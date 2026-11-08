@@ -13,25 +13,14 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-100">
 
-    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO REAL DE RED JOHN (PINTURA CHORREANTE) -->
+    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO REAL DE RED JOHN -->
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-4">
-            <div class="bg-slate-950 p-2 rounded-xl border border-red-900/80 shadow-lg flex items-center justify-center">
-                <!-- CARA SONRIENTE REAL DE RED JOHN (CON MANCHAS Y CHORROS DE PINTURA) -->
-                <svg class="w-10 h-10 text-red-600 drop-shadow-[0_0_6px_rgba(220,38,38,0.8)]" viewBox="0 0 100 100" fill="currentColor">
-                    <!-- Círculo de la cara con trazo irregular -->
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="240 10" stroke-linecap="round"/>
-                    <!-- Ojos -->
-                    <circle cx="34" cy="38" r="6"/>
-                    <circle cx="66" cy="38" r="6"/>
-                    <!-- Sonrisa ancha -->
-                    <path d="M 24 55 Q 50 88 76 55" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
-                    <!-- Chorros de pintura cayendo desde la sonrisa -->
-                    <path d="M 40 76 L 38 95" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M 50 81 L 52 98" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-                    <path d="M 60 76 L 63 92" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M 30 70 L 25 85" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-                </svg>
+            <div class="bg-slate-950 p-1 rounded-xl border border-red-900 shadow-lg flex items-center justify-center">
+                <!-- LOGO REAL RED JOHN (IMAGEN CANÓNICA) -->
+                <img id="logo-red-john" src="https://upload.wikimedia.org/wikipedia/commons/ thumb/8/87/Red_John_symbol.svg/1200px-Red_John_symbol.svg.png" 
+                     onerror="this.onerror=null; this.src='https://static.wikia.nocookie.net/thementalist/images/6/6b/Red_john_face.png/revision/latest?cb=20131125024419';" 
+                     alt="Red John Face" class="w-10 h-10 object-contain">
             </div>
             <div>
                 <h1 class="text-lg md:text-xl font-black tracking-wider text-amber-400">SAB // FORENSIC LAB</h1>
@@ -50,14 +39,9 @@
         <div id="view-login" class="max-w-md w-full bg-white border border-slate-200 p-8 rounded-2xl shadow-xl space-y-6">
             <div class="text-center space-y-2">
                 <div class="inline-flex p-3 bg-red-50 text-red-600 rounded-full font-bold mb-1 border border-red-100 justify-center">
-                    <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
-                        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"/>
-                        <circle cx="34" cy="38" r="6"/>
-                        <circle cx="66" cy="38" r="6"/>
-                        <path d="M 24 55 Q 50 88 76 55" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
-                        <path d="M 40 76 L 38 95" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-                        <path d="M 50 81 L 52 98" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-                    </svg>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Red_John_symbol.svg/1200px-Red_John_symbol.svg.png" 
+                         onerror="this.onerror=null; this.src='https://static.wikia.nocookie.net/thementalist/images/6/6b/Red_john_face.png/revision/latest?cb=20131125024419';" 
+                         class="w-10 h-10 object-contain">
                 </div>
                 <h2 class="text-2xl font-black text-slate-900">Acceso a Plataforma Forense</h2>
                 <p class="text-xs text-slate-500">Ingrese su clave institucional para autenticar su perfil de acceso.</p>
@@ -73,23 +57,24 @@
             <div id="login-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Credenciales incorrectas. Verifique la contraseña.</div>
         </div>
 
-        <!-- 2. PORTADA PRINCIPAL (NOTICIAS ACADÉMICAS Y BASE DE PERFILES) -->
+        <!-- 2. PORTADA PRINCIPAL -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
             <!-- NAVEGACIÓN INTERNA -->
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">INVESTIGACIÓN Y REGISTROS FORENSES</h2>
-                    <p class="text-xs text-slate-500 font-medium">Biotecnología y artículos científicos aplicados a la criminalística</p>
+                    <p class="text-xs text-slate-500 font-medium">Biotecnología y herramientas de cotejo de ADN</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Artículos y Noticias</button>
-                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Artículos</button>
+                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
+                    <button onclick="mostrarSeccion('comparador')" id="tab-comparador" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🔬 Cotejo / Comparador ADN</button>
                     <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2.5 text-xs font-bold rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar Perfiles</button>
                 </div>
             </div>
 
-            <!-- SECCIÓN A: NOTICIAS ACADÉMICAS Y CIENTÍFICAS -->
+            <!-- SECCIÓN A: NOTICIAS ACADÉMICAS -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
 
@@ -103,9 +88,32 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="lista-sujetos"></div>
             </div>
 
+            <!-- SECCIÓN C: MÓDULO DE COTEJO Y COMPARACIÓN DE ADN -->
+            <div id="seccion-comparador" class="hidden space-y-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xl">
+                <div class="border-b border-slate-200 pb-4">
+                    <h3 class="text-lg font-black text-slate-900">MÓDULO DE COTEJO Y COMPARACIÓN GENÉTICA</h3>
+                    <p class="text-xs text-slate-500">Seleccione un perfil para analizar y comparar su código STR contra la base de datos institucional.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold text-slate-700 block">Seleccionar Perfil a Comparar:</label>
+                        <select id="select-comparar" class="w-full bg-slate-50 border border-slate-300 p-3 rounded-xl text-xs font-bold text-slate-800">
+                            <!-- Opciones cargadas dinámicamente -->
+                        </select>
+                        <button onclick="ejecutarComparacion()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider shadow">Ejecutar Análisis de Muestra</button>
+                    </div>
+
+                    <div id="resultado-comparacion" class="bg-slate-50 p-5 rounded-2xl border border-slate-200 flex flex-col justify-center items-center text-center">
+                        <span class="text-4xl mb-2">🧬</span>
+                        <p class="text-xs text-slate-500 font-medium">Seleccione un sujeto y presione "Ejecutar Análisis" para evaluar la coincidencia genética.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- 3. VISTA DEDICADA DE DETALLE DE NOTICIA (ESTILO ARTÍCULO UNIVERSITARIO) -->
+        <!-- 3. DETALLE DE NOTICIA -->
         <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
             <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200">← Volver al Panel Principal</button>
             
@@ -128,7 +136,7 @@
             </div>
         </div>
 
-        <!-- 4. FICHA INDIVIDUAL DE PERFIL (AMPLIADA Y DINÁMICA) -->
+        <!-- 4. FICHA INDIVIDUAL DE PERFIL -->
         <div id="view-perfil" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
             <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
             
@@ -206,7 +214,6 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // BASE DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS REALES
         const baseNoticias = [
             {
                 id: 1,
@@ -240,39 +247,6 @@
                 imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
                 resumen: "Extracción de perfiles genéticos completos tras la manipulación breve de objetos.",
                 texto: "Tradicionalmente, las pruebas biológicas requerían charcos visibles de sangre o fluidos. Hoy en día, la técnica conocida como 'Touch DNA' permite recuperar células de la piel que las personas desprenden al tocar un objeto por apenas unos segundos (como manillas de puertas, volantes o herramientas).\n\nMediante los ciclos de amplificación ultrasensible por PCR, los laboratorios logran replicar trazas menores a un nanogramo hasta obtener un perfil STR legible y con validez legal irrefutable ante los tribunales."
-            },
-            {
-                id: 4,
-                categoria: "Fenotipación Forense",
-                titulo: "Construcción de retratos robot biológicos mediante marcadores SNPs",
-                institucion: "Parabon NanoLabs",
-                lugar: "Virginia, Estados Unidos",
-                fecha: "Año 2023",
-                imagen: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=500",
-                resumen: "Predicción de color de ojos, piel, cabello y rasgos ancestrales a partir de restos óseos.",
-                texto: "Cuando se descubren osamentas antiguas o muestras sin coincidencias en los registros policiales, la fenotipación forense ofrece una salida revolucionaria. Analizando polimorfismos de nucleótido único (SNPs), los sistemas bioinformáticos predicen con alta precisión estadística las características físicas externas y los orígenes biogeográficos del individuo, orientando con efectividad las pesquisas policiales."
-            },
-            {
-                id: 5,
-                categoria: "Microbioma Forense",
-                titulo: "La firma bacteriana cutánea como evidencia de manipulación",
-                institucion: "Universidad de Colorado",
-                lugar: "Colorado, Estados Unidos",
-                fecha: "Año 2022",
-                imagen: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
-                resumen: "Uso de comunidades microbianas personales para vincular sospechosos con dispositivos.",
-                texto: "Cada persona alberga una comunidad única de bacterias en su piel. Al utilizar teclados, teléfonos o pantallas táctiles, transferimos nuestra firma microbiana personal. La secuenciación genética del microbioma permite corroborar quién manipuló un objeto específico, aportando una capa adicional de certeza incluso cuando el ADN humano presenta interferencias o mezclas."
-            },
-            {
-                id: 6,
-                categoria: "Epigenética Forense",
-                titulo: "Estimación precisa de la edad biológica mediante metilación del ADN",
-                institucion: "Universidad de Friburgo",
-                lugar: "Friburgo, Alemania",
-                fecha: "Año 2025",
-                imagen: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
-                resumen: "Cálculo de la edad cronológica de un sospechoso midiendo marcas químicas celulares.",
-                texto: "La epigenética estudia las modificaciones químicas que se acumulan en el ADN a lo largo del ciclo vital humano. Al analizar los patrones de metilación en genes específicos, los científicos forenses pueden calcular la edad exacta de una persona a partir de una muestra de sangre o tejido con un margen de error mínimo de apenas dos años."
             }
         ];
 
@@ -326,6 +300,7 @@
             }
             renderizarNoticias();
             renderizarDashboard();
+            poblarSelectorComparador();
             mostrarVista('view-dashboard');
             mostrarSeccion('noticias');
         }
@@ -339,23 +314,16 @@
         }
 
         function mostrarSeccion(seccion) {
-            const btnNoticias = document.getElementById('tab-noticias');
-            const btnRegistros = document.getElementById('tab-registros');
-            const secNoticias = document.getElementById('seccion-noticias');
-            const secRegistros = document.getElementById('seccion-registros');
+            ['noticias', 'registros', 'comparador'].forEach(sec => {
+                document.getElementById('tab-' + sec).className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                document.getElementById('seccion-' + sec).classList.add('hidden');
+            });
 
-            if(seccion === 'noticias') {
-                secNoticias.classList.remove('hidden');
-                secRegistros.classList.add('hidden');
-                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
-                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
-            } else {
-                secNoticias.classList.add('hidden');
-                secRegistros.classList.remove('hidden');
-                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
-                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
-                renderizarDashboard();
-            }
+            document.getElementById('tab-' + seccion).className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+            document.getElementById('seccion-' + seccion).classList.remove('hidden');
+
+            if(seccion === 'registros') renderizarDashboard();
+            if(seccion === 'comparador') poblarSelectorComparador();
         }
 
         function renderizarNoticias() {
@@ -382,15 +350,6 @@
                     </div>
                 `;
             });
-
-            if(limiteNoticias >= baseNoticias.length) {
-                document.getElementById('btn-cargar-mas').classList.add('hidden');
-            }
-        }
-
-        function cargarMasNoticias() {
-            limiteNoticias += 3;
-            renderizarNoticias();
         }
 
         function verDetalleNoticia(id) {
@@ -452,9 +411,16 @@
             });
         }
 
-        function verPerfil(id) {
-            const s = sujetos.find(item => item.id === id);
+        // MOSTRAR FICHA INDIVIDUAL Y GENERAR QR AUTOCONTENIDO PARA MÓVIL
+        function verPerfil(id, objetoSujeto = null) {
+            let s = objetoSujeto || sujetos.find(item => item.id === id);
             if(!s) return;
+
+            // Si el sujeto viene del QR y no existe en el celular, lo agregamos a su memoria local
+            if(!sujetos.some(existente => existente.id === s.id)) {
+                sujetos.push(s);
+                guardarDatos();
+            }
 
             const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
             const fechaFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
@@ -505,19 +471,59 @@
                 </div>
             `;
 
-            history.pushState({id: id}, "", "#" + id);
+            history.pushState({id: s.id}, "", "#" + s.id);
             mostrarVista('view-perfil');
 
-            const urlPerfilLimpia = window.location.href.split('#')[0] + "#" + s.id;
+            // CODIFICACIÓN DEL QR CON DATOS DE RESPALDO (Sin romper el formateador)
+            const payloadQR = {
+                id: s.id,
+                nombre: s.nombre,
+                fechaNac: s.fechaNac,
+                sexo: s.sexo,
+                estado: s.estado,
+                coincidencia: s.coincidencia,
+                adn: s.adn
+            };
+            const encodedData = btoa(JSON.stringify(payloadQR));
+            const urlFinalQR = window.location.href.split('#')[0] + "#profileData=" + encodedData;
+
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
-                text: urlPerfilLimpia,
+                text: urlFinalQR,
                 width: 160,
                 height: 160,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.M
+                correctLevel: QRCode.CorrectLevel.L
             });
+        }
+
+        // MÓDULO DE COTEJO DE ADN
+        function poblarSelectorComparador() {
+            const select = document.getElementById('select-comparar');
+            select.innerHTML = '';
+            sujetos.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.id} - ${s.nombre}</option>`;
+            });
+        }
+
+        function ejecutarComparacion() {
+            const selectedId = document.getElementById('select-comparar').value;
+            const s = sujetos.find(item => item.id === selectedId);
+            if(!s) return;
+
+            const res = document.getElementById('resultado-comparacion');
+            res.innerHTML = `
+                <div class="space-y-3 w-full">
+                    <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">¡COINCIDENCIA ENCONTRADA EN LA BASE DE DATOS!</span>
+                    <h4 class="text-lg font-black text-slate-900">${s.nombre} (${s.id})</h4>
+                    <p class="text-xs text-slate-600">Porcentaje de Coincidencia Biométrica: <strong class="text-blue-900 text-sm font-black">${s.coincidencia}</strong></p>
+                    <div class="p-3 bg-slate-900 text-emerald-400 font-mono text-xs rounded-xl">
+                        ${s.adn}
+                    </div>
+                    <button onclick="verPerfil('${s.id}')" class="mt-2 bg-blue-900 text-white font-bold px-4 py-2 rounded-xl text-xs">Abrir Ficha Oficial Completa →</button>
+                </div>
+            `;
         }
 
         function volverAlDashboard() {
@@ -612,9 +618,22 @@
             }
         }
 
+        // MANEJO DE ESCANEO DE QR EN CUALQUIER DISPOSITIVO
         window.onload = function() {
             const hash = window.location.hash.replace('#', '');
-            if(hash.startsWith('noticia-')) {
+            
+            if(hash.startsWith('profileData=')) {
+                try {
+                    const jsonRaw = atob(hash.replace('profileData=', ''));
+                    const sujetoQR = JSON.parse(jsonRaw);
+                    rolActual = 'visitante';
+                    document.getElementById('user-status').classList.remove('hidden');
+                    document.getElementById('rol-actual').innerText = "VISITANTE (QR)";
+                    verPerfil(sujetoQR.id, sujetoQR);
+                } catch(e) {
+                    console.error("Error al sincronizar QR", e);
+                }
+            } else if(hash.startsWith('noticia-')) {
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
@@ -627,7 +646,12 @@
 
         window.onpopstate = function(event) {
             const hash = window.location.hash.replace('#', '');
-            if(hash.startsWith('noticia-')) {
+            if(hash.startsWith('profileData=')) {
+                try {
+                    const sujetoQR = JSON.parse(atob(hash.replace('profileData=', '')));
+                    verPerfil(sujetoQR.id, sujetoQR);
+                } catch(e) {}
+            } else if(hash.startsWith('noticia-')) {
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
