@@ -221,7 +221,7 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
         
-        // ID de respaldo compartido en JsonBlob para sincronización en red entre cualquier dispositivo
+        // ID centralizado y sincronizado en la nube para red global
         const BLOB_URL = "https://jsonblob.com/api/jsonBlob/1346618790215565312";
 
         const baseNoticias = [
@@ -328,7 +328,6 @@
 
         let limiteNoticias = 3;
 
-        // LOS 30 PERFILES FIJOS OFICIALES DE LA BASE INSTITUCIONAL CON HISTORIALES
         const perfilesBaseOficiales = [
             { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2008-05-10", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Sujeto bajo seguimiento analítico preventivo en laboratorios de biotecnología. Muestra rastros de metabolitos estables en pruebas epiteliales y control genético riguroso sin alteraciones criminales.", ultimoIngreso: "08/11/2026 12:00" },
             { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18 | TPOX: 9,12", historia: "Hallado sin vida en zona rural periférica (km 42). Presenta marcados vestigios de alcaloides sintéticos y trazas hemáticas de arrastre en la escena principal.", ultimoIngreso: "05/06/2026 14:22" },
@@ -370,24 +369,23 @@
 
         let sujetos = [];
         let rolActual = null;
-        let perfilSeleccionadoQR = null;
 
-        // Carga centralizada desde la nube en red compartida
+        // Carga centralizada desde la nube con revalidación forzada
         async function cargarDatosNube() {
             try {
-                const res = await fetch(BLOB_URL);
+                const res = await fetch(BLOB_URL + "?t=" + new Date().getTime());
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
                         sujetos = data;
+                        localStorage.setItem('sab_sujetos_cloud_cache', JSON.stringify(sujetos));
                         return;
                     }
                 }
             } catch(e) {
-                console.warn("Modo offline o error al conectar con la nube, usando respaldo local.");
+                console.warn("Usando caché local por falta de red.");
             }
             
-            // Si falla la nube, usa respaldo local sincronizado
             const local = JSON.parse(localStorage.getItem('sab_sujetos_cloud_cache'));
             sujetos = (local && local.length >= perfilesBaseOficiales.length) ? local : perfilesBaseOficiales;
         }
@@ -401,7 +399,7 @@
                     body: JSON.stringify(sujetos)
                 });
             } catch(e) {
-                console.error("No se pudo sincronizar en la nube global:", e);
+                console.error("Error sincronizando en la nube:", e);
             }
         }
 
@@ -461,15 +459,9 @@
                     document.getElementById('btn-admin-panel').classList.remove('hidden');
                 }
                 
-                if (perfilSeleccionadoQR) {
-                    perfilSeleccionadoQR.ultimoIngreso = obtenerFechaActualFormateada();
-                    const idx = sujetos.findIndex(s => s.id === perfilSeleccionadoQR.id);
-                    if(idx !== -1) {
-                        sujetos[idx] = perfilSeleccionadoQR;
-                    }
-                    guardarDatosNube();
-                    verPerfil(perfilSeleccionadoQR.id);
-                    perfilSeleccionadoQR = null;
+                const hash = window.location.hash.replace('#', '');
+                if (hash && sujetos.some(s => s.id === hash)) {
+                    verPerfil(hash);
                 } else {
                     mostrarVista('view-dashboard');
                     mostrarSeccion('noticias');
@@ -838,10 +830,16 @@
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
-                perfilSeleccionadoQR = sujetos.find(s => s.id === hash);
-                mostrarVista('view-qr-auth');
+                // Al escanear el QR o abrir por enlace directo, pedirá clave de seguridad si no ha iniciado sesión
+                if(!rolActual) {
+                    mostrarVista('view-qr-auth');
+                } else {
+                    verPerfil(hash);
+                }
             } else {
-                mostrarVista('view-login');
+                if(!rolActual) {
+                    mostrarVista('view-login');
+                }
             }
         }
 
