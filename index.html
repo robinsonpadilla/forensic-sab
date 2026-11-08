@@ -220,6 +220,9 @@
         const PASS_VISITANTE = "profe angelica";
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
+        
+        // ID de respaldo compartido en JsonBlob para sincronización en red entre cualquier dispositivo
+        const BLOB_URL = "https://jsonblob.com/api/jsonBlob/1346618790215565312";
 
         const baseNoticias = [
             {
@@ -365,23 +368,41 @@
             }
         });
 
-        // Sincronización global y persistente
-        let sujetosGuardados = JSON.parse(localStorage.getItem('sab_sujetos_global'));
-        let sujetos = sujetosGuardados && sujetosGuardados.length >= perfilesBaseOficiales.length ? sujetosGuardados : perfilesBaseOficiales;
-
+        let sujetos = [];
         let rolActual = null;
-        let sujetoPendienteQR = null;
+        let perfilSeleccionadoQR = null;
 
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'sab_sujetos_global') {
-                sujetos = JSON.parse(e.newValue) || perfilesBaseOficiales;
-                renderizarDashboard();
+        // Carga centralizada desde la nube en red compartida
+        async function cargarDatosNube() {
+            try {
+                const res = await fetch(BLOB_URL);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        sujetos = data;
+                        return;
+                    }
+                }
+            } catch(e) {
+                console.warn("Modo offline o error al conectar con la nube, usando respaldo local.");
             }
-        });
+            
+            // Si falla la nube, usa respaldo local sincronizado
+            const local = JSON.parse(localStorage.getItem('sab_sujetos_cloud_cache'));
+            sujetos = (local && local.length >= perfilesBaseOficiales.length) ? local : perfilesBaseOficiales;
+        }
 
-        function guardarDatosLocal() {
-            localStorage.setItem('sab_sujetos_global', JSON.stringify(sujetos));
-            window.dispatchEvent(new Event('storage'));
+        async function guardarDatosNube() {
+            localStorage.setItem('sab_sujetos_cloud_cache', JSON.stringify(sujetos));
+            try {
+                await fetch(BLOB_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sujetos)
+                });
+            } catch(e) {
+                console.error("No se pudo sincronizar en la nube global:", e);
+            }
         }
 
         function calcularEdad(fechaNacStr) {
@@ -440,17 +461,19 @@
                     document.getElementById('btn-admin-panel').classList.remove('hidden');
                 }
                 
-                sujetoPendienteQR.ultimoIngreso = obtenerFechaActualFormateada();
-                const idxExistente = sujetos.findIndex(s => s.id === sujetoPendienteQR.id);
-                if(idxExistente !== -1) {
-                    sujetos[idxExistente] = sujetoPendienteQR;
+                if (perfilSeleccionadoQR) {
+                    perfilSeleccionadoQR.ultimoIngreso = obtenerFechaActualFormateada();
+                    const idx = sujetos.findIndex(s => s.id === perfilSeleccionadoQR.id);
+                    if(idx !== -1) {
+                        sujetos[idx] = perfilSeleccionadoQR;
+                    }
+                    guardarDatosNube();
+                    verPerfil(perfilSeleccionadoQR.id);
+                    perfilSeleccionadoQR = null;
                 } else {
-                    sujetos.push(sujetoPendienteQR);
+                    mostrarVista('view-dashboard');
+                    mostrarSeccion('noticias');
                 }
-                guardarDatosLocal();
-
-                verPerfil(sujetoPendienteQR.id, sujetoPendienteQR);
-                sujetoPendienteQR = null;
             } else {
                 const err = document.getElementById('qr-auth-error');
                 err.classList.remove('hidden');
@@ -586,24 +609,9 @@
                 sujetos.forEach(s => {
                     const qrContenedor = document.getElementById(`mini-qr-${s.id}`);
                     if (qrContenedor && qrContenedor.innerHTML === "") {
-                        const urlBase = window.location.origin + window.location.pathname;
-                        const payloadQR = { 
-                            id: s.id, 
-                            nombre: s.nombre, 
-                            fechaNac: s.fechaNac, 
-                            edad: calcularEdad(s.fechaNac) || s.edad, 
-                            estado: s.estado, 
-                            adn: s.adn, 
-                            historia: s.historia || "",
-                            coincidencia: s.coincidencia || '99.8%',
-                            foto: s.foto || FOTO_DEFAULT,
-                            ultimoIngreso: s.ultimoIngreso || obtenerFechaActualFormateada()
-                        };
-                        const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
-                        const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
-
+                        const urlLimpia = window.location.origin + window.location.pathname + "#" + s.id;
                         new QRCode(qrContenedor, {
-                            text: urlFinalQR,
+                            text: urlLimpia,
                             width: 56,
                             height: 56,
                             colorDark: "#000000",
@@ -615,19 +623,12 @@
             }, 100);
         }
 
-        function verPerfil(id, objetoExterno = null) {
-            let s = objetoExterno || sujetos.find(item => item.id === id);
+        function verPerfil(id) {
+            let s = sujetos.find(item => item.id === id);
             if(!s) return;
 
-            if (!objetoExterno) {
-                s.ultimoIngreso = obtenerFechaActualFormateada();
-                guardarDatosLocal();
-            }
-
-            if(!sujetos.some(existente => existente.id === s.id)) {
-                sujetos.push(s);
-                guardarDatosLocal();
-            }
+            s.ultimoIngreso = obtenerFechaActualFormateada();
+            guardarDatosNube();
 
             const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
             const fechaNacFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
@@ -691,28 +692,13 @@
             history.pushState({id: s.id}, "", "#" + s.id);
             mostrarVista('view-perfil');
 
-            const urlBase = window.location.origin + window.location.pathname;
-            const payloadQR = { 
-                id: s.id, 
-                nombre: s.nombre, 
-                fechaNac: s.fechaNac, 
-                edad: edadCalculada, 
-                estado: s.estado, 
-                adn: s.adn, 
-                historia: s.historia || "",
-                coincidencia: s.coincidencia || '99.8%',
-                foto: s.foto || FOTO_DEFAULT,
-                ultimoIngreso: s.ultimoIngreso
-            };
-            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
-            const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
-
             setTimeout(() => {
                 const qrContainer = document.getElementById('qrcode');
                 if(qrContainer) {
                     qrContainer.innerHTML = "";
+                    const urlLimpia = window.location.origin + window.location.pathname + "#" + s.id;
                     new QRCode(qrContainer, {
-                        text: urlFinalQR,
+                        text: urlLimpia,
                         width: 160,
                         height: 160,
                         colorDark: "#000000",
@@ -797,7 +783,7 @@
                 sujetos.push(nuevoSujeto);
             }
 
-            guardarDatosLocal();
+            guardarDatosNube();
             limpiarFormulario();
             actualizarListaAdmin();
             renderizarDashboard();
@@ -832,7 +818,7 @@
         function eliminarSujeto(index) {
             if(confirm("¿Desea eliminar permanentemente este registro forense?")) {
                 sujetos.splice(index, 1);
-                guardarDatosLocal();
+                guardarDatosNube();
                 actualizarListaAdmin();
                 renderizarDashboard();
             }
@@ -844,43 +830,27 @@
             mostrarSeccion('noticias');
         }
 
-        window.onload = function() {
+        async function procesarRutaHash() {
+            await cargarDatosNube();
             const hash = window.location.hash.replace('#', '');
-            
-            if(hash.startsWith('profileData=')) {
-                try {
-                    const jsonRaw = decodeURIComponent(escape(atob(hash.replace('profileData=', ''))));
-                    sujetoPendienteQR = JSON.parse(jsonRaw);
-                    mostrarVista('view-qr-auth');
-                } catch(e) {
-                    console.error("Error al procesar QR", e);
-                }
-            } else if(hash.startsWith('noticia-')) {
-                const idNoticia = parseInt(hash.replace('noticia-', ''));
-                verDetalleNoticia(idNoticia);
-            } else if(hash && sujetos.some(s => s.id === hash)) {
-                sujetoPendienteQR = sujetos.find(s => s.id === hash);
-                mostrarVista('view-qr-auth');
-            }
-        };
 
-        window.onpopstate = function(event) {
-            const hash = window.location.hash.replace('#', '');
-            if(hash.startsWith('profileData=')) {
-                try {
-                    sujetoPendienteQR = JSON.parse(decodeURIComponent(escape(atob(hash.replace('profileData=', '')))));
-                    mostrarVista('view-qr-auth');
-                } catch(e) {}
-            } else if(hash.startsWith('noticia-')) {
+            if(hash.startsWith('noticia-')) {
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
-                sujetoPendienteQR = sujetos.find(s => s.id === hash);
+                perfilSeleccionadoQR = sujetos.find(s => s.id === hash);
                 mostrarVista('view-qr-auth');
             } else {
-                mostrarVista('view-dashboard');
-                mostrarSeccion('noticias');
+                mostrarVista('view-login');
             }
+        }
+
+        window.onload = async function() {
+            await procesarRutaHash();
+        };
+
+        window.onpopstate = async function(event) {
+            await procesarRutaHash();
         };
     </script>
 </body>
