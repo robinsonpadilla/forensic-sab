@@ -198,7 +198,7 @@
 
                 <div>
                     <label class="text-xs font-bold text-slate-700 block mb-1">Historial Tanatológico / Reporte Pericial Breve:</label>
-                    <textarea id="historia" rows="3" placeholder="Ej: Suscrito a investigaciones previas, localizado con trazas de..." class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">Sujeto bajo vigilancia pericial preventiva. Muestras biológicas estables en cadena de custodia institucional.</textarea>
+                    <textarea id="historia" rows="3" placeholder="Ej: Suscrito a investigaciones previas..." class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">Sujeto bajo vigilancia pericial preventiva. Muestras biológicas estables en cadena de custodia institucional.</textarea>
                 </div>
 
                 <div class="flex gap-3 pt-2">
@@ -325,7 +325,7 @@
 
         let limiteNoticias = 3;
 
-        // LOS 30 PERFILES FIJOS OFICIALES DE LA BASE INSTITUCIONAL CON HISTORIALES TANATOLÓGICOS Y FORENSES
+        // LOS 30 PERFILES FIJOS OFICIALES DE LA BASE INSTITUCIONAL CON HISTORIALES
         const perfilesBaseOficiales = [
             { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2008-05-10", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Sujeto bajo seguimiento analítico preventivo en laboratorios de biotecnología. Muestra rastros de metabolitos estables en pruebas epiteliales y control genético riguroso sin alteraciones criminales.", ultimoIngreso: "08/11/2026 12:00" },
             { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18 | TPOX: 9,12", historia: "Hallado sin vida en zona rural periférica (km 42). Presenta marcados vestigios de alcaloides sintéticos y trazas hemáticas de arrastre en la escena principal.", ultimoIngreso: "05/06/2026 14:22" },
@@ -338,7 +338,7 @@
             { id: "SAB-1009", nombre: "Isidora Belén Morales", fechaNac: "2010-01-18", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 16,17 | TPOX: 9,10", historia: "Sujeto bajo monitoreo genómico rutinario. Sin incidencias toxicológicas relevantes registradas en los archivos del departamento.", ultimoIngreso: "05/11/2026 12:30" },
             { id: "SAB-1010", nombre: "Benjamín Alonso Silva", fechaNac: "2009-06-25", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 15,19 | TPOX: 8,11", historia: "VINCULADO a peritaje balístico preliminar por residuos de pólvora (bario y plomo) detectados en pruebas de parafina en dorso de manos.", ultimoIngreso: "06/11/2026 15:50" },
             { id: "SAB-1011", nombre: "Camila Andrea Fuentes", fechaNac: "2008-04-03", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,14 | vWA: 16,18 | TPOX: 11,11", historia: "Perfil biométrico de referencia institucional. Colaboradora en la validación de perfiles STR de alta pureza.", ultimoIngreso: "07/11/2026 09:00" },
-            { id: "SAB-1012", nombre: "Joaquín Alejandro Contreras", fechaNac: "2009-12-14", edad: 16, estado: "FALLECIDO", coincidencia: "99.2%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 8,13 | vWA: 14,16 | TPOX: 7,9", ... }, // Se mantiene la misma estructura consistente
+            { id: "SAB-1012", nombre: "Joaquín Alejandro Contreras", fechaNac: "2009-12-14", edad: 16, estado: "FALLECIDO", coincidencia: "99.2%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 8,13 | vWA: 14,16 | TPOX: 7,9", historia: "Hallado en abandonada bodega industrial con indicios de colapso respiratorio y rastros de solventes aromáticos en muestras hepáticas.", ultimoIngreso: "07/11/2026 18:00" },
             { id: "SAB-1013", nombre: "Antonia Javiera Alarcón", fechaNac: "2010-05-09", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 17,20 | TPOX: 8,10", historia: "Sujeto evaluado por trazas de reactivos químicos fluorescentes encontrados en su equipamiento personal durante peritaje de campo.", ultimoIngreso: "08/11/2026 11:15" },
             { id: "SAB-1014", nombre: "Diego Esteban Parra", fechaNac: "2008-08-19", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 15,18 | TPOX: 9,12", historia: "Bajo investigación por alteración de muestras biológicas secundarias en el sector laboratorios. Perfil genético estable.", ultimoIngreso: "08/11/2026 13:40" },
             { id: "SAB-1015", nombre: "Florencia Ignacia Bravo", fechaNac: "2009-10-01", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,11 | vWA: 16,16 | TPOX: 8,9", historia: "Sin antecedentes criminales. Muestra perfiles de metilación epigenética normales acordes a su grupo etario.", ultimoIngreso: "08/11/2026 14:00" },
@@ -359,7 +359,6 @@
             { id: "SAB-1030", nombre: "Esteban Alejandro Palma", fechaNac: "2009-04-05", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 17,19 | TPOX: 9,12", historia: "Evaluado en peritaje balístico y químico sin arrojar elementos punibles en su contra.", ultimoIngreso: "08/11/2026 15:20" }
         ];
 
-        // Rellenar las historias faltantes por defecto para los que no tengan la propiedad escrita explícitamente
         perfilesBaseOficiales.forEach(p => {
             if(!p.historia) {
                 p.historia = "Sujeto bajo investigación pericial estándar. Muestras biológicas analizadas y archivadas bajo estrictos protocolos de cadena de custodia institucional.";
