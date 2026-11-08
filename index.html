@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAB - Sistema de Identificación Forense</title>
+    <title>SAB - Colegio San Antonio del Baluarte de Rengo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
@@ -17,68 +17,98 @@
 </head>
 <body class="min-h-screen flex flex-col scanlines">
 
-    <!-- BARRA SUPERIOR INSTITUCIONAL -->
-    <header class="bg-slate-900 border-b border-cyan-800/50 p-4 flex justify-between items-center shadow-lg">
+    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO SAB -->
+    <header class="bg-slate-900 border-b border-cyan-800/50 p-4 flex flex-col md:flex-row justify-between items-center shadow-lg gap-4">
         <div class="flex items-center space-x-3">
-            <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <h1 class="text-xl font-bold tracking-widest text-cyan-400">SAB // FORENSIC DATABASE SYSTEM</h1>
+            <!-- LOGOTIPO OFICIAL DEL COLEGIO SAN ANTONIO DEL BALUARTE DE RENGO -->
+            <img src="https://colegiosanantonio.cl/wp-content/uploads/2021/03/logo-web.png" alt="Logo SAB Rengo" class="w-10 h-10 object-contain bg-white/10 p-1 rounded border border-cyan-500/30">
+            <div>
+                <h1 class="text-base md:text-xl font-bold tracking-widest text-cyan-400">SAB // FORENSIC LAB</h1>
+                <p class="text-[10px] text-slate-400 tracking-wider">Colegio San Antonio del Baluarte · Rengo</p>
+            </div>
         </div>
-        <div id="user-status" class="text-xs text-slate-400 hidden">
-            MODO: <span id="rol-actual" class="text-yellow-400 font-bold"></span> | 
-            <button onclick="cerrarSesion()" class="text-red-400 hover:underline ml-2">[ CERRAR SESIÓN ]</button>
+        <div id="user-status" class="text-xs text-slate-400 hidden flex items-center space-x-2">
+            <span>MODO: <span id="rol-actual" class="text-yellow-400 font-bold"></span></span>
+            <span>|</span>
+            <button onclick="cerrarSesion()" class="text-red-400 hover:underline">[ CERRAR SESIÓN ]</button>
         </div>
     </header>
 
     <main class="flex-grow flex items-center justify-center p-4">
 
-        <!-- 1. PANTALLA PRINCIPAL DE ACCESO -->
-        <div id="view-login" class="max-w-xl w-full bg-slate-900/90 border border-cyan-500/40 p-8 rounded-xl shadow-2xl backdrop-blur">
-            <div class="text-center mb-8">
-                <div class="inline-block p-4 rounded-full bg-cyan-950/50 border border-cyan-500/30 mb-4 text-3xl">🛡️</div>
-                <h2 class="text-2xl font-black text-cyan-300 tracking-wider">ESTADO DEL SISTEMA: OPERATIVO</h2>
-                <p class="text-xs text-slate-400 mt-2">ACCESO RESTRINGIDO - UNIDAD DE INVESTIGACIÓN CRIMINALÍSTICA</p>
+        <!-- 1. PORTADA DIDÁCTICA Y DE ACCESO -->
+        <div id="view-login" class="max-w-3xl w-full space-y-6">
+            
+            <!-- SECCIÓN EDUCATIVA / CRIMINALÍSTICA -->
+            <div class="bg-slate-900/90 border border-cyan-500/40 p-6 rounded-xl shadow-2xl backdrop-blur space-y-4">
+                <div class="flex items-center space-x-3 border-b border-slate-800 pb-3">
+                    <span class="text-2xl">🔬</span>
+                    <div>
+                        <h2 class="text-lg font-bold text-cyan-300">PORTAL EDUCATIVO DE CRIMINALÍSTICA Y ADN</h2>
+                        <p class="text-xs text-slate-400">Investigación científica aplicada y biometría forense</p>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    La criminalística utiliza ciencias como la genética molecular (perfiles STR), la dactiloscopia y la balística para el esclarecimiento riguroso de evidencias. Este sistema simula un entorno institucional protegido para el análisis de perfiles e identificación forense.
+                </p>
+
+                <!-- MINI IA FORENSE INTERACTIVA -->
+                <div class="bg-slate-950 p-4 rounded-lg border border-cyan-900/50 space-y-3">
+                    <div class="flex justify-between items-center text-xs text-cyan-400 font-bold">
+                        <span>🤖 SAB-AI // ASISTENTE FORENSE VIRTUAL</span>
+                        <span class="text-[10px] text-green-400 animate-pulse">● ACTIVO</span>
+                    </div>
+                    <div id="ia-chat-output" class="text-xs text-slate-300 bg-slate-900 p-3 rounded h-24 overflow-y-auto font-mono border border-slate-800">
+                        SAB-AI: Hola. Pregúntame sobre perfiles genéticos, huellas o métodos forenses del sistema.
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="ia-pregunta" placeholder="Ej: ¿Qué es un marcador STR?" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white focus:outline-none focus:border-cyan-500" onkeypress="if(event.key === 'Enter') consultarIA()">
+                        <button onclick="consultarIA()" class="bg-cyan-700 hover:bg-cyan-600 text-slate-950 px-4 py-2 rounded text-xs font-bold transition">CONSULTAR</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="space-y-6">
-                <div class="bg-slate-950/60 p-5 rounded-lg border border-slate-800">
-                    <h3 class="text-sm font-bold text-cyan-400 mb-3 uppercase tracking-wider">Acceso de Consulta (Visitantes)</h3>
-                    <input type="password" id="pass-visitante" placeholder="Ingrese clave de consulta..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded text-cyan-300 mb-3 focus:outline-none focus:border-cyan-500 text-sm">
-                    <button onclick="loginVisitante()" class="w-full bg-cyan-700 hover:bg-cyan-600 text-slate-950 font-black py-2.5 rounded transition tracking-wider text-sm">INGRESAR AL SISTEMA</button>
+            <!-- ACCESO A CREDENCIALES -->
+            <div class="bg-slate-900/90 border border-cyan-500/40 p-6 rounded-xl shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-800">
+                    <h3 class="text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wider">Acceso Visitante</h3>
+                    <input type="password" id="pass-visitante" placeholder="Clave de consulta..." class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded text-cyan-300 mb-2 text-xs focus:outline-none focus:border-cyan-500">
+                    <button onclick="loginVisitante()" class="w-full bg-cyan-700 hover:bg-cyan-600 text-slate-950 font-bold py-2 rounded text-xs transition">INGRESAR</button>
                 </div>
 
-                <div class="bg-slate-950/60 p-5 rounded-lg border border-slate-800">
-                    <h3 class="text-sm font-bold text-yellow-400 mb-3 uppercase tracking-wider">Acceso de Administrador (Panel Privado)</h3>
-                    <input type="password" id="pass-admin" placeholder="Ingrese clave maestra..." class="w-full bg-slate-900 border border-slate-700 p-3 rounded text-yellow-300 mb-3 focus:outline-none focus:border-yellow-500 text-sm">
-                    <button onclick="loginAdmin()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-black py-2.5 rounded transition tracking-wider text-sm">ACCEDER COMO ADMIN</button>
+                <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-800">
+                    <h3 class="text-xs font-bold text-yellow-400 mb-2 uppercase tracking-wider">Acceso Administrador</h3>
+                    <input type="password" id="pass-admin" placeholder="Clave maestra..." class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded text-yellow-300 mb-2 text-xs focus:outline-none focus:border-yellow-500">
+                    <button onclick="loginAdmin()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-2 rounded text-xs transition">ACCEDER ADMIN</button>
                 </div>
             </div>
-            <div id="login-error" class="text-red-400 text-xs text-center mt-4 hidden font-bold">⚠️ CREDENCIALES INCORRECTAS. ACCESO DENEGADO.</div>
+            <div id="login-error" class="text-red-400 text-xs text-center font-bold hidden">⚠️ CREDENCIALES INCORRECTAS. ACCESO DENEGADO.</div>
         </div>
 
-        <!-- 2. PANEL DE CONSULTA Y LISTADO DE REGISTROS -->
+        <!-- 2. PANEL DE LISTADO DE REGISTROS -->
         <div id="view-dashboard" class="w-full max-w-4xl hidden space-y-6">
             <div class="flex justify-between items-center bg-slate-900 p-4 rounded-lg border border-cyan-800/50">
-                <h2 class="text-lg font-bold text-cyan-400">REGISTRO DE INDIVIDUOS IDENTIFICADOS</h2>
-                <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden bg-yellow-500 text-slate-950 px-4 py-2 rounded text-xs font-bold hover:bg-yellow-400 transition">+ GESTIONAR REGISTROS</button>
+                <h2 class="text-sm md:text-lg font-bold text-cyan-400">REGISTRO DE INDIVIDUOS IDENTIFICADOS</h2>
+                <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden bg-yellow-500 text-slate-950 px-3 py-1.5 rounded text-xs font-bold hover:bg-yellow-400 transition">+ GESTIONAR</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="lista-sujetos">
-                <!-- Carga dinámica -->
+                <!-- Dinámico -->
             </div>
         </div>
 
-        <!-- 3. FICHA INDIVIDUAL DE CADA PERSONA -->
+        <!-- 3. FICHA INDIVIDUAL -->
         <div id="view-perfil" class="w-full max-w-2xl hidden bg-slate-900 border border-cyan-500/50 p-6 rounded-xl shadow-2xl relative">
-            <button onclick="volverAlDashboard()" class="mb-4 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1.5 rounded border border-cyan-900">← Volver al Sistema</button>
+            <button onclick="volverAlDashboard()" class="mb-4 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1.5 rounded border border-cyan-950 cursor-pointer">← Volver al Sistema</button>
             <div id="detalle-perfil">
-                <!-- Ficha detallada -->
+                <!-- Detalle -->
             </div>
         </div>
 
-        <!-- 4. PANEL DE ADMINISTRACIÓN (CRUD CON ARCHIVOS) -->
+        <!-- 4. PANEL DE ADMINISTRACIÓN -->
         <div id="view-admin" class="w-full max-w-3xl hidden bg-slate-900 border border-yellow-500/50 p-6 rounded-xl shadow-2xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                <h2 class="text-lg font-bold text-yellow-400">PANEL DE CONTROL ADMINISTRATIVO</h2>
+                <h2 class="text-sm font-bold text-yellow-400">PANEL DE CONTROL ADMINISTRATIVO</h2>
                 <button onclick="volverAlDashboard()" class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded">Cerrar Panel</button>
             </div>
 
@@ -89,15 +119,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Nombre Completo:</label>
-                        <input type="text" id="nombre" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white focus:outline-none focus:border-yellow-500">
+                        <input type="text" id="nombre" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Fecha de Nacimiento:</label>
-                        <input type="date" id="fecha-nacimiento" required onchange="calcularEdadAutomatica()" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white focus:outline-none focus:border-yellow-500">
+                        <input type="date" id="fecha-nacimiento" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Sexo:</label>
-                        <select id="sexo" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                        <select id="sexo" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white">
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
                             <option value="No Especificado">No Especificado</option>
@@ -105,14 +135,14 @@
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Estado Vital:</label>
-                        <select id="estado" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                        <select id="estado" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white">
                             <option value="VIVO">VIVO</option>
                             <option value="FALLECIDO">FALLECIDO</option>
                         </select>
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">% Coincidencia Genética:</label>
-                        <input type="text" id="coincidencia" value="99.8%" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                        <input type="text" id="coincidencia" value="99.8%" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Fotografía (Archivo local):</label>
@@ -121,35 +151,32 @@
                 </div>
 
                 <div id="preview-contenedor" class="hidden flex items-center space-x-3 bg-slate-900 p-2 rounded border border-slate-800">
-                    <img id="preview-img" class="w-12 h-12 object-cover rounded border border-yellow-500">
-                    <span class="text-xs text-slate-400">Vista previa de la imagen cargada</span>
+                    <img id="preview-img" class="w-10 h-10 object-cover rounded border border-yellow-500">
+                    <span class="text-xs text-slate-400">Vista previa cargada</span>
                 </div>
 
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">Perfil Genético Ficticio (STR / ADN):</label>
-                    <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                    <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-xs text-white">
                 </div>
-                <button type="submit" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-2 rounded text-sm transition tracking-wider">GUARDAR REGISTRO FORENSE</button>
+                <button type="submit" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-2 rounded text-xs transition">GUARDAR REGISTRO FORENSE</button>
             </form>
 
-            <div class="space-y-3" id="lista-admin-sujetos">
-                <!-- Lista administrativa -->
-            </div>
+            <div class="space-y-3" id="lista-admin-sujetos"></div>
         </div>
 
     </main>
 
     <footer class="text-center py-4 text-xs text-slate-600 border-t border-slate-900">
-        SAB FORENSIC SYSTEM · SEGURIDAD INSTITUCIONAL V2.5
+        SAB FORENSIC SYSTEM · COLEGIO SAN ANTONIO DEL BALUARTE (RENGO) V3.0
     </footer>
 
     <script>
         const PASS_VISITANTE = "profe angelica";
         const PASS_ADMIN = "saezypadillamolecular";
-
-        // Imagen predeterminada si no se sube ninguna foto
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
+        // Base robusta inicial predeterminada (para que celulares con QR detecten registros reales al instante)
         let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
             { id: "SAB-1001", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, sexo: "Masculino", estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18" },
             { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, sexo: "Femenino", estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19" }
@@ -210,6 +237,8 @@
             document.getElementById('user-status').classList.add('hidden');
             document.getElementById('pass-visitante').value = '';
             document.getElementById('pass-admin').value = '';
+            // Limpiar hash de la URL sin recargar
+            history.pushState("", document.title, window.location.pathname);
             mostrarVista('view-login');
         }
 
@@ -219,9 +248,7 @@
             const hoy = new Date();
             let edad = hoy.getFullYear() - nac.getFullYear();
             const m = hoy.getMonth() - nac.getMonth();
-            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) {
-                edad--;
-            }
+            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) { edad--; }
             return edad;
         }
 
@@ -304,6 +331,8 @@
         }
 
         function volverAlDashboard() {
+            // Limpia el hash en la barra de direcciones de forma limpia
+            history.pushState("", document.title, window.location.pathname);
             renderizarDashboard();
             mostrarVista('view-dashboard');
         }
@@ -391,6 +420,45 @@
                 sujetos = sujetos.filter(s => s.id !== id);
                 guardarDatos();
                 abrirPanelAdmin();
+            }
+        }
+
+        // SIMULADOR DE IA FORENSE DIDÁCTICA
+        function consultarIA() {
+            const input = document.getElementById('ia-pregunta');
+            const output = document.getElementById('ia-chat-output');
+            const query = input.value.trim().toLowerCase();
+            if(!query) return;
+
+            output.innerHTML += `<br><span class="text-cyan-400">> ${input.value}</span>`;
+            input.value = '';
+
+            let respuesta = "SAB-AI: Consulta registrada. Los perfiles STR analizados en el sistema comparan loci específicos de ADN para determinar identidad con alta precisión estadística.";
+            
+            if(query.includes('adn') || query.includes('genetica')) {
+                respuesta = "SAB-AI: El ADN forense analiza regiones cortas en tándem (STR). Una coincidencia del 99.8% o superior confirma vinculación biológica directa en la base de datos.";
+            } else if(query.includes('huella') || query.includes('dactilar')) {
+                respuesta = "SAB-AI: La crestografía dactilar evalúa puntos característicos (minucias: bifurcaciones y finales de línea) para identificación indubitada.";
+            } else if(query.includes('colegio') || query.includes('rengo') || query.includes('sab')) {
+                respuesta = "SAB-AI: Este módulo pertenece al Colegio San Antonio del Baluarte de Rengo (SAB), diseñado para la investigación y divulgación de técnicas criminalísticas.";
+            }
+
+            setTimeout(() => {
+                output.innerHTML += `<br><span class="text-green-400">${respuesta}</span>`;
+                output.scrollTop = output.scrollHeight;
+            }, 400);
+        }
+
+        // AUTO-DETECCIÓN DE QR AL ABRIR DESDE EL CELULAR
+        window.onload = function() {
+            const hash = window.location.hash.replace('#', '');
+            if(hash) {
+                // Si alguien escanea el QR, forzamos acceso directo o solicitamos clave de visitante
+                // Para simplificar la experiencia móvil al escanear, permitimos ingreso automático con rol visitante
+                rolActual = 'visitante';
+                document.getElementById('user-status').classList.remove('hidden');
+                document.getElementById('rol-actual').innerText = "VISITANTE (VIA QR)";
+                verPerfil(hash);
             }
         }
     </script>
