@@ -328,7 +328,6 @@
         let rolActual = null;
         let sujetoPendienteQR = null;
 
-        // Escucha cambios de almacenamiento en tiempo real entre pestañas/dispositivos locales
         window.addEventListener('storage', function(e) {
             if (e.key === 'sab_sujetos') {
                 sujetos = JSON.parse(e.newValue) || [];
@@ -368,7 +367,7 @@
         }
 
         function autenticarUsuario() {
-            const val = document.getElementById('pass-unica').value.trim();
+            const val = document.getElementById('pass-unica').value.trim().toLowerCase();
             if(val === PASS_ADMIN) {
                 rolActual = 'admin';
                 iniciarSesionExitoso();
@@ -387,7 +386,7 @@
         }
 
         function validarQRAuth() {
-            const val = document.getElementById('pass-qr').value.trim();
+            const val = document.getElementById('pass-qr').value.trim().toLowerCase();
             if(val === PASS_ADMIN || val === PASS_VISITANTE) {
                 rolActual = val === PASS_ADMIN ? 'admin' : 'visitante';
                 document.getElementById('user-status').classList.remove('hidden');
@@ -485,7 +484,7 @@
 
             const btnCargar = document.getElementById('btn-cargar-mas');
             if(limiteNoticias >= baseNoticias.length) {
-                btnCargar.style.display = 'none'; // Oculta el botón limpiamente si ya no hay más noticias
+                btnCargar.style.display = 'none';
             } else {
                 btnCargar.style.display = 'block';
             }
@@ -760,4 +759,24 @@
             }
         };
 
-        window
+        window.onpopstate = function(event) {
+            const hash = window.location.hash.replace('#', '');
+            if(hash.startsWith('profileData=')) {
+                try {
+                    sujetoPendienteQR = JSON.parse(decodeURIComponent(escape(atob(hash.replace('profileData=', '')))));
+                    mostrarVista('view-qr-auth');
+                } catch(e) {}
+            } else if(hash.startsWith('noticia-')) {
+                const idNoticia = parseInt(hash.replace('noticia-', ''));
+                verDetalleNoticia(idNoticia);
+            } else if(hash && sujetos.some(s => s.id === hash)) {
+                sujetoPendienteQR = sujetos.find(s => s.id === hash);
+                mostrarVista('view-qr-auth');
+            } else {
+                mostrarVista('view-dashboard');
+                mostrarSeccion('noticias');
+            }
+        };
+    </script>
+</body>
+</html>
