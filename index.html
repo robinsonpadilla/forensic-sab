@@ -281,7 +281,7 @@
                 fecha: "Año 2023",
                 imagen: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500",
                 resumen: "Extracción del contenido estomacal de larvas necrófagas para identificar perfiles genéticos humanos y estimar data de muerte.",
-                texto: "La entomología forense estudia la sucesión de insectos en restos humanos para estimar el intervalo post-mortem (IPM). Sin embargo, la biotecnología molecular ha llevado esta disciplina un paso más allá al integrar la identificación genética de los restos digeridos dentro de los insectos.\n\nCuando un cadáver se encuentra desarticulado o incompleto, las larvas de moscas y escarabajos que se han alimentado de los tejidos blandos retienen en su tracto digestivo células humanas intactas.\n\nMediante la extracción y amplificación de ADN de las larvas, los peritos pueden cotejar la identidad genética de la víctima y analizar toxinas o fármacos presentes en el cuerpo a través del metabolismo del propio insecto."
+                texto: "La entomología forense estudia la sucesión de insectos en restos humanos para estimar el intervalo post-mortem (IPM). Sin embargo, la biotecnología molecular ha llevado esta disciplina un paso más allá al integrar la identificación genética de los restos digeridos dentro de los insectos.\n\nКогда un cadáver se encuentra desarticulado o incompleto, las larvas de moscas y escarabajos que se han alimentado de los tejidos blandos retienen en su tracto digestivo células humanas intactas.\n\nMediante la extracción y amplificación de ADN de las larvas, los peritos pueden cotejar la identidad genética de la víctima y analizar toxinas o fármacos presentes en el cuerpo a través del metabolismo del propio insecto."
             },
             {
                 id: 7,
@@ -320,7 +320,7 @@
 
         let limiteNoticias = 3;
 
-        // BASE DE DATOS FIJA CON LOS 30 PERFILES INSTITUCIONALES OFICIALES
+        // LOS 30 PERFILES FIJOS OFICIALES DE LA BASE INSTITUCIONAL
         const perfilesBaseOficiales = [
             { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2008-05-10", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 12:00" },
             { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18 | TPOX: 9,12", ultimoIngreso: "05/06/2026 14:22" },
@@ -354,9 +354,9 @@
             { id: "SAB-1030", nombre: "Esteban Alejandro Palma", fechaNac: "2009-04-05", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 17,19 | TPOX: 9,12", ultimoIngreso: "08/11/2026 15:20" }
         ];
 
-        // Combinar la base oficial con localStorage para rescatar agregados dinámicos sin perder los 30 fijos
+        // Fusionar base oficial fija con localStorage (siempre garantizando que los 30 estén presentes)
         let sujetosGuardados = JSON.parse(localStorage.getItem('sab_sujetos'));
-        let sujetos = sujetosGuardados && sujetosGuardados.length > 0 ? sujetosGuardados : perfilesBaseOficiales;
+        let sujetos = sujetosGuardados && sujetosGuardados.length >= perfilesBaseOficiales.length ? sujetosGuardados : perfilesBaseOficiales;
 
         let rolActual = null;
         let sujetoPendienteQR = null;
@@ -553,17 +553,54 @@
             sujetos.forEach(s => {
                 const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
                 contenedor.innerHTML += `
-                    <div onclick="verPerfil('${s.id}')" class="bg-white border border-slate-200 p-5 rounded-2xl cursor-pointer hover:border-blue-900 hover:shadow-lg transition flex items-center space-x-5">
-                        <img src="${s.foto || FOTO_DEFAULT}" class="w-20 h-20 object-cover rounded-xl border border-slate-200 shadow">
-                        <div class="space-y-1">
-                            <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">${s.id}</span>
-                            <h3 class="text-slate-900 font-black text-base">${s.nombre}</h3>
-                            <p class="text-xs text-slate-600 font-semibold">Edad: <strong class="text-slate-900">${edadCalculada} años</strong> | Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
-                            <p class="text-xs text-slate-400">Último Ingreso: ${s.ultimoIngreso || 'No registrado'}</p>
+                    <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:border-blue-900 hover:shadow-lg transition flex flex-col justify-between space-y-4">
+                        <div onclick="verPerfil('${s.id}')" class="flex items-center space-x-4 cursor-pointer">
+                            <img src="${s.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shadow">
+                            <div class="space-y-1">
+                                <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">${s.id}</span>
+                                <h3 class="text-slate-900 font-black text-sm md:text-base">${s.nombre}</h3>
+                                <p class="text-xs text-slate-600 font-semibold">Edad: <strong class="text-slate-900">${edadCalculada} años</strong> | Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-100 pt-3">
+                            <button onclick="verPerfil('${s.id}')" class="text-xs text-blue-700 font-bold hover:underline">Ver Ficha Completa →</button>
+                            <div id="mini-qr-${s.id}" class="p-1 bg-white border border-slate-200 rounded-lg shadow-sm"></div>
                         </div>
                     </div>
                 `;
             });
+
+            // Generar códigos QR mini para cada tarjeta en el dashboard de forma asíncrona
+            setTimeout(() => {
+                sujetos.forEach(s => {
+                    const qrContenedor = document.getElementById(`mini-qr-${s.id}`);
+                    if (qrContenedor && qrContenedor.innerHTML === "") {
+                        const urlBase = window.location.origin + window.location.pathname;
+                        const payloadQR = { 
+                            id: s.id, 
+                            nombre: s.nombre, 
+                            fechaNac: s.fechaNac, 
+                            edad: calcularEdad(s.fechaNac) || s.edad, 
+                            estado: s.estado, 
+                            adn: s.adn, 
+                            coincidencia: s.coincidencia || '99.8%',
+                            foto: s.foto || FOTO_DEFAULT,
+                            ultimoIngreso: s.ultimoIngreso || obtenerFechaActualFormateada()
+                        };
+                        const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
+                        const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
+
+                        new QRCode(qrContenedor, {
+                            text: urlFinalQR,
+                            width: 56,
+                            height: 56,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.L
+                        });
+                    }
+                });
+            }, 100);
         }
 
         function verPerfil(id, objetoExterno = null) {
@@ -647,15 +684,20 @@
             const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
             const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
 
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: urlFinalQR,
-                width: 160,
-                height: 160,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
-            });
+            setTimeout(() => {
+                const qrContainer = document.getElementById('qrcode');
+                if(qrContainer) {
+                    qrContainer.innerHTML = "";
+                    new QRCode(qrContainer, {
+                        text: urlFinalQR,
+                        width: 160,
+                        height: 160,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.L
+                    });
+                }
+            }, 50);
         }
 
         function procesarFotoLocal(e) {
