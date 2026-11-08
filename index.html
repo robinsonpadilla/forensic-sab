@@ -16,7 +16,8 @@
     <!-- BARRA SUPERIOR INSTITUCIONAL SAB -->
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-3">
-            <img src="https://colegiosanantonio.cl/wp-content/uploads/2021/03/logo-web.png" alt="Logo SAB Rengo" class="w-11 h-11 object-contain bg-white p-1 rounded shadow">
+            <!-- AQUÍ PUEDES CAMBIAR LA URL DE TU LOGOTIPO CUANDO DESEES -->
+            <img id="logo-institucional" src="https://colegiosanantonio.cl/wp-content/uploads/2021/03/logo-web.png" alt="Logo SAB Rengo" class="w-11 h-11 object-contain bg-white p-1 rounded shadow">
             <div>
                 <h1 class="text-base md:text-lg font-bold tracking-wide text-amber-400">SAB // FORENSIC LAB</h1>
                 <p class="text-xs text-slate-300">Colegio San Antonio del Baluarte · Rengo</p>
@@ -51,7 +52,7 @@
         <!-- 2. PORTADA PRINCIPAL (NOTICIAS Y ASISTENTE IA) -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
-            <!-- BARRA DE NAVEGACIÓN INTERNA -->
+            <!-- NAVEGACIÓN INTERNA -->
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm gap-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">PANEL DE INVESTIGACIÓN Y DIVULGACIÓN</h2>
@@ -64,10 +65,11 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN A: NOTICIAS REALES DE BIOTECNOLOGÍA CRIMINALÍSTICA -->
+            <!-- SECCIÓN A: NOTICIAS REALES CON MODAL DETALLADO -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     
+                    <!-- Noticia 1 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
                         <div>
                             <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500" class="w-full h-40 object-cover" alt="ADN">
@@ -75,31 +77,35 @@
                                 <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">GENEALOGÍA GENÉTICA</span>
                                 <h3 class="font-bold text-slate-900 text-base">La caída del "Golden State Killer"</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Por primera vez en 2018, los investigadores utilizaron bases de datos genealógicas públicas para cruzar perfiles de ADN dejados en escenas de crímenes de décadas atrás, revolucionando la resolución de casos fríos.
+                                    El uso revolucionario de bases de datos genealógicas públicas para cruzar perfiles de ADN en 2018 permitió capturar a uno de los asesinos seriales más escurridizos de Estados Unidos tras décadas de impunidad.
                                 </p>
                             </div>
                         </div>
-                        <div class="px-5 pb-5 pt-0">
-                            <span class="text-[11px] text-slate-400 font-medium">Impacto: Identificación por parentesco lejano.</span>
+                        <div class="px-5 pb-5 pt-0 flex justify-between items-center">
+                            <span class="text-[11px] text-slate-400 font-medium">Año 2018</span>
+                            <button onclick="abrirNoticia(1)" class="text-xs font-bold text-blue-900 hover:underline">Leer Caso Completo →</button>
                         </div>
                     </div>
 
+                    <!-- Noticia 2 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
                         <div>
                             <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500" class="w-full h-40 object-cover" alt="Forense">
                             <div class="p-5 space-y-2">
-                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">ADN DE CONTACTO (TOUCH DNA)</span>
-                                <h3 class="font-bold text-slate-900 text-base">Miniaturización y ADN de Minutos</h3>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">ADN DE CONTACTO</span>
+                                <h3 class="font-bold text-slate-900 text-base">Evidencia Invisible y Touch DNA</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Los avances en la recolección de trazas moleculares permiten extraer perfiles completos a partir de células epiteliales depositadas al tocar un objeto por apenas unos segundos.
+                                    Los avances moleculares actuales permiten extraer perfiles genéticos completos a partir de mínimas cantidades de células epiteliales dejadas al tocar un objeto por apenas unos segundos.
                                 </p>
                             </div>
                         </div>
-                        <div class="px-5 pb-5 pt-0">
-                            <span class="text-[11px] text-slate-400 font-medium">Impacto: Evidencia invisible recuperada.</span>
+                        <div class="px-5 pb-5 pt-0 flex justify-between items-center">
+                            <span class="text-[11px] text-slate-400 font-medium">Actualidad</span>
+                            <button onclick="abrirNoticia(2)" class="text-xs font-bold text-blue-900 hover:underline">Leer Caso Completo →</button>
                         </div>
                     </div>
 
+                    <!-- Noticia 3 -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
                         <div>
                             <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500" class="w-full h-40 object-cover" alt="Fenotipación">
@@ -107,35 +113,36 @@
                                 <span class="text-[10px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full border border-purple-100">FENOTIPACIÓN FORENSE</span>
                                 <h3 class="font-bold text-slate-900 text-base">Reconstrucción Facial por ADN</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Mediante fenotipación avanzada, los laboratorios modernos pueden predecir con alta precisión el color de ojos, cabello, tono de piel y rasgos ancestrales a partir de restos óseos o fluidos.
+                                    Mediante fenotipación avanzada, los laboratorios modernos predicen el color de ojos, cabello, tono de piel y rasgos biogeográficos a partir de muestras óseas degradadas.
                                 </p>
                             </div>
                         </div>
-                        <div class="px-5 pb-5 pt-0">
-                            <span class="text-[11px] text-slate-400 font-medium">Impacto: Retratos robot biológicos.</span>
+                        <div class="px-5 pb-5 pt-0 flex justify-between items-center">
+                            <span class="text-[11px] text-slate-400 font-medium">Innovación</span>
+                            <button onclick="abrirNoticia(3)" class="text-xs font-bold text-blue-900 hover:underline">Leer Caso Completo →</button>
                         </div>
-
                     </div>
+
                 </div>
 
-                <!-- ASISTENTE IA FORENSE REAL INTEGRADO -->
+                <!-- ASISTENTE IA FORENSE AVANZADO Y PROFUNDO -->
                 <div class="bg-white border border-slate-200 p-6 rounded-xl shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
                             <span class="text-lg">🤖</span>
-                            <h3 class="font-bold text-slate-900 text-sm">Asistente Virtual SAB-AI (Consulta Criminalística)</h3>
+                            <h3 class="font-bold text-slate-900 text-sm">Asistente Virtual SAB-AI (Especialista Forense)</h3>
                         </div>
-                        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">● Sistema Operativo</span>
+                        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">● Motor Neural Activo</span>
                     </div>
-                    <p class="text-xs text-slate-500">Haz una pregunta sobre genética forense, STR, dactiloscopia o biotecnología aplicada:</p>
+                    <p class="text-xs text-slate-500">Haz una consulta científica detallada sobre genética, STR, dactiloscopia o biotecnología criminalística:</p>
                     
-                    <div id="ia-chat-output" class="text-xs text-slate-700 bg-slate-50 p-4 rounded-xl h-32 overflow-y-auto font-mono border border-slate-200 space-y-2">
-                        <div><strong class="text-blue-900">SAB-AI:</strong> Hola. Estoy conectado a la base de conocimientos biotecnológicos. ¿Qué consulta deseas realizar?</div>
+                    <div id="ia-chat-output" class="text-xs text-slate-700 bg-slate-50 p-4 rounded-xl h-36 overflow-y-auto font-mono border border-slate-200 space-y-2">
+                        <div><strong class="text-blue-900">SAB-AI:</strong> Saludos. Sistema experto en biotecnología forense inicializado. ¿Qué concepto o caso científico deseas analizar?</div>
                     </div>
 
                     <div class="flex gap-2">
-                        <input type="text" id="ia-pregunta" placeholder="Ej: ¿Cómo funcionan los marcadores STR en el ADN?" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') consultarIAVerdadera()">
-                        <button onclick="consultarIAVerdadera()" class="bg-blue-900 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-xs font-semibold transition shrink-0">Preguntar</button>
+                        <input type="text" id="ia-pregunta" placeholder="Ej: Explícame detalladamente cómo funcionan los marcadores STR..." class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') consultarIAVerdadera()">
+                        <button onclick="consultarIAVerdadera()" class="bg-blue-900 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-xs font-semibold transition shrink-0">Consultar IA</button>
                     </div>
                 </div>
             </div>
@@ -217,12 +224,23 @@
 
     </main>
 
+    <!-- VENTANA MODAL PARA LEER NOTICIA COMPLETA -->
+    <div id="modal-noticia" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white max-w-lg w-full rounded-2xl p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 id="modal-titulo" class="font-bold text-slate-900 text-base"></h3>
+                <button onclick="cerrarNoticiaModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+            </div>
+            <div id="modal-contenido" class="text-xs text-slate-600 leading-relaxed space-y-3"></div>
+            <button onclick="cerrarNoticiaModal()" class="w-full bg-blue-900 text-white font-semibold py-2 rounded-lg text-xs">Cerrar Detalle</button>
+        </div>
+    </div>
+
     <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white">
         SAB FORENSIC SYSTEM · Colegio San Antonio del Baluarte (Rengo) · 2026
     </footer>
 
     <script>
-        // CONTRASEÑAS INSTITUCIONALES DEFINIDAS
         const PASS_VISITANTE = "profe angelica";
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
@@ -245,7 +263,6 @@
             document.getElementById(vistaId).classList.remove('hidden');
         }
 
-        // AUTENTICACIÓN ÚNICA INTELIGENTE
         function autenticarUsuario() {
             const val = document.getElementById('pass-unica').value.trim();
             if(val === PASS_ADMIN) {
@@ -385,6 +402,7 @@
                 </div>
             `;
 
+            history.pushState({id: id}, "", "#" + id);
             mostrarVista('view-perfil');
 
             document.getElementById('qrcode').innerHTML = "";
@@ -487,7 +505,46 @@
             }
         }
 
-        // MOTOR INTELIGENTE REAL DE ASISTENCIA FORENSE
+        // MODAL DE NOTICIAS DETALLADAS
+        function abrirNoticia(id) {
+            const modal = document.getElementById('modal-noticia');
+            const titulo = document.getElementById('modal-titulo');
+            const contenido = document.getElementById('modal-contenido');
+
+            if(id === 1) {
+                titulo.innerText = "Caso Histórico: La captura del Golden State Killer";
+                contenido.innerHTML = `
+                    <p><strong>Contexto:</strong> Durante las décadas de 1970 y 1980, California fue aterrorizada por un violento violador y asesino en serie conocido como el "Golden State Killer". El caso quedó frío por más de 30 años sin pistas concluyentes.</p>
+                    <p><strong>Innovación Biotecnológica:</strong> En 2018, los investigadores decidieron aplicar una técnica pionera: la <em>genealogía genética forense</em>. Subieron el perfil de ADN recuperado de las escenas a una base de datos pública de genealogía (GEDmatch) bajo un perfil ficticio.</p>
+                    <p><strong>Resultado:</strong> El sistema encontró coincidencias con parientes lejanos del asesino. A partir de allí, los genetistas forenses construyeron extensos árboles genealógicos hasta identificar al ex-policía Joseph James DeAngelo, confirmando su identidad mediante una muestra de ADN descartada de su basura.</p>
+                `;
+            } else if(id === 2) {
+                titulo.innerText = "Innovación Forense: El poder del ADN de Contacto (Touch DNA)";
+                contenido.innerHTML = `
+                    <p><strong>Contexto:</strong> Tradicionalmente, los laboratorios forenses requerían charcos de sangre, semen o grandes fluidos corporales para extraer perfiles de ADN viables en una escena criminal.</p>
+                    <p><strong>Innovación Biotecnológica:</strong> Con el desarrollo de los kits de amplificación ultrasensibles de PCR, hoy es posible recolectar células epiteliales (células de la piel) que las personas desprenden al simple contacto físico con un objeto.</p>
+                    <p><strong>Impacto:</strong> Esto transformó perillas de puertas, casquillos de bala, volantes de autos y herramientas en fuentes de evidencia molecular contundente, permitiendo resolver casos donde antes no existía ningún rastro visible.</p>
+                `;
+            } else if(id === 3) {
+                titulo.innerText = "Vanguardia Científica: Fenotipación Forense y Retratos Biológicos";
+                contenido.innerHTML = `
+                    <p><strong>Contexto:</strong> Ante restos óseos muy antiguos o perfiles genéticos sin coincidencias en las bases de datos policiales tradicionales, la investigación solía estancarse por completo.</p>
+                    <p><strong>Innovación Biotecnológica:</strong> La fenotipación forense analiza marcadores genéticos informativos de ancestralidad (AIMs) y polimorfismos de nucleótido único (SNPs).</p>
+                    <p><strong>Resultado:</strong> Esto permite predecir estadísticamente el color de ojos, cabello, tono de piel, estructura facial y origen biogeográfico del sospechoso, generando un "retrato robot biológico" de alta precisión para orientar a la policía.</p>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function cerrarNoticiaModal() {
+            const modal = document.getElementById('modal-noticia');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        // MOTOR INTELIGENTE FORENSE AVANZADO Y PROFUNDO
         function consultarIAVerdadera() {
             const input = document.getElementById('ia-pregunta');
             const output = document.getElementById('ia-chat-output');
@@ -498,18 +555,20 @@
             const preguntaUsuario = input.value;
             input.value = '';
 
-            let respuesta = "El sistema biotecnológico analiza patrones genéticos moleculares estandarizados para validación legal e identificación forense.";
+            let respuesta = "La biotecnología criminalística moderna emplea secuenciación de alto rendimiento y marcadores moleculares estandarizados para garantizar evidencia con rigor científico absoluto ante los tribunales.";
             
-            if(query.includes('str') || query.includes('repet') || query.includes('loci')) {
-                respuesta = "Los STR (Short Tandem Repeats) son secuencias cortas de ADN que se repiten en tándem en los cromosomas. Su longitud varía enormemente entre individuos, lo que permite crear un perfil genético casi único (con una probabilidad de coincidencia aleatoria inferior a 1 en 1 billón).";
-            } else if(query.includes('genealogía') || query.includes('golden state') || query.includes('parientes')) {
-                respuesta = "La genealogía genética forense combina perfiles de ADN de muestras criminales con bases de datos genealógicas comerciales voluntarias para buscar parientes lejanos del sospechoso, construyendo árboles genealógicos hasta dar con el autor.";
-            } else if(query.includes('contacto') || query.includes('tocar') || query.includes('epitelial')) {
-                respuesta = "El ADN de contacto se compone de células desprendidas al manipular un objeto. Aunque la cantidad de ADN es mínima (a menudo menos de un nanogramo), los métodos de amplificación por PCR actuales permiten obtener perfiles completos de manera confiable.";
-            } else if(query.includes('colegio') || query.includes('rengo') || query.includes('baluarte')) {
-                respuesta = "Esta plataforma fue desarrollada bajo estándares institucionales para el Colegio San Antonio del Baluarte de Rengo (SAB), integrando bases de datos biométricas y divulgación científica.";
+            if(query.includes('str') || query.includes('repet') || query.includes('loci') || query.includes('marcadores')) {
+                respuesta = "Los STR (Short Tandem Repeats) son regiones de ADN no codificante donde secuencias cortas de nucleótidos (de 2 a 6 pares de bases) se repiten en tándem de manera consecutiva. Dado que el número de repeticiones varía enormemente entre individuos debido a la herencia genética, el análisis simultáneo de múltiples loci STR (como los 20 marcadores estándar del CODIS) genera un perfil estadísticamente único con una probabilidad de coincidencia aleatoria inferior a 1 en varios billones.";
+            } else if(query.includes('genealogía') || query.includes('golden state') || query.includes('parientes') || query.includes('familiar')) {
+                respuesta = "La genealogía genética forense es una técnica puntera que combina la elaboración de perfiles de ADN de muestras criminales con bases de datos genealógicas comerciales de acceso público. Al buscar coincidencias de parentesco lejano (primos segundos o terceros), los investigadores construyen complejos árboles genealógicos cruzando registros civiles e históricos hasta acotar la búsqueda al sospechoso o a sus familiares directos.";
+            } else if(query.includes('contacto') || query.includes('tocar') || query.includes('epitelial') || query.includes('piel')) {
+                respuesta = "El 'Touch DNA' o ADN de contacto se refiere al material genético depositado de forma indirecta cuando una persona toca una superficie, transfiriendo células epiteliales descamadas. Aunque el rendimiento suele ser inferior a un nanogramo de ADN, la técnica de Reacción en Cadena de la Polimerasa (PCR) permite amplificar estas trazas mínimas hasta obtener perfiles completos aptos para comparación forense.";
+            } else if(query.includes('fenotipación') || query.includes('rostro') || query.includes('ojos') || query.includes('piel')) {
+                respuesta = "La fenotipación forense utiliza polimorfismos de nucleótido único (SNPs) para deducir características físicas externas y biogeográficas de un individuo a partir de su ADN, permitiendo estimar pigmentación, rasgos faciales y ascendencia cuando no existen registros previos en las bases de datos.";
+            } else if(query.includes('colegio') || query.includes('rengo') || query.includes('baluarte') || query.includes('sab')) {
+                respuesta = "Esta plataforma fue diseñada institucionalmente para el Colegio San Antonio del Baluarte de Rengo (SAB), integrando la educación en biotecnología criminalística, gestión de perfiles y divulgación científica avanzada.";
             } else {
-                respuesta = `Respecto a "${preguntaUsuario}", la biotecnología criminalística moderna utiliza secuenciación de alto rendimiento y marcadores moleculares para garantizar evidencia con rigor científico absoluto.`;
+                respuesta = `Respecto a su consulta sobre "${preguntaUsuario}", la biotecnología criminalística aplica principios de genética molecular, enzimología y bioinformática para transformar indicios biológicos invisibles en pruebas científicas irrefutables.`;
             }
 
             setTimeout(() => {
@@ -518,16 +577,29 @@
             }, 500);
         }
 
-        // DETECCIÓN DE QR MÓVIL
+        // CARGA Y DETECCIÓN AUTOMÁTICA DE QR MÓVIL
         window.onload = function() {
             const hash = window.location.hash.replace('#', '');
-            if(hash) {
+            if(hash && sujetos.some(s => s.id === hash)) {
                 rolActual = 'visitante';
                 document.getElementById('user-status').classList.remove('hidden');
-                document.getElementById('rol-actual').innerText = "VISITANTE (QR)";
+                document.getElementById('rol-actual').innerText = "VISITANTE (QR MÓVIL)";
                 verPerfil(hash);
             }
-        }
+        };
+
+        // Manejo fluido de los botones de retroceso del navegador
+        window.onpopstate = function(event) {
+            if(window.location.hash) {
+                const id = window.location.hash.replace('#', '');
+                if(sujetos.some(s => s.id === id)) {
+                    verPerfil(id);
+                }
+            } else {
+                mostrarVista('view-dashboard');
+                mostrarSeccion('noticias');
+            }
+        };
     </script>
 </body>
 </html>
