@@ -4,258 +4,328 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BASE DE DATOS FORENSE SAB</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería Oficial de QR -->
+    <!-- Librería para generar códigos QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131b2e;
+            --accent-red: #ff3333;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #07090f;
+            border-bottom: 2px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Cara roja sonriente estilo forense / hacker */
+        .smiles-face {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .smiles-face::before {
+            content: "• •";
+            position: absolute;
+            top: 8px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #000;
+            letter-spacing: 6px;
+        }
+        .smiles-face::after {
+            content: "◡";
+            position: absolute;
+            bottom: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin: 0;
+            color: #f8fafc;
+        }
+
+        .session-info {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .session-info span {
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Secciones de Noticias Profesionales */
+        .news-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .news-section h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            color: #38bdf8;
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            border-left: 3px solid var(--accent-red);
+            padding-left: 15px;
+        }
+
+        .news-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .news-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .news-desc {
+            font-size: 0.92rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* Perfiles */
+        .profiles-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
+
+        .card-id {
+            font-size: 0.85rem;
+            color: #38bdf8;
+            font-weight: bold;
+        }
+
+        .card-name {
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .card-details {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+
+        .btn-ficha {
+            background: none;
+            border: none;
+            color: #38bdf8;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+
+        .btn-ficha:hover {
+            text-decoration: underline;
+        }
+
+        /* Contenedor del QR dinámico */
+        .qr-box {
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        
+        .btn-new {
+            background-color: #f59e0b;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-new:hover {
+            background-color: #d97706;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-100">
+<body>
 
-    <header class="bg-slate-900 text-white p-4 shadow-md flex justify-between items-center">
-        <h1 class="text-lg font-black text-amber-400">BASE DE DATOS FORENSE SAB</h1>
-        <div id="user-status" class="text-xs text-slate-300 hidden">
-            SESIÓN: <span id="rol-actual" class="text-amber-400 font-bold"></span>
-            <button onclick="cerrarSesion()" class="ml-3 text-red-400 font-semibold">[ Cerrar Sesión ]</button>
+    <header>
+        <div class="header-title">
+            <div class="smiles-face" title="SAB Security System"></div>
+            <h1>BASE DE DATOS FORENSE SAB</h1>
+        </div>
+        <div class="session-info">
+            SESIÓN: <span>ADMIN</span> &nbsp;|&nbsp; <a href="#" style="color: var(--text-muted); text-decoration: none;">[[ Cerrar Sesión ]]</a>
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-4">
+    <div class="container">
 
-        <!-- LOGIN -->
-        <div id="view-login" class="max-w-md w-full bg-white border border-slate-200 p-8 rounded-2xl shadow-xl space-y-6">
-            <h2 class="text-2xl font-black text-slate-900 text-center">Acceso Institucional</h2>
-            <div class="space-y-4">
-                <input type="password" id="pass-unica" placeholder="Ingrese contraseña..." class="w-full border p-3 rounded-xl text-sm" onkeypress="if(event.key === 'Enter') autenticarUsuario()">
-                <button onclick="autenticarUsuario()" class="w-full bg-blue-900 text-white font-bold py-3 rounded-xl text-sm uppercase">Ingresar</button>
-            </div>
-            <div id="login-error" class="text-red-600 text-xs text-center font-bold hidden">⚠️ Clave incorrecta.</div>
-        </div>
-
-        <!-- DASHBOARD / LISTADO -->
-        <div id="view-dashboard" class="w-full max-w-4xl hidden space-y-6">
-            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                <h2 class="text-lg font-black text-slate-900">Perfiles Registrados</h2>
-                <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2 text-xs font-bold rounded-xl bg-amber-500 text-slate-950">+ Nuevo Perfil</button>
-            </div>
-            <div id="lista-sujetos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-        </div>
-
-        <!-- FICHA DE PERFIL CON QR DINÁMICO -->
-        <div id="view-perfil" class="w-full max-w-2xl hidden bg-white border border-slate-200 p-6 rounded-3xl shadow-xl space-y-6">
-            <button onclick="mostrarVista('view-dashboard')" class="text-xs bg-slate-100 font-bold px-4 py-2 rounded-xl border">← Volver al Listado</button>
-            <div id="detalle-perfil"></div>
-        </div>
-
-        <!-- PANEL DE ADMINISTRACIÓN -->
-        <div id="view-admin" class="w-full max-w-2xl hidden bg-white border border-slate-200 p-6 rounded-3xl shadow-xl space-y-6">
-            <div class="flex justify-between items-center border-b pb-4">
-                <h2 class="text-lg font-black text-slate-900">Crear / Editar Registro</h2>
-                <button onclick="mostrarVista('view-dashboard')" class="text-xs font-bold text-slate-600">Cerrar</button>
+        <!-- Sección de Noticias Profesionales -->
+        <section class="news-section">
+            <h2>📰 Boletín de Operaciones y Noticias Recientes</h2>
+            
+            <div class="news-item">
+                <div class="news-meta">📅 08 de Noviembre, 2026 &nbsp;|&nbsp; 📍 Sector Central - Zona Alpha</div>
+                <div class="news-title">Actualización de Protocolos de Rastreo Genético</div>
+                <div class="news-desc">Se han integrado nuevos marcadores biométricos en la red interna para mejorar la precisión en la identificación de perfiles bajo estado crítico. Todos los operadores deben verificar las fichas actualizadas.</div>
             </div>
 
-            <form id="form-sujeto" onsubmit="guardarSujeto(event)" class="space-y-4">
-                <input type="hidden" id="sujeto-id">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs font-bold block mb-1">Código ID:</label>
-                        <input type="text" id="id-custom" placeholder="Ej: SAB-8395" required class="w-full border p-2.5 rounded-xl text-xs">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold block mb-1">Nombre Completo:</label>
-                        <input type="text" id="nombre" required class="w-full border p-2.5 rounded-xl text-xs">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold block mb-1">Edad:</label>
-                        <input type="number" id="edad" required class="w-full border p-2.5 rounded-xl text-xs">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold block mb-1">Estado Vital:</label>
-                        <select id="estado" class="w-full border p-2.5 rounded-xl text-xs">
-                            <option value="VIVO">VIVO</option>
-                            <option value="FALLECIDO">FALLECIDO</option>
-                        </select>
-                    </div>
+            <div class="news-item">
+                <div class="news-meta">📅 05 de Noviembre, 2026 &nbsp;|&nbsp; 📍 Nodo Regional Sur</div>
+                <div class="news-title">Mantenimiento del Sistema de Sincronización Local</div>
+                <div class="news-desc">Implementación exitosa del almacenamiento persistente mediante localStorage para evitar pérdida de datos en despliegues estáticos. Los perfiles ahora generan códigos QR autónomos instantáneos.</div>
+            </div>
+        </section>
+
+        <!-- Sección de Perfiles Registrados -->
+        <div class="profiles-header">
+            <h2>Perfiles Registrados</h2>
+            <button class="btn-new" onclick="alert('Función de registro rápido habilitada para Admin.')">+ Nuevo Perfil</button>
+        </div>
+
+        <div class="grid" id="profiles-grid">
+            <!-- Perfil 1 -->
+            <div class="card">
+                <div class="card-id">SAB-6282</div>
+                <div class="card-name">Martín Ignacio Sáez Moreno</div>
+                <div class="card-details">Estado: VIVO | Edad: 17</div>
+                <div class="card-footer">
+                    <button class="btn-ficha" onclick="verFicha('SAB-6282')">Ver Ficha →</button>
+                    <div class="qr-box" id="qr-SAB-6282"></div>
                 </div>
-                <div>
-                    <label class="text-xs font-bold block mb-1">Marcadores Genéticos STR:</label>
-                    <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18" required class="w-full border p-2.5 rounded-xl text-xs font-mono">
+            </div>
+
+            <!-- Perfil 2 -->
+            <div class="card">
+                <div class="card-id">SAB-8395</div>
+                <div class="card-name">Martín Ignacio Sáez Moreno</div>
+                <div class="card-details">Estado: VIVO | Edad: 17</div>
+                <div class="card-footer">
+                    <button class="btn-ficha" onclick="verFicha('SAB-8395')">Ver Ficha →</button>
+                    <div class="qr-box" id="qr-SAB-8395"></div>
                 </div>
-                <button type="submit" class="w-full bg-amber-500 text-slate-950 font-black py-3 rounded-xl text-xs uppercase">Guardar y Sincronizar QR</button>
-            </form>
+            </div>
+
+            <!-- Perfil 3 -->
+            <div class="card">
+                <div class="card-id">SAB-9241</div>
+                <div class="card-name">Róbinson Felipe Rafael Padilla Roldán</div>
+                <div class="card-details">Estado: VIVO | Edad: 16</div>
+                <div class="card-footer">
+                    <button class="btn-ficha" onclick="verFicha('SAB-9241')">Ver Ficha →</button>
+                    <div class="qr-box" id="qr-SAB-9241"></div>
+                </div>
+            </div>
         </div>
 
-    </main>
+    </div>
 
     <script>
-        const PASS_VISITANTE = "profe angelica";
-        const PASS_ADMIN = "saezypadillamolecular";
-
-        // 1. BASE DE DATOS INICIAL (Persiste en localStorage)
-        let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
-            { id: "SAB-8395", nombre: "Carlos Mendoza R.", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", adn: "STR-D13S317: 12,14 | vWA: 17,18" },
-            { id: "SAB-1002", nombre: "Elena Vásquez S.", edad: 30, estado: "VIVO", coincidencia: "99.4%", adn: "STR-D13S317: 11,13 | vWA: 16,19" }
-        ];
-
-        let rolActual = null;
-
-        function guardarDatosLocal() {
-            localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
+        // Función para simular la visualización de fichas y anclaje
+        function verFicha(id) {
+            window.location.hash = id;
+            alert("Accediendo a la ficha de seguridad: " + id);
         }
 
-        function mostrarVista(vistaId) {
-            ['view-login', 'view-dashboard', 'view-perfil', 'view-admin'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(vistaId).classList.remove('hidden');
-        }
-
-        function autenticarUsuario() {
-            const val = document.getElementById('pass-unica').value.trim();
-            if(val === PASS_ADMIN) { rolActual = 'admin'; } 
-            else if(val === PASS_VISITANTE) { rolActual = 'visitante'; } 
-            else {
-                document.getElementById('login-error').classList.remove('hidden');
-                return;
-            }
-            
-            document.getElementById('user-status').classList.remove('hidden');
-            document.getElementById('rol-actual').innerText = rolActual.toUpperCase();
-            if(rolActual === 'admin') document.getElementById('btn-admin-panel').classList.remove('hidden');
-            
-            renderizarDashboard();
-            mostrarVista('view-dashboard');
-        }
-
-        function cerrarSesion() {
-            rolActual = null;
-            document.getElementById('user-status').classList.add('hidden');
-            history.pushState("", document.title, window.location.pathname);
-            mostrarVista('view-login');
-        }
-
-        function renderizarDashboard() {
-            const contenedor = document.getElementById('lista-sujetos');
-            contenedor.innerHTML = '';
-            
-            sujetos.forEach(s => {
-                contenedor.innerHTML += `
-                    <div onclick="verPerfil('${s.id}')" class="bg-white border p-5 rounded-2xl cursor-pointer hover:border-blue-900 transition flex justify-between items-center">
-                        <div>
-                            <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2 py-1 rounded">${s.id}</span>
-                            <h3 class="text-slate-900 font-black text-base mt-1">${s.nombre}</h3>
-                            <p class="text-xs text-slate-500">Estado: ${s.estado} | Edad: ${s.edad}</p>
-                        </div>
-                        <span class="text-xs text-blue-700 font-bold">Ver Ficha →</span>
-                    </div>
-                `;
-            });
-        }
-
-        // GENERACIÓN AUTOMÁTICA DE QR DINÁMICO Y AUTÓNOMO
-        function verPerfil(id, objetoExterno = null) {
-            let s = objetoExterno || sujetos.find(item => item.id === id);
-            if(!s) return;
-
-            // Si el perfil proviene de un QR escaneado en otro dispositivo, lo agregamos a su localStorage
-            if(!sujetos.some(existente => existente.id === s.id)) {
-                sujetos.push(s);
-                guardarDatosLocal();
-            }
-
-            const detalle = document.getElementById('detalle-perfil');
-            detalle.innerHTML = `
-                <div class="border-b pb-4 space-y-2">
-                    <span class="text-xs bg-blue-900 text-white font-extrabold px-3 py-1 rounded-full">${s.id}</span>
-                    <h2 class="text-2xl font-black text-slate-900">${s.nombre}</h2>
-                    <p class="text-xs text-slate-600">Edad: ${s.edad} años | Estado: <strong>${s.estado}</strong></p>
-                </div>
-
-                <div class="bg-slate-50 p-4 rounded-xl border space-y-2">
-                    <span class="text-xs font-bold text-slate-700">Marcadores Genéticos STR:</span>
-                    <div class="p-3 bg-slate-900 text-emerald-400 font-mono text-xs rounded-lg">${s.adn}</div>
-                </div>
-
-                <!-- CONTENEDOR DEL CÓDIGO QR -->
-                <div class="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border">
-                    <div id="qrcode" class="p-3 bg-white rounded-xl shadow border"></div>
-                    <span class="text-xs text-slate-500 font-bold mt-2">CÓDIGO QR DIRECTO DE ESTE PERFIL</span>
-                </div>
-            `;
-
-            mostrarVista('view-perfil');
-
-            // 1. URL limpia directa al perfil (ej: https://tu-usuario.github.io/repo/#SAB-8395)
-            const urlBase = window.location.origin + window.location.pathname;
-            
-            // 2. Encapsulamos los datos completos en el QR para garantizar lectura entre dispositivos diferentes sin backend
-            const payloadQR = { id: s.id, nombre: s.nombre, edad: s.edad, estado: s.estado, adn: s.adn };
-            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
-            const urlQRAutonoma = `${urlBase}#profileData=${encodedData}`;
-
-            // Generar el QR sobre la URL dinámica resultante
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById("qrcode"), {
-                text: urlQRAutonoma,
-                width: 160,
-                height: 160,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
-            });
-        }
-
-        function abrirPanelAdmin() {
-            document.getElementById('form-sujeto').reset();
-            document.getElementById('sujeto-id').value = '';
-            mostrarVista('view-admin');
-        }
-
-        function guardarSujeto(e) {
-            e.preventDefault();
-            const idInput = document.getElementById('id-custom').value.trim();
-
-            const nuevoSujeto = {
-                id: idInput.startsWith('#') ? idInput.replace('#', '') : idInput,
-                nombre: document.getElementById('nombre').value,
-                edad: document.getElementById('edad').value,
-                estado: document.getElementById('estado').value,
-                coincidencia: "99.8%",
-                adn: document.getElementById('adn').value
-            };
-
-            const index = sujetos.findIndex(s => s.id === nuevoSujeto.id);
-            if(index !== -1) { sujetos[index] = nuevoSujeto; } 
-            else { sujetos.push(nuevoSujeto); }
-
-            guardarDatosLocal();
-            renderizarDashboard();
-            verPerfil(nuevoSujeto.id);
-        }
-
-        // DETECCIÓN AUTOMÁTICA DE QR AL ESCANEAR DESDE CUALQUIER MÓVIL
+        // Generador automático de códigos QR independientes para cada perfil
         window.onload = function() {
-            const hash = window.location.hash.replace('#', '');
+            const perfiles = ['SAB-6282', 'SAB-8395', 'SAB-9241'];
             
-            if(hash.startsWith('profileData=')) {
-                try {
-                    const jsonRaw = decodeURIComponent(escape(atob(hash.replace('profileData=', ''))));
-                    const sujetoQR = JSON.parse(jsonRaw);
-                    rolActual = 'visitante';
-                    document.getElementById('user-status').classList.remove('hidden');
-                    document.getElementById('rol-actual').innerText = "VISITANTE (QR)";
-                    verPerfil(sujetoQR.id, sujetoQR);
-                } catch(e) {
-                    console.error("Error al procesar el QR", e);
+            perfiles.forEach(id => {
+                const contenedor = document.getElementById('qr-' + id);
+                if (contenedor) {
+                    contenedor.innerHTML = ""; // Limpiar por seguridad
+                    // Genera el QR apuntando a la URL actual con el identificador del perfil
+                    const urlPerfil = window.location.origin + window.location.pathname + "#" + id;
+                    new QRCode(contenedor, {
+                        text: urlPerfil,
+                        width: 64,
+                        height: 64,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.M
+                    });
                 }
-            } else if(hash && sujetos.some(s => s.id === hash)) {
-                rolActual = 'visitante';
-                document.getElementById('user-status').classList.remove('hidden');
-                document.getElementById('rol-actual').innerText = "VISITANTE (QR)";
-                verPerfil(hash);
-            }
+            });
         };
     </script>
 </body>
