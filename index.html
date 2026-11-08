@@ -1,6 +1,3 @@
-Aquí tienes guardado el código completo e impecable que incluye toda la estructura modular, el boletín científico de 9 investigaciones, el panel de administración, la persistencia en `localStorage`, la cara sonriente vectorial estilizada y el sistema de códigos QR dinámicos seguros:
-
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -104,11 +101,11 @@ Aquí tienes guardado el código completo e impecable que incluye toda la estruc
                 </div>
             </div>
 
-            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS (9 TOTALES) -->
+            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS (SIN CONTADORES VISIBLES) -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
                 <div class="text-center pt-4">
-                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones (Mostrando 3 de 9)</button>
+                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
                 </div>
             </div>
 
@@ -240,7 +237,7 @@ Aquí tienes guardado el código completo e impecable que incluye toda la estruc
                 fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
                 resumen: "El cruce sin precedentes de muestras de ADN genómico con árboles genealógicos digitales para resolver crímenes impunes de más de 40 años.",
-                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los methods comparativos tradicionales contra las bases de datos criminales de la policía jamás arrojaron un resultado positivo.\n\nEn 2018, los investigadores aplicaron un enfoque revolucionario en biotecnología forense: la genealogía genética. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a plataformas públicas de parentesco. El sistema detectó coincidencias con parientes lejanos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares hasta converger en el autor, demostrando el enorme potencial investigativo de la genómica moderna combinada con bases de datos públicas."
+                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los métodos comparativos tradicionales contra las bases de datos criminales de la policía jamás arrojaron un resultado positivo.\n\nEn 2018, los investigadores aplicaron un enfoque revolucionario en biotecnología forense: la genealogía genética. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a plataformas públicas de parentesco. El sistema detectó coincidencias con parientes lejanos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares hasta converger en el autor, demostrando el enorme potencial investigativo de la genómica moderna combinada con bases de datos públicas."
             },
             {
                 id: 3,
@@ -330,6 +327,14 @@ Aquí tienes guardado el código completo e impecable que incluye toda la estruc
 
         let rolActual = null;
         let sujetoPendienteQR = null;
+
+        // Escucha cambios de almacenamiento en tiempo real entre pestañas/dispositivos locales
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'sab_sujetos') {
+                sujetos = JSON.parse(e.newValue) || [];
+                renderizarDashboard();
+            }
+        });
 
         function guardarDatosLocal() {
             localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
@@ -480,11 +485,9 @@ Aquí tienes guardado el código completo e impecable que incluye toda la estruc
 
             const btnCargar = document.getElementById('btn-cargar-mas');
             if(limiteNoticias >= baseNoticias.length) {
-                btnCargar.innerText = "✓ Todas las investigaciones cargadas (9 de 9)";
-                btnCargar.classList.add('opacity-50', 'cursor-not-allowed');
+                btnCargar.style.display = 'none'; // Oculta el botón limpiamente si ya no hay más noticias
             } else {
-                btnCargar.innerText = `➕ Cargar Más Investigaciones (Mostrando ${limiteNoticias} de 9)`;
-                btnCargar.classList.remove('opacity-50', 'cursor-not-allowed');
+                btnCargar.style.display = 'block';
             }
         }
 
@@ -757,26 +760,4 @@ Aquí tienes guardado el código completo e impecable que incluye toda la estruc
             }
         };
 
-        window.onpopstate = function(event) {
-            const hash = window.location.hash.replace('#', '');
-            if(hash.startsWith('profileData=')) {
-                try {
-                    sujetoPendienteQR = JSON.parse(decodeURIComponent(escape(atob(hash.replace('profileData=', '')))));
-                    mostrarVista('view-qr-auth');
-                } catch(e) {}
-            } else if(hash.startsWith('noticia-')) {
-                const idNoticia = parseInt(hash.replace('noticia-', ''));
-                verDetalleNoticia(idNoticia);
-            } else if(hash && sujetos.some(s => s.id === hash)) {
-                sujetoPendienteQR = sujetos.find(s => s.id === hash);
-                mostrarVista('view-qr-auth');
-            } else {
-                mostrarVista('view-dashboard');
-                mostrarSeccion('noticias');
-            }
-        };
-    </script>
-</body>
-</html>
-
-```
+        window
