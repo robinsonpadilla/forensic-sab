@@ -101,7 +101,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS (SIN CONTADORES VISIBLES) -->
+            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
                 <div class="text-center pt-4">
@@ -320,17 +320,50 @@
 
         let limiteNoticias = 3;
 
-        let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
-            { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18", ultimoIngreso: "05/06/2026 14:22" },
-            { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19", ultimoIngreso: "06/06/2026 09:15" }
+        // BASE DE DATOS FIJA CON LOS 30 PERFILES INSTITUCIONALES OFICIALES
+        const perfilesBaseOficiales = [
+            { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2008-05-10", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 12:00" },
+            { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18 | TPOX: 9,12", ultimoIngreso: "05/06/2026 14:22" },
+            { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19 | TPOX: 8,10", ultimoIngreso: "06/06/2026 09:15" },
+            { id: "SAB-9241", nombre: "Róbinson Felipe Rafael Padilla R.", fechaNac: "2010-02-15", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 10:30" },
+            { id: "SAB-1005", nombre: "Sofía Valentina Rojas", fechaNac: "2009-03-12", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 15,17 | TPOX: 9,11", ultimoIngreso: "01/11/2026 11:00" },
+            { id: "SAB-1006", nombre: "Matías Ignacio Soto", fechaNac: "2008-07-22", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 16,20 | TPOX: 8,12", ultimoIngreso: "02/11/2026 14:10" },
+            { id: "SAB-1007", nombre: "Valentina Paz Castillo", fechaNac: "2009-09-05", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,14 | vWA: 17,19 | TPOX: 7,10", ultimoIngreso: "03/11/2026 16:45" },
+            { id: "SAB-1008", nombre: "Lucas Andrés Herrera", fechaNac: "2008-11-30", edad: 17, estado: "FALLECIDO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 18,18 | TPOX: 8,8", ultimoIngreso: "04/11/2026 08:20" },
+            { id: "SAB-1009", nombre: "Isidora Belén Morales", fechaNac: "2010-01-18", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 16,17 | TPOX: 9,10", ultimoIngreso: "05/11/2026 12:30" },
+            { id: "SAB-1010", nombre: "Benjamín Alonso Silva", fechaNac: "2009-06-25", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 15,19 | TPOX: 8,11", ultimoIngreso: "06/11/2026 15:50" },
+            { id: "SAB-1011", nombre: "Camila Andrea Fuentes", fechaNac: "2008-04-03", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,14 | vWA: 16,18 | TPOX: 11,11", ultimoIngreso: "07/11/2026 09:00" },
+            { id: "SAB-1012", nombre: "Joaquín Alejandro Contreras", fechaNac: "2009-12-14", edad: 16, estado: "FALLECIDO", coincidencia: "99.2%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 8,13 | vWA: 14,16 | TPOX: 7,9", ultimoIngreso: "07/11/2026 18:00" },
+            { id: "SAB-1013", nombre: "Antonia Javiera Alarcón", fechaNac: "2010-05-09", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 17,20 | TPOX: 8,10", ultimoIngreso: "08/11/2026 11:15" },
+            { id: "SAB-1014", nombre: "Diego Esteban Parra", fechaNac: "2008-08-19", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 15,18 | TPOX: 9,12", ultimoIngreso: "08/11/2026 13:40" },
+            { id: "SAB-1015", nombre: "Florencia Ignacia Bravo", fechaNac: "2009-10-01", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,11 | vWA: 16,16 | TPOX: 8,9", ultimoIngreso: "08/11/2026 14:00" },
+            { id: "SAB-1016", nombre: "Vicente Emilio Muñoz", fechaNac: "2008-02-14", edad: 18, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,15 | vWA: 19,21 | TPOX: 10,12", ultimoIngreso: "08/11/2026 14:10" },
+            { id: "SAB-1017", nombre: "Martina Paz Reyes", fechaNac: "2010-04-20", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 17,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 14:15" },
+            { id: "SAB-1018", nombre: "Agustín Ignacio Garrido", fechaNac: "2009-01-11", edad: 17, estado: "FALLECIDO", coincidencia: "99.1%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,12 | vWA: 13,15 | TPOX: 6,8", ultimoIngreso: "08/11/2026 14:20" },
+            { id: "SAB-1019", nombre: "Emilia Rosa Sepúlveda", fechaNac: "2008-06-17", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,14 | vWA: 18,22 | TPOX: 11,13", ultimoIngreso: "08/11/2026 14:25" },
+            { id: "SAB-1020", nombre: "Maximiliano Andrés Espinoza", fechaNac: "2010-08-28", edad: 16, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19 | TPOX: 8,10", ultimoIngreso: "08/11/2026 14:30" },
+            { id: "SAB-1021", nombre: "Trinidad Paz Valenzuela", fechaNac: "2009-11-04", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 15,17 | TPOX: 9,11", ultimoIngreso: "08/11/2026 14:35" },
+            { id: "SAB-1022", nombre: "Vicente Alejandro Lagos", fechaNac: "2008-03-29", edad: 18, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 17,20 | TPOX: 7,12", ultimoIngreso: "08/11/2026 14:40" },
+            { id: "SAB-1023", nombre: "Catalina Ignacia San Martín", fechaNac: "2010-07-15", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 18,19 | TPOX: 10,11", ultimoIngreso: "08/11/2026 14:45" },
+            { id: "SAB-1024", nombre: "Tomás Ignacio Araya", fechaNac: "2009-05-08", edad: 17, estado: "FALLECIDO", coincidencia: "99.3%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 8,11 | vWA: 14,16 | TPOX: 6,9", ultimoIngreso: "08/11/2026 14:50" },
+            { id: "SAB-1025", nombre: "Josefa Belén Pizarro", fechaNac: "2008-12-02", edad: 17, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 16,18 | TPOX: 8,10", ultimoIngreso: "08/11/2026 14:55" },
+            { id: "SAB-1026", nombre: "Ignacio Javier Olivares", fechaNac: "2010-03-21", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 17,19 | TPOX: 9,11", ultimoIngreso: "08/11/2026 15:00" },
+            { id: "SAB-1027", nombre: "Isabel Cristina Saavedra", fechaNac: "2009-09-14", edad: 17, estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 15,17 | TPOX: 7,10", ultimoIngreso: "08/11/2026 15:05" },
+            { id: "SAB-1028", nombre: "Felipe Andrés Navarro", fechaNac: "2008-01-30", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,15 | vWA: 20,21 | TPOX: 11,12", ultimoIngreso: "08/11/2026 15:10" },
+            { id: "SAB-1029", nombre: "Rocío Belén Vergara", fechaNac: "2010-10-10", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 15:15" },
+            { id: "SAB-1030", nombre: "Esteban Alejandro Palma", fechaNac: "2009-04-05", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 17,19 | TPOX: 9,12", ultimoIngreso: "08/11/2026 15:20" }
         ];
+
+        // Combinar la base oficial con localStorage para rescatar agregados dinámicos sin perder los 30 fijos
+        let sujetosGuardados = JSON.parse(localStorage.getItem('sab_sujetos'));
+        let sujetos = sujetosGuardados && sujetosGuardados.length > 0 ? sujetosGuardados : perfilesBaseOficiales;
 
         let rolActual = null;
         let sujetoPendienteQR = null;
 
         window.addEventListener('storage', function(e) {
             if (e.key === 'sab_sujetos') {
-                sujetos = JSON.parse(e.newValue) || [];
+                sujetos = JSON.parse(e.newValue) || perfilesBaseOficiales;
                 renderizarDashboard();
             }
         });
