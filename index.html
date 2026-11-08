@@ -7,30 +7,32 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-100">
 
-    <!-- BARRA SUPERIOR INSTITUCIONAL SAB -->
+    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO RED JOHN -->
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
-        <div class="flex items-center space-x-3">
-            <div class="bg-white p-1.5 rounded-lg shadow border border-slate-700 flex items-center justify-center">
-                <img id="logo-institucional" src="https://colegiosanantonio.cl/wp-content/uploads/2021/03/logo-web.png" alt="Logo SAB Rengo" class="w-10 h-10 object-contain">
+        <div class="flex items-center space-x-4">
+            <div class="bg-slate-950 p-2 rounded-xl border border-red-900/60 shadow-lg flex items-center justify-center">
+                <!-- CARA SONRIENTE RED JOHN -->
+                <svg class="w-9 h-9 text-red-600" viewBox="0 0 100 100" fill="currentColor">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="7"/>
+                    <circle cx="35" cy="40" r="6"/>
+                    <circle cx="65" cy="40" r="6"/>
+                    <path d="M 25 60 Q 50 85 75 60" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                </svg>
             </div>
             <div>
-                <h1 class="text-base md:text-lg font-bold tracking-wide text-amber-400">SAB // FORENSIC LAB</h1>
-                <p class="text-xs text-slate-300">Colegio San Antonio del Baluarte · Rengo</p>
+                <h1 class="text-lg md:text-xl font-black tracking-wider text-amber-400">SAB // FORENSIC LAB</h1>
+                <p class="text-xs text-slate-300 font-medium">Colegio San Antonio del Baluarte · Rengo</p>
             </div>
         </div>
         <div id="user-status" class="text-xs text-slate-300 hidden flex items-center space-x-3">
-            <span>SESIÓN: <span id="rol-actual" class="text-amber-400 font-semibold uppercase"></span></span>
-            <div id="btn-cambiar-logo" class="hidden">
-                <label for="input-logo-file" class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1.5 rounded cursor-pointer border border-slate-700 text-xs font-medium">📷 Cambiar Logo</label>
-                <input type="file" id="input-logo-file" accept="image/*" onchange="subirLogoLocal(event)" class="hidden">
-            </div>
-            <button onclick="cerrarSesion()" class="text-red-400 hover:text-red-300 font-medium bg-slate-800 px-3 py-1.5 rounded transition">[ Cerrar Sesión ]</button>
+            <span>SESIÓN: <span id="rol-actual" class="text-amber-400 font-bold uppercase"></span></span>
+            <button onclick="cerrarSesion()" class="text-red-400 hover:text-red-300 font-semibold bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 transition">[ Cerrar Sesión ]</button>
         </div>
     </header>
 
@@ -39,167 +41,144 @@
         <!-- 1. PANTALLA DE ACCESO ÚNICO -->
         <div id="view-login" class="max-w-md w-full bg-white border border-slate-200 p-8 rounded-2xl shadow-xl space-y-6">
             <div class="text-center space-y-2">
-                <div class="inline-block p-3 bg-blue-50 text-blue-900 rounded-full font-bold text-xl mb-1 border border-blue-100">🛡️</div>
-                <h2 class="text-xl font-bold text-slate-900">Acceso a Plataforma Forense</h2>
-                <p class="text-xs text-slate-500">Ingrese su clave institucional para autenticar su cuenta.</p>
+                <div class="inline-flex p-3 bg-red-50 text-red-600 rounded-full font-bold mb-1 border border-red-100 justify-center">
+                    <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8"/>
+                        <circle cx="35" cy="40" r="6"/>
+                        <circle cx="65" cy="40" r="6"/>
+                        <path d="M 25 60 Q 50 85 75 60" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-black text-slate-900">Acceso a Plataforma Forense</h2>
+                <p class="text-xs text-slate-500">Ingrese su clave institucional para autenticar su perfil de acceso.</p>
             </div>
 
             <div class="space-y-4">
                 <div>
-                    <label class="text-xs font-semibold text-slate-700 block mb-1">CONTRASEÑA INSTITUCIONAL:</label>
-                    <input type="password" id="pass-unica" placeholder="Ingrese su clave..." class="w-full bg-slate-50 border border-slate-300 p-3 rounded-lg text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') autenticarUsuario()">
+                    <label class="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Contraseña Institucional:</label>
+                    <input type="password" id="pass-unica" placeholder="Ingrese su clave..." class="w-full bg-slate-50 border border-slate-300 p-3 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') autenticarUsuario()">
                 </div>
-                <button onclick="autenticarUsuario()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 rounded-lg text-sm transition shadow-sm">INGRESAR AL SISTEMA</button>
+                <button onclick="autenticarUsuario()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md tracking-wider uppercase">Ingresar al Sistema</button>
             </div>
-            <div id="login-error" class="text-red-600 text-xs text-center font-medium hidden bg-red-50 p-2.5 rounded-lg border border-red-100">⚠️ Contraseña incorrecta. Verifique sus credenciales.</div>
+            <div id="login-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Credenciales incorrectas. Verifique la contraseña.</div>
         </div>
 
-        <!-- 2. PORTADA PRINCIPAL (NOTICIAS Y ASISTENTE IA) -->
+        <!-- 2. PORTADA PRINCIPAL (CASOS Y BASE DE PERFILES) -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
             <!-- NAVEGACIÓN INTERNA -->
-            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm gap-3">
+            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900">PANEL DE INVESTIGACIÓN Y DIVULGACIÓN</h2>
-                    <p class="text-xs text-slate-500">Innovación científica y registros biométricos criminalísticos</p>
+                    <h2 class="text-xl font-black text-slate-900">INVESTIGACIÓN Y REGISTROS FORENSES</h2>
+                    <p class="text-xs text-slate-500 font-medium">Biotecnología aplicadas a la resolución de casos biológicos</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-900 text-white transition">Casos y Noticias</button>
-                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
-                    <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2 text-xs font-semibold rounded-lg bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar Perfiles</button>
+                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Casos e Investigaciones</button>
+                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
+                    <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2.5 text-xs font-bold rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar Perfiles</button>
                 </div>
             </div>
 
-            <!-- SECCIÓN A: NOTICIAS REALES EXTENDIDAS -->
+            <!-- SECCIÓN A: CASOS INVESTIGATIVOS -->
             <div id="seccion-noticias" class="space-y-6">
-                
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
 
-                <div class="text-center pt-2">
-                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-6 py-2.5 rounded-lg text-xs transition shadow">➕ Ver Más Casos e Investigaciones</button>
-                </div>
-
-                <!-- ASISTENTE IA FORENSE MEJORADO -->
-                <div class="bg-white border border-slate-200 p-6 rounded-xl shadow-sm space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-lg">🤖</span>
-                            <h3 class="font-bold text-slate-900 text-sm">Asistente Virtual SAB-AI (Especialista Forense)</h3>
-                        </div>
-                        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">● Sistema Activo</span>
-                    </div>
-                    <p class="text-xs text-slate-500">Haz una pregunta sobre criminalística, genética, STR o saluda al asistente:</p>
-                    
-                    <div id="ia-chat-output" class="text-xs text-slate-700 bg-slate-50 p-4 rounded-xl h-40 overflow-y-auto border border-slate-200 space-y-3">
-                        <div><strong class="text-blue-900">SAB-AI:</strong> ¡Hola! Soy SAB-AI, tu asistente virtual de criminalística y biotecnología del Colegio San Antonio del Baluarte. ¿En qué puedo ayudarte hoy?</div>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <input type="text" id="ia-pregunta" placeholder="Ej: Hola / ¿Cómo funcionan los marcadores STR?" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') procesarConsultaIA()">
-                        <button onclick="procesarConsultaIA()" class="bg-blue-900 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-xs font-semibold transition shrink-0">Preguntar</button>
-                    </div>
+                <div class="text-center pt-4">
+                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Casos Reales</button>
                 </div>
             </div>
 
             <!-- SECCIÓN B: BASE DE PERFILES -->
-            <div id="seccion-registros" class="hidden space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="lista-sujetos"></div>
+            <div id="seccion-registros" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="lista-sujetos"></div>
             </div>
 
         </div>
 
-        <!-- 3. VISTA DEDICADA DE DETALLE DE NOTICIA (PÁGINA COMPLETA) -->
-        <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-2xl shadow-xl space-y-6">
-            <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg transition border border-slate-200">← Volver al Panel Principal</button>
+        <!-- 3. VISTA DEDICADA DE DETALLE DE CASO -->
+        <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
+            <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200">← Volver al Panel Principal</button>
             
-            <div class="space-y-4 border-b border-slate-100 pb-6">
-                <span id="det-cat" class="text-[10px] font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 uppercase"></span>
-                <h2 id="det-titulo" class="text-2xl md:text-3xl font-black text-slate-900"></h2>
-                <div class="flex items-center space-x-4 text-xs text-slate-500 font-medium">
-                    <span>📍 <span id="det-lugar"></span></span>
-                    <span>📅 <span id="det-fecha"></span></span>
+            <div class="space-y-3 border-b border-slate-100 pb-6">
+                <span id="det-cat" class="text-xs font-extrabold text-blue-900 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-100 uppercase tracking-wider"></span>
+                <h2 id="det-titulo" class="text-2xl md:text-3xl font-black text-slate-900 leading-tight"></h2>
+                <div class="flex items-center space-x-6 text-xs text-slate-500 font-semibold pt-1">
+                    <span>📍 Ubicación: <strong id="det-lugar" class="text-slate-800"></strong></span>
+                    <span>📅 Fecha: <strong id="det-fecha" class="text-slate-800"></strong></span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-                <div class="md:col-span-1">
-                    <img id="det-imagen" class="w-full h-56 object-cover rounded-xl border border-slate-200 shadow-sm" alt="Caso forense">
-                </div>
-                <div class="md:col-span-2 space-y-6">
-                    <div class="bg-blue-50/70 border-l-4 border-blue-900 p-5 rounded-r-xl space-y-2">
-                        <h4 class="font-bold text-blue-900 text-xs uppercase tracking-wider">1. Explicación Sencilla (Resumen del Caso)</h4>
-                        <p id="det-simple" class="text-slate-800 text-sm leading-relaxed"></p>
-                    </div>
-
-                    <div class="bg-slate-50 border-l-4 border-slate-700 p-5 rounded-r-xl space-y-2">
-                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">2. Análisis Científico Técnico (Profundización)</h4>
-                        <p id="det-tecnico" class="text-slate-800 text-sm leading-relaxed"></p>
-                    </div>
+            <div class="space-y-6">
+                <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Caso de estudio">
+                <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Informe Completo de la Investigación</h3>
+                    <p id="det-texto" class="text-slate-800 text-sm leading-relaxed whitespace-pre-line font-medium"></p>
                 </div>
             </div>
         </div>
 
-        <!-- 4. FICHA INDIVIDUAL DE PERFIL -->
-        <div id="view-perfil" class="w-full max-w-2xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-xl relative">
-            <button onclick="volverAlDashboard()" class="mb-6 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg transition border border-slate-200 cursor-pointer">← Volver al Panel</button>
+        <!-- 4. FICHA INDIVIDUAL DE PERFIL (AMPLIADA Y DINÁMICA) -->
+        <div id="view-perfil" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
+            <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
+            
             <div id="detalle-perfil"></div>
         </div>
 
         <!-- 5. PANEL DE ADMINISTRACIÓN -->
-        <div id="view-admin" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-xl space-y-6">
+        <div id="view-admin" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-3xl shadow-xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-200 pb-4">
-                <h2 class="text-base font-bold text-slate-900">Panel de Administración de Registros</h2>
-                <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 text-slate-600 font-semibold px-3 py-1.5 rounded-lg hover:bg-slate-200 transition">Cerrar Panel</button>
+                <h2 class="text-lg font-black text-slate-900">PANEL DE CONTROL DE ADMINISTRACIÓN</h2>
+                <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 text-slate-700 font-bold px-3.5 py-2 rounded-xl hover:bg-slate-200 transition">Cerrar Panel</button>
             </div>
 
-            <form id="form-sujeto" onsubmit="guardarSujeto(event)" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+            <form id="form-sujeto" onsubmit="guardarSujeto(event)" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
                 <input type="hidden" id="sujeto-id">
                 <input type="hidden" id="foto-base64">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="text-xs font-semibold text-slate-700 block mb-1">Nombre Completo:</label>
-                        <input type="text" id="nombre" required class="w-full bg-white border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Nombre Completo:</label>
+                        <input type="text" id="nombre" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-700 block mb-1">Fecha de Nacimiento:</label>
-                        <input type="date" id="fecha-nacimiento" required class="w-full bg-white border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Fecha de Nacimiento:</label>
+                        <input type="date" id="fecha-nacimiento" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-700 block mb-1">Sexo:</label>
-                        <select id="sexo" class="w-full bg-white border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Sexo:</label>
+                        <select id="sexo" class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
                             <option value="No Especificado">No Especificado</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-700 block mb-1">Estado Vital:</label>
-                        <select id="estado" class="w-full bg-white border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Estado Vital:</label>
+                        <select id="estado" class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                             <option value="VIVO">VIVO</option>
                             <option value="FALLECIDO">FALLECIDO</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-700 block mb-1">% Coincidencia Genética:</label>
-                        <input type="text" id="coincidencia" value="99.8%" required class="w-full bg-white border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">% Coincidencia Genética:</label>
+                        <input type="text" id="coincidencia" value="99.8%" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-slate-700 block mb-1">Fotografía (Archivo local):</label>
-                        <input type="file" id="archivo-foto" accept="image/*" onchange="procesarFotoLocal(event)" class="w-full bg-white border border-slate-300 p-1.5 rounded-lg text-xs text-slate-600">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Fotografía (Archivo de imagen local):</label>
+                        <input type="file" id="archivo-foto" accept="image/*" onchange="procesarFotoLocal(event)" class="w-full bg-white border border-slate-300 p-2 rounded-xl text-xs text-slate-600">
                     </div>
                 </div>
 
-                <div id="preview-contenedor" class="hidden flex items-center space-x-3 bg-white p-2.5 rounded-lg border border-slate-200">
-                    <img id="preview-img" class="w-10 h-10 object-cover rounded border border-slate-300">
-                    <span class="text-xs text-slate-500 font-medium">Imagen lista para guardar</span>
+                <div id="preview-contenedor" class="hidden flex items-center space-x-3 bg-white p-3 rounded-xl border border-slate-200">
+                    <img id="preview-img" class="w-12 h-12 object-cover rounded-lg border border-slate-300">
+                    <span class="text-xs text-slate-600 font-semibold">Fotografía cargada correctamente</span>
                 </div>
 
                 <div>
-                    <label class="text-xs font-semibold text-slate-700 block mb-1">Perfil Genético (STR / ADN):</label>
-                    <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11" required class="w-full bg-white border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800 font-mono">
+                    <label class="text-xs font-bold text-slate-700 block mb-1">Perfil Genético STR / ADN:</label>
+                    <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-mono">
                 </div>
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition shadow-sm">GUARDAR REGISTRO FORENSE</button>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs transition shadow-md tracking-wider uppercase">Guardar Registro Forense</button>
             </form>
 
             <div class="space-y-3" id="lista-admin-sujetos"></div>
@@ -207,7 +186,7 @@
 
     </main>
 
-    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white">
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white font-medium">
         SAB FORENSIC SYSTEM · Colegio San Antonio del Baluarte (Rengo) · 2026
     </footer>
 
@@ -216,7 +195,7 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // BASE DE DATOS EXTENDIDA DE NOTICIAS REALES
+        // BASE DE NOTICIAS REALES CON REDACCIÓN INTEGRADA
         const baseNoticias = [
             {
                 id: 1,
@@ -225,9 +204,8 @@
                 lugar: "California, Estados Unidos",
                 fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
-                resumen: "Uso de bases genealógicas públicas para resolver crímenes de hace 40 años.",
-                simple: "El Golden State Killer cometió múltiples crímenes en las décadas de 1970 y 1980 y nunca pudo ser identificado por la policía tradicional. En 2018, los investigadores tomaron el ADN antiguo de una escena del crimen y lo subieron a una web pública donde la gente busca familiares lejanos (GEDmatch). Al encontrar primos lejanos del sospechoso, construyeron un árbol genealógico familiar enorme hasta llegar a Joseph DeAngelo, un ex-policía de 72 años que nadie sospechaba.",
-                tecnico: "Se realizó una secuenciación de polimorfismos de nucleótido único (SNPs) en un microarray genómico a partir de la muestra biológica degradada. El perfil SNP resultante se comparó mediante algoritmos de coincidencia por segmentos Identical-by-Descent (IBD) medidos en centiOrgans (cM). El análisis filogenético identificó ancestros comunes de 3ra y 4ta generación, lo que permitió acotar el linaje paterno mediante triangulación genealógica."
+                resumen: "Resolución histórica de docenas de crímenes sin resolver mediante genealogía genética cruzada.",
+                texto: "El caso del 'Golden State Killer' permaneció sin resolver durante más de cuatro décadas en el estado de California. Las investigaciones policiales tradicionales no habían logrado identificar al responsable a pesar de contar con muestras biológicas recuperadas en múltiples escenas del crimen.\n\nEn 2018, un equipo especializado utilizó genealogía genética forense. Tomaron el perfil de ADN obtenido de las evidencias biológicas antiguas y lo ingresaron en GEDmatch, una base de datos genealógica pública utilizada por personas que buscan rastrear sus ancestros. El análisis permitió identificar coincidencias con parientes lejanos del sospechoso (primos terceros y cuartos).\n\nA través de la reconstrucción paso a paso del árbol genealógico familiar, los investigadores delimitaron el linaje hasta Joseph James DeAngelo, un exoficial de policía de 72 años. La policía confirmó su coincidencia mediante una muestra de ADN obtenida directamente de un objeto descartado en su basura, logrando su arresto definitivo."
             },
             {
                 id: 2,
@@ -236,9 +214,8 @@
                 lugar: "Laboratorios de Investigación, Reino Unido",
                 fecha: "Año 2021",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
-                resumen: "Obtención de perfiles completos a partir de toques invisibles de segundos.",
-                simple: "Antes se pensaba que para obtener ADN de una persona se necesitaba sangre o saliva visible. Hoy en día, cuando una persona sostiene un picaporte, un volante o un casquillo de bala durante unos pocos segundos, deja células invisibles de su piel. Los nuevos líquidos químicos y raspadores microscópicos permiten recoger esas minúsculas células para saber quién estuvo allí.",
-                tecnico: "El Touch DNA procesa rendimientos de plantilla celular ultrabajos (< 100 picogramos de ADN). Requiere amplificación por PCR de baja copia (Low Copy Number - LCN) ajustando el número de ciclos térmicos de 28 a 34 ciclos. Esto amplifica marcadores STR a partir de células epiteliales desprendidas por fricción mecánica, analizando alelos mediante electroforesis capilar."
+                resumen: "Obtención de perfiles genéticos completos a partir de toques breves sobre superficies.",
+                texto: "Tradicionalmente, la recolección de ADN forense requería muestras visibles de fluidos corporales como sangre o saliva. Sin embargo, el desarrollo del denominado 'Touch DNA' revolucionó la recolección de indicios biológicos.\n\nCuando una persona manipula una superficie durante apenas unos segundos —como una manilla de puerta, el volante de un vehículo o un casquillo de bala— desprende de forma natural células epiteliales de la piel. Aunque la cantidad de material genético presente suele ser microscópica (inferior a 100 picogramos), los kits de amplificación molecular modernos por reacción en cadena de la polimerasa (PCR) permiten copiar y multiplicar esas mínimas trazas hasta obtener un perfil genético completo apto para comparación judicial."
             },
             {
                 id: 3,
@@ -247,42 +224,38 @@
                 lugar: "Parabon NanoLabs, Virginia, EE.UU.",
                 fecha: "Año 2023",
                 imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
-                resumen: "Predicción exacta de rasgos faciales, piel y ojos mediante genética.",
-                simple: "Cuando la policía encuentra restos óseos antiguos o ADN sin coincidencias en los ordenadores policiales, usan la fenotipación. Esta tecnología lee las 'instrucciones' del ADN para predecir cómo era la cara de la persona: si tenía ojos azules o marrones, tono de piel claro u oscuro, tipo de cabello y de qué parte del mundo venían sus antepasados.",
-                tecnico: "El software de fenotipado analítico evalúa marcadores informativos de ancestralidad (AIMs) y SNPs pigmentarios asociados a genes como HERC2/OCA2 (color de ojos), SLC24A5 (pigmentación cutánea) y MC1R (color de cabello). Mediante aprendizaje automático discriminante, genera mapas de probabilidad fenotípica y una reconstrucción facial tridimensional."
+                resumen: "Predicción de características físicas y facciones faciales a través del análisis de marcadores genéticos.",
+                texto: "En escenarios donde se encuentran restos óseos sin identificar o perfiles genéticos que no generan ninguna coincidencia en las bases de datos policiales, la investigación puede quedar completamente paralizada.\n\nLa fenotipación forense utiliza las variaciones en el ADN (SNPs) relacionadas con rasgos físicos externos. Mediante algoritmos computacionales avanzados, esta tecnología analiza marcadores específicos para determinar con alta precisión estadística el color de ojos, el tono de piel, la pigmentación del cabello, la morfología facial y el origen biogeográfico. El resultado es un retrato robot biológico tridimensional que orienta la búsqueda de los investigadores."
             },
             {
                 id: 4,
                 categoria: "ADN Ambiental (eDNA)",
-                titulo: "Rastreo de sospechosos mediante polvo del entorno",
+                titulo: "Rastreo de presencia humana mediante partículas en el aire",
                 lugar: "Canadá / Australia",
                 fecha: "Año 2024",
                 imagen: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=500",
-                resumen: "Captura de ADN humano suspendido en el aire y aire acondicionado.",
-                simple: "Al respirar, hablar o movernos en una habitación, dejamos una pequeña 'nube' invisible de ADN en el polvo y en los filtros del aire acondicionado. Los científicos forenses han comenzado a aspirar los filtros de aire en escenas de crimen para saber qué personas estuvieron presentes en la habitación, incluso si no tocaron ninguna superficie.",
-                tecnico: "El ADN ambiental (eDNA) aplica metabarcoding y PCR cuantitativa (qPCR) al material genético traza recuperado de filtros HEPA y partículas aéreas. Permite diferenciar mezclas complejas de ADN mediante secuenciación masiva en paralelo (MPS/NGS), identificando haplotipos humanos individuales dentro de matrices biológicas compuestas."
+                resumen: "Captura de material genético humano en suspensión en sistemas de ventilación.",
+                simple: "Las personas desprenden constantemente material biológico microscópico en el entorno a través de partículas de piel y respiración. Los laboratorios forenses han comenzado a aplicar análisis de ADN ambiental (eDNA) filtrando partículas capturadas en sistemas de aire acondicionado y superficies de ventilación para determinar qué personas estuvieron dentro de un espacio cerrado, incluso si no tocaron directamente ningún objeto."
             },
             {
                 id: 5,
                 categoria: "Microbioma Forense",
-                titulo: "La 'huella dactilar' de las bacterias de la piel",
+                titulo: "La firma bacteriana única de la piel",
                 lugar: "Universidad de Colorado, EE.UU.",
                 fecha: "Año 2022",
                 imagen: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
-                resumen: "Uso de bacterias personales para identificar objetos manipulados.",
-                simple: "Cada ser humano tiene millones de bacterias únicas viviendo en la palma de su mano. Al tocar una pantalla de teléfono o un teclado, transferimos nuestra comunidad de bacterias personal. Aunque dos gemelos tengan el mismo ADN, sus bacterias son distintas y permiten saber quién usó un dispositivo.",
-                tecnico: "El perfilado del microbioma forense secuencia el gen ARNr 16S de las comunidades bacterianas de la superficie epidérmica (principalmente *Propionibacterium*, *Streptococcus* y *Staphylococcus*). La diversidad alfa y beta de la microbiota proporciona una firma biológica personalizada estable en el tiempo para la atribución de contacto."
+                resumen: "Identificación de individuos por la composición bacteriana dejada al contacto.",
+                texto: "Cada individuo posee una comunidad bacteriana única viviendo en la superficie de las manos. Al sujetar un teclado, un teléfono o un dispositivo, se transfiere una firma biológica microbiana. La secuenciación del microbioma permite diferenciar individuos basándose en las poblaciones bacterianas detectadas, constituyendo una herramienta complementaria indispensable cuando el ADN humano se encuentra degradado."
             },
             {
                 id: 6,
-                categoria: "Epigenética y Edad Genética",
-                titulo: "Determinación exacta de la edad biológica por ADN",
+                categoria: "Epigenética Forense",
+                titulo: "Determinación de la edad biológica por metilación de ADN",
                 lugar: "Friburgo, Alemania",
                 fecha: "Año 2025",
                 imagen: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
-                resumen: "Estimación del rango de edad con margen de error de solo 2 años.",
-                simple: "Con el ADN normal, sabemos quién es la persona si ya está registrada, pero no su edad exacta. Con la epigenética, los científicos miran las 'marcas de envejecimiento' químicas que se acumulan en el ADN con los años, permitiendo saber la edad exacta del sospechoso cuando dejó la gota de sangre.",
-                tecnico: "Analiza la metilación del ADN en sitios CpG específicos utilizando pirosecuenciación cuantitativa tras la conversión con bisulfito de sodio. Al medir los niveles de metilación en genes reloj epigenéticos como *EDARADD*, *TOM1L1* y *PDE4C*, los algoritmos de regresión predicen la edad cronológica de la muestra con un margen de ±2.1 años."
+                resumen: "Estimación precisa del rango de edad cronológica a partir de muestras biológicas.",
+                texto: "El perfil de ADN clásico determina la identidad de un individuo, pero no revela su edad actual. La epigenética analiza los niveles de metilación en sitios específicos del ADN, los cuales se alteran de forma constante a medida que el cuerpo envejece. Mediante este análisis, los laboratorios pueden calcular la edad exacta de una persona que dejó una muestra biológica con un margen de error de solo dos a tres años."
             }
         ];
 
@@ -295,26 +268,8 @@
 
         let rolActual = null;
 
-        if(localStorage.getItem('sab_logo')) {
-            document.getElementById('logo-institucional').src = localStorage.getItem('sab_logo');
-        }
-
         function guardarDatos() {
             localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
-        }
-
-        function subirLogoLocal(e) {
-            const archivo = e.target.files[0];
-            if(archivo) {
-                const lector = new FileReader();
-                lector.onload = function(evt) {
-                    const logoBase64 = evt.target.result;
-                    document.getElementById('logo-institucional').src = logoBase64;
-                    localStorage.setItem('sab_logo', logoBase64);
-                    alert("¡Logo institucional actualizado correctamente!");
-                }
-                lector.readAsDataURL(archivo);
-            }
         }
 
         function mostrarVista(vistaId) {
@@ -349,10 +304,8 @@
             
             if(rolActual === 'admin') {
                 document.getElementById('btn-admin-panel').classList.remove('hidden');
-                document.getElementById('btn-cambiar-logo').classList.remove('hidden');
             } else {
                 document.getElementById('btn-admin-panel').classList.add('hidden');
-                document.getElementById('btn-cambiar-logo').classList.add('hidden');
             }
             renderizarNoticias();
             renderizarDashboard();
@@ -377,13 +330,13 @@
             if(seccion === 'noticias') {
                 secNoticias.classList.remove('hidden');
                 secRegistros.classList.add('hidden');
-                btnNoticias.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-blue-900 text-white transition";
-                btnRegistros.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
             } else {
                 secNoticias.classList.add('hidden');
                 secRegistros.classList.remove('hidden');
-                btnRegistros.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-blue-900 text-white transition";
-                btnNoticias.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
                 renderizarDashboard();
             }
         }
@@ -396,18 +349,18 @@
 
             noticiasAmostrar.forEach(n => {
                 contenedor.innerHTML += `
-                    <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
                         <div>
-                            <img src="${n.imagen}" class="w-full h-40 object-cover" alt="${n.titulo}">
+                            <img src="${n.imagen}" class="w-full h-44 object-cover" alt="${n.titulo}">
                             <div class="p-5 space-y-2">
-                                <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">${n.categoria}</span>
-                                <h3 class="font-bold text-slate-900 text-base">${n.titulo}</h3>
-                                <p class="text-xs text-slate-500 font-medium">📍 ${n.lugar} · 📅 ${n.fecha}</p>
-                                <p class="text-xs text-slate-600 leading-relaxed">${n.resumen}</p>
+                                <span class="text-[10px] font-extrabold text-blue-900 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 uppercase tracking-wider">${n.categoria}</span>
+                                <h3 class="font-bold text-slate-900 text-base leading-snug">${n.titulo}</h3>
+                                <p class="text-xs text-slate-500 font-semibold">📍 ${n.lugar}</p>
+                                <p class="text-xs text-slate-600 leading-relaxed font-normal">${n.resumen}</p>
                             </div>
                         </div>
                         <div class="px-5 pb-5 pt-0 flex justify-end">
-                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-bold text-blue-900 hover:underline">Analizar Caso Completo →</button>
+                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-black text-blue-900 hover:underline">Leer Caso Completo →</button>
                         </div>
                     </div>
                 `;
@@ -432,8 +385,7 @@
             document.getElementById('det-lugar').innerText = n.lugar;
             document.getElementById('det-fecha').innerText = n.fecha;
             document.getElementById('det-imagen').src = n.imagen;
-            document.getElementById('det-simple').innerText = n.simple;
-            document.getElementById('det-tecnico').innerText = n.tecnico;
+            document.getElementById('det-texto').innerText = n.texto || n.simple;
 
             history.pushState({noticiaId: id}, "", "#noticia-" + id);
             mostrarVista('view-detalle-noticia');
@@ -469,19 +421,20 @@
             sujetos.forEach(s => {
                 const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
                 contenedor.innerHTML += `
-                    <div onclick="verPerfil('${s.id}')" class="bg-white border border-slate-200 p-4 rounded-xl cursor-pointer hover:border-blue-600 hover:shadow-md transition flex items-center space-x-4">
-                        <img src="${s.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded-lg border border-slate-200 shadow-sm">
-                        <div>
-                            <span class="text-xs text-blue-800 font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-100">${s.id}</span>
-                            <h3 class="text-slate-900 font-bold text-sm mt-1">${s.nombre}</h3>
-                            <p class="text-xs text-slate-500">Edad: ${edadCalculada} años | Estado: <span class="font-semibold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
-                            <p class="text-xs text-blue-700 font-medium mt-0.5">Coincidencia ADN: ${s.coincidencia}</p>
+                    <div onclick="verPerfil('${s.id}')" class="bg-white border border-slate-200 p-5 rounded-2xl cursor-pointer hover:border-blue-900 hover:shadow-lg transition flex items-center space-x-5">
+                        <img src="${s.foto || FOTO_DEFAULT}" class="w-20 h-20 object-cover rounded-xl border border-slate-200 shadow">
+                        <div class="space-y-1">
+                            <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">${s.id}</span>
+                            <h3 class="text-slate-900 font-black text-base">${s.nombre}</h3>
+                            <p class="text-xs text-slate-600 font-semibold">Edad: <strong class="text-slate-900">${edadCalculada} años</strong> | Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
+                            <p class="text-xs text-blue-700 font-bold">ADN Coincidencia: ${s.coincidencia}</p>
                         </div>
                     </div>
                 `;
             });
         }
 
+        // FICHA DETALLADA Y GRANDE DE PERFIL
         function verPerfil(id) {
             const s = sujetos.find(item => item.id === id);
             if(!s) return;
@@ -491,42 +444,60 @@
 
             const detalle = document.getElementById('detalle-perfil');
             detalle.innerHTML = `
-                <div class="flex flex-col md:flex-row gap-6 items-center border-b border-slate-100 pb-6 mb-6">
-                    <img src="${s.foto || FOTO_DEFAULT}" class="w-32 h-32 object-cover rounded-xl border-2 border-blue-900 shadow-md">
-                    <div class="space-y-1.5 text-center md:text-left">
-                        <span class="text-xs bg-blue-50 text-blue-900 font-bold px-3 py-1 rounded-full border border-blue-100">${s.id}</span>
-                        <h2 class="text-2xl font-black text-slate-900 mt-2">${s.nombre}</h2>
-                        <p class="text-xs text-slate-600">NACIMIENTO: <span class="text-slate-900 font-semibold">${fechaFormateada}</span> (${edadCalculada} AÑOS)</p>
-                        <p class="text-xs text-slate-600">SEXO: <span class="text-slate-900 font-semibold">${s.sexo}</span> | ESTADO: <span class="font-bold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
+                <div class="flex flex-col md:flex-row gap-8 items-center border-b border-slate-200 pb-8">
+                    <img src="${s.foto || FOTO_DEFAULT}" class="w-44 h-44 object-cover rounded-2xl border-4 border-slate-900 shadow-xl">
+                    
+                    <div class="space-y-3 text-center md:text-left flex-grow">
+                        <span class="text-xs bg-blue-900 text-white font-extrabold px-4 py-1.5 rounded-full tracking-wider">${s.id}</span>
+                        <h2 class="text-3xl font-black text-slate-900 leading-tight">${s.nombre}</h2>
+                        
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">F. Nacimiento:</span>
+                                <span class="text-sm font-black text-slate-900">${fechaFormateada}</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Edad Registrada:</span>
+                                <span class="text-sm font-black text-slate-900">${edadCalculada} AÑOS</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Sexo:</span>
+                                <span class="text-sm font-black text-slate-900">${s.sexo}</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Estado Vital:</span>
+                                <span class="text-sm font-black ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-slate-600">PERFIL GENÉTICO STR:</span>
-                        <span class="text-blue-900">${s.coincidencia} COINCIDENCIA</span>
+                <div class="space-y-3 bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-6">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-slate-700 uppercase tracking-wider">Perfil Genético STR (Marcadores Moleculares):</span>
+                        <span class="text-blue-900 font-black bg-blue-100 px-3 py-1 rounded-full">${s.coincidencia} COINCIDENCIA</span>
                     </div>
-                    <div class="p-3 bg-white rounded-lg font-mono text-xs text-emerald-700 border border-slate-200 shadow-inner">
+                    <div class="p-4 bg-slate-900 rounded-xl font-mono text-sm text-emerald-400 border border-slate-800 shadow-inner overflow-x-auto">
                         ${s.adn}
                     </div>
                 </div>
 
-                <div class="mt-6 flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <div id="qrcode" class="mb-2 p-2 bg-white rounded shadow-sm"></div>
-                    <span class="text-slate-700 text-xs font-bold tracking-wider">CÓDIGO QR INSTITUCIONAL</span>
+                <div class="mt-8 flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-inner">
+                    <div id="qrcode" class="mb-3 p-3 bg-white rounded-xl shadow-md border border-slate-200"></div>
+                    <span class="text-slate-800 text-xs font-black tracking-widest uppercase">CÓDIGO QR INSTITUCIONAL DIRECTO</span>
                 </div>
             `;
 
             history.pushState({id: id}, "", "#" + id);
             mostrarVista('view-perfil');
 
-            // QR LIMPIO Y ESTÁNDAR (Fácil de escanear por cualquier cámara)
+            // QR LIMPIO DIRECTO AL ID DEL PERFIL
             const urlPerfilLimpia = window.location.href.split('#')[0] + "#" + s.id;
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
                 text: urlPerfilLimpia,
-                width: 150,
-                height: 150,
+                width: 160,
+                height: 160,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.M
@@ -541,17 +512,17 @@
 
         function abrirPanelAdmin() {
             const contenedor = document.getElementById('lista-admin-sujetos');
-            contenedor.innerHTML = '<h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Gestión de Perfiles</h3>';
+            contenedor.innerHTML = '<h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Gestión de Perfiles</h3>';
             
             sujetos.forEach(s => {
                 contenedor.innerHTML += `
-                    <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center text-xs shadow-sm">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
                         <div>
-                            <span class="text-blue-900 font-bold">${s.id}</span> - <span class="text-slate-800 font-medium">${s.nombre}</span>
+                            <span class="text-blue-900 font-extrabold">${s.id}</span> - <span class="text-slate-900 font-bold">${s.nombre}</span>
                         </div>
                         <div class="space-x-3">
-                            <button onclick="editarSujeto('${s.id}')" class="text-blue-700 hover:underline font-semibold">[ Editar ]</button>
-                            <button onclick="eliminarSujeto('${s.id}')" class="text-rose-600 hover:underline font-semibold">[ Eliminar ]</button>
+                            <button onclick="editarSujeto('${s.id}')" class="text-blue-700 hover:underline font-bold">[ Editar ]</button>
+                            <button onclick="eliminarSujeto('${s.id}')" class="text-rose-600 hover:underline font-bold">[ Eliminar ]</button>
                         </div>
                     </div>
                 `;
@@ -625,43 +596,7 @@
             }
         }
 
-        // IA FORENSE CONVERSACIONAL REAL
-        function procesarConsultaIA() {
-            const input = document.getElementById('ia-pregunta');
-            const output = document.getElementById('ia-chat-output');
-            const textoPregunta = input.value.trim();
-            const query = textoPregunta.toLowerCase();
-            
-            if(!query) return;
-
-            output.innerHTML += `<div><strong class="text-slate-900">Usuario:</strong> ${textoPregunta}</div>`;
-            input.value = '';
-
-            let respuesta = "";
-
-            if(query.includes('hola') || query.includes('buenos dias') || query.includes('saludos') || query.includes('como estas')) {
-                respuesta = "¡Hola! Estoy excelente y listo para ayudarte a investigar conceptos de genética y criminalística. ¿Qué duda tienes hoy?";
-            } else if(query.includes('str') || query.includes('repet') || query.includes('marcadores')) {
-                respuesta = "Los marcadores STR (Short Tandem Repeats) son secuencias repetitivas del ADN (como AATG repetido 10 veces). Heredamos una combinación de nuestros padres, y al examinar 20 marcadores distintos en el laboratorio, la probabilidad de coincidencia es menor a 1 en un billón.";
-            } else if(query.includes('golden') || query.includes('genealogía') || query.includes('deangelo') || query.includes('arbol')) {
-                respuesta = "La genealogía genética forense combina el ADN del crimen con bases de datos públicas de árboles genealógicos para encontrar parientes lejanos del sospechoso, rastreando su linaje hasta dar con el autor.";
-            } else if(query.includes('fenotip') || query.includes('rostro') || query.includes('ojos') || query.includes('pelo') || query.includes('piel')) {
-                respuesta = "La fenotipación forense lee variaciones en el ADN (SNPs) para deducir el aspecto físico de alguien no registrado: color exacto de ojos, tipo de piel y origen ancestral para armar un retrato robot biológico.";
-            } else if(query.includes('contacto') || query.includes('touch') || query.includes('tocar') || query.includes('celula')) {
-                respuesta = "El ADN de contacto recolecta diminutas células de la piel que dejamos al tocar una superficie por pocos segundos. Mediante PCR (amplificación molecular), se obtiene un perfil legible a partir de mínimas trazas.";
-            } else if(query.includes('sab') || query.includes('colegio') || query.includes('rengo') || query.includes('baluarte')) {
-                respuesta = "Esta plataforma fue desarrollada institucionalmente para el Colegio San Antonio del Baluarte de Rengo (SAB) con el fin de enseñar biotecnología criminalística de manera práctica.";
-            } else {
-                respuesta = `Respecto a "${textoPregunta}": La biotecnología criminalística moderna convierte muestras biológicas microscópicas en evidencia científica contundente mediante secuenciación genética y análisis bioinformático.`;
-            }
-
-            setTimeout(() => {
-                output.innerHTML += `<div><strong class="text-blue-900">SAB-AI:</strong> ${respuesta}</div>`;
-                output.scrollTop = output.scrollHeight;
-            }, 400);
-        }
-
-        // DETECCIÓN DE QR MÓVIL Y NAVEGACIÓN
+        // DETECCIÓN AL CARGAR Y ESCANEAR QR
         window.onload = function() {
             const hash = window.location.hash.replace('#', '');
             if(hash.startsWith('noticia-')) {
