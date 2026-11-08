@@ -63,20 +63,19 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="lista-sujetos">
-                <!-- Se cargan dinámicamente -->
+                <!-- Carga dinámica -->
             </div>
         </div>
 
         <!-- 3. FICHA INDIVIDUAL DE CADA PERSONA -->
         <div id="view-perfil" class="w-full max-w-2xl hidden bg-slate-900 border border-cyan-500/50 p-6 rounded-xl shadow-2xl relative">
             <button onclick="volverAlDashboard()" class="mb-4 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1.5 rounded border border-cyan-900">← Volver al Sistema</button>
-            
             <div id="detalle-perfil">
-                <!-- Contenido de la ficha cargado por JS -->
+                <!-- Ficha detallada -->
             </div>
         </div>
 
-        <!-- 4. PANEL DE ADMINISTRACIÓN (CRUD DE SUJETOS) -->
+        <!-- 4. PANEL DE ADMINISTRACIÓN (CRUD CON ARCHIVOS) -->
         <div id="view-admin" class="w-full max-w-3xl hidden bg-slate-900 border border-yellow-500/50 p-6 rounded-xl shadow-2xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4">
                 <h2 class="text-lg font-bold text-yellow-400">PANEL DE CONTROL ADMINISTRATIVO</h2>
@@ -85,14 +84,16 @@
 
             <form id="form-sujeto" onsubmit="guardarSujeto(event)" class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-4">
                 <input type="hidden" id="sujeto-id">
+                <input type="hidden" id="foto-base64">
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Nombre Completo:</label>
-                        <input type="text" id="nombre" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                        <input type="text" id="nombre" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">Edad:</label>
-                        <input type="number" id="edad" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                        <label class="text-xs text-slate-400 block mb-1">Fecha de Nacimiento:</label>
+                        <input type="date" id="fecha-nacimiento" required onchange="calcularEdadAutomatica()" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Sexo:</label>
@@ -103,7 +104,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">Estado:</label>
+                        <label class="text-xs text-slate-400 block mb-1">Estado Vital:</label>
                         <select id="estado" class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
                             <option value="VIVO">VIVO</option>
                             <option value="FALLECIDO">FALLECIDO</option>
@@ -114,36 +115,44 @@
                         <input type="text" id="coincidencia" value="99.8%" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">URL de Fotografía:</label>
-                        <input type="url" id="foto" placeholder="https://..." required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
+                        <label class="text-xs text-slate-400 block mb-1">Fotografía (Archivo local):</label>
+                        <input type="file" id="archivo-foto" accept="image/*" onchange="procesarFotoLocal(event)" class="w-full bg-slate-900 border border-slate-700 p-1.5 rounded text-xs text-slate-300">
                     </div>
                 </div>
+
+                <div id="preview-contenedor" class="hidden flex items-center space-x-3 bg-slate-900 p-2 rounded border border-slate-800">
+                    <img id="preview-img" class="w-12 h-12 object-cover rounded border border-yellow-500">
+                    <span class="text-xs text-slate-400">Vista previa de la imagen cargada</span>
+                </div>
+
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">Perfil Genético Ficticio (STR / ADN):</label>
                     <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11" required class="w-full bg-slate-900 border border-slate-700 p-2 rounded text-sm text-white">
                 </div>
-                <button type="submit" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-2 rounded text-sm transition">GUARDAR / ACTUALIZAR REGISTRO</button>
+                <button type="submit" class="w-full bg-yellow-600 hover:bg-yellow-500 text-slate-950 font-bold py-2 rounded text-sm transition tracking-wider">GUARDAR REGISTRO FORENSE</button>
             </form>
 
             <div class="space-y-3" id="lista-admin-sujetos">
-                <!-- Lista para administrar -->
+                <!-- Lista administrativa -->
             </div>
         </div>
 
     </main>
 
     <footer class="text-center py-4 text-xs text-slate-600 border-t border-slate-900">
-        SAB FORENSIC SYSTEM · SEGURIDAD INSTITUCIONAL V2.4
+        SAB FORENSIC SYSTEM · SEGURIDAD INSTITUCIONAL V2.5
     </footer>
 
     <script>
-        // CONTRASEÑAS PERSONALIZADAS
         const PASS_VISITANTE = "profe angelica";
         const PASS_ADMIN = "saezypadillamolecular";
 
+        // Imagen predeterminada si no se sube ninguna foto
+        const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
+
         let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
-            { id: "SAB-1001", nombre: "Carlos Mendoza R.", edad: 34, sexo: "Masculino", estado: "FALLECIDO", coincidencia: "99.9%", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300", adn: "STR-D13S317: 12,14 | vWA: 17,18" },
-            { id: "SAB-1002", nombre: "Elena Vásquez S.", edad: 29, sexo: "Femenino", estado: "VIVO", coincidencia: "99.4%", foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300", adn: "STR-D13S317: 11,13 | vWA: 16,19" }
+            { id: "SAB-1001", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, sexo: "Masculino", estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18" },
+            { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, sexo: "Femenino", estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19" }
         ];
 
         let rolActual = null;
@@ -160,8 +169,7 @@
         }
 
         function loginVisitante() {
-            const val = document.getElementById('pass-visitante').value;
-            if(val === PASS_VISITANTE) {
+            if(document.getElementById('pass-visitante').value === PASS_VISITANTE) {
                 rolActual = 'visitante';
                 iniciarSesionExitoso();
             } else {
@@ -170,8 +178,7 @@
         }
 
         function loginAdmin() {
-            const val = document.getElementById('pass-admin').value;
-            if(val === PASS_ADMIN) {
+            if(document.getElementById('pass-admin').value === PASS_ADMIN) {
                 rolActual = 'admin';
                 iniciarSesionExitoso();
             } else {
@@ -206,19 +213,45 @@
             mostrarVista('view-login');
         }
 
+        function calcularEdad(fechaNacStr) {
+            if (!fechaNacStr) return 0;
+            const nac = new Date(fechaNacStr);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - nac.getFullYear();
+            const m = hoy.getMonth() - nac.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) {
+                edad--;
+            }
+            return edad;
+        }
+
+        function procesarFotoLocal(e) {
+            const archivo = e.target.files[0];
+            if (archivo) {
+                const lector = new FileReader();
+                lector.onload = function(event) {
+                    document.getElementById('foto-base64').value = event.target.result;
+                    document.getElementById('preview-img').src = event.target.result;
+                    document.getElementById('preview-contenedor').classList.remove('hidden');
+                };
+                lector.readAsDataURL(archivo);
+            }
+        }
+
         function renderizarDashboard() {
             const contenedor = document.getElementById('lista-sujetos');
             contenedor.innerHTML = '';
             
             sujetos.forEach(s => {
+                const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
                 contenedor.innerHTML += `
                     <div onclick="verPerfil('${s.id}')" class="bg-slate-950/80 border border-cyan-900/50 p-4 rounded-lg cursor-pointer hover:border-cyan-500 transition flex items-center space-x-4">
-                        <img src="${s.foto}" class="w-16 h-16 object-cover rounded border border-cyan-500/30">
+                        <img src="${s.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded border border-cyan-500/30">
                         <div>
                             <span class="text-xs text-cyan-500 font-bold">${s.id}</span>
                             <h3 class="text-white font-bold text-sm">${s.nombre}</h3>
-                            <p class="text-xs text-slate-400">Estado: <span class="${s.estado === 'VIVO' ? 'text-green-400' : 'text-red-400'}">${s.estado}</span></p>
-                            <p class="text-xs text-cyan-300 mt-1">Coincidencia Genética: ${s.coincidencia}</p>
+                            <p class="text-xs text-slate-400">Edad: ${edadCalculada} años | Estado: <span class="${s.estado === 'VIVO' ? 'text-green-400' : 'text-red-400'}">${s.estado}</span></p>
+                            <p class="text-xs text-cyan-300 mt-1">Coincidencia ADN: ${s.coincidencia}</p>
                         </div>
                     </div>
                 `;
@@ -229,15 +262,18 @@
             const s = sujetos.find(item => item.id === id);
             if(!s) return;
 
+            const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
+            const fechaFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
+
             const detalle = document.getElementById('detalle-perfil');
             detalle.innerHTML = `
                 <div class="flex flex-col md:flex-row gap-6 items-center border-b border-slate-800 pb-6 mb-6">
-                    <img src="${s.foto}" class="w-32 h-32 object-cover rounded-lg border-2 border-cyan-500 shadow-lg">
+                    <img src="${s.foto || FOTO_DEFAULT}" class="w-32 h-32 object-cover rounded-lg border-2 border-cyan-500 shadow-lg">
                     <div class="space-y-1 text-center md:text-left">
                         <span class="text-xs bg-cyan-950 text-cyan-400 px-2.5 py-1 rounded border border-cyan-800">${s.id}</span>
                         <h2 class="text-2xl font-black text-white mt-2">${s.nombre}</h2>
-                        <p class="text-xs text-slate-400">Edad: <span class="text-cyan-300">${s.edad} años</span> | Sexo: <span class="text-cyan-300">${s.sexo}</span></p>
-                        <p class="text-xs text-slate-400">Estado Vital: <span class="font-bold ${s.estado === 'VIVO' ? 'text-green-400' : 'text-red-400'}">${s.estado}</span></p>
+                        <p class="text-xs text-slate-300">F. NACIMIENTO: <span class="text-cyan-400 font-bold">${fechaFormateada}</span> (${edadCalculada} AÑOS)</p>
+                        <p class="text-xs text-slate-400">SEXO: <span class="text-cyan-300">${s.sexo}</span> | ESTADO VITAL: <span class="font-bold ${s.estado === 'VIVO' ? 'text-green-400' : 'text-red-400'}">${s.estado}</span></p>
                     </div>
                 </div>
 
@@ -251,9 +287,9 @@
                     </div>
                 </div>
 
-                <div class="mt-6 flex flex-col items-center justify-center p-4 bg-white rounded-lg">
+                <div class="mt-6 flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-inner">
                     <div id="qrcode" class="mb-2"></div>
-                    <span class="text-slate-900 text-xs font-bold">CÓDIGO QR INSTITUCIONAL DE ACCESO</span>
+                    <span class="text-slate-900 text-xs font-bold tracking-widest">CÓDIGO QR INSTITUCIONAL DE ACCESO</span>
                 </div>
             `;
 
@@ -295,14 +331,21 @@
         function guardarSujeto(e) {
             e.preventDefault();
             const idEdit = document.getElementById('sujeto-id').value;
+            const fechaNac = document.getElementById('fecha-nacimiento').value;
+            const fotoBase64 = document.getElementById('foto-base64').value;
+
+            const sujetoExistente = sujetos.find(s => s.id === idEdit);
+            const fotoFinal = fotoBase64 ? fotoBase64 : (sujetoExistente ? sujetoExistente.foto : FOTO_DEFAULT);
+
             const nuevoSujeto = {
                 id: idEdit ? idEdit : "SAB-" + Math.floor(1000 + Math.random() * 9000),
                 nombre: document.getElementById('nombre').value,
-                edad: document.getElementById('edad').value,
+                fechaNac: fechaNac,
+                edad: calcularEdad(fechaNac),
                 sexo: document.getElementById('sexo').value,
                 estado: document.getElementById('estado').value,
                 coincidencia: document.getElementById('coincidencia').value,
-                foto: document.getElementById('foto').value,
+                foto: fotoFinal,
                 adn: document.getElementById('adn').value
             };
 
@@ -314,9 +357,15 @@
             }
 
             guardarDatos();
+            limpiarFormulario();
+            abrirPanelAdmin();
+        }
+
+        function limpiarFormulario() {
             document.getElementById('form-sujeto').reset();
             document.getElementById('sujeto-id').value = '';
-            abrirPanelAdmin();
+            document.getElementById('foto-base64').value = '';
+            document.getElementById('preview-contenedor').classList.add('hidden');
         }
 
         function editarSujeto(id) {
@@ -324,12 +373,17 @@
             if(!s) return;
             document.getElementById('sujeto-id').value = s.id;
             document.getElementById('nombre').value = s.nombre;
-            document.getElementById('edad').value = s.edad;
+            document.getElementById('fecha-nacimiento').value = s.fechaNac || '';
             document.getElementById('sexo').value = s.sexo;
             document.getElementById('estado').value = s.estado;
             document.getElementById('coincidencia').value = s.coincidencia;
-            document.getElementById('foto').value = s.foto;
             document.getElementById('adn').value = s.adn;
+
+            if(s.foto) {
+                document.getElementById('foto-base64').value = s.foto;
+                document.getElementById('preview-img').src = s.foto;
+                document.getElementById('preview-contenedor').classList.remove('hidden');
+            }
         }
 
         function eliminarSujeto(id) {
