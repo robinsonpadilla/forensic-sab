@@ -13,16 +13,24 @@
 </head>
 <body class="min-h-screen flex flex-col bg-slate-100">
 
-    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO RED JOHN -->
+    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO REAL DE RED JOHN (PINTURA CHORREANTE) -->
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-4">
-            <div class="bg-slate-950 p-2 rounded-xl border border-red-900/60 shadow-lg flex items-center justify-center">
-                <!-- CARA SONRIENTE RED JOHN -->
-                <svg class="w-9 h-9 text-red-600" viewBox="0 0 100 100" fill="currentColor">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="7"/>
-                    <circle cx="35" cy="40" r="6"/>
-                    <circle cx="65" cy="40" r="6"/>
-                    <path d="M 25 60 Q 50 85 75 60" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+            <div class="bg-slate-950 p-2 rounded-xl border border-red-900/80 shadow-lg flex items-center justify-center">
+                <!-- CARA SONRIENTE REAL DE RED JOHN (CON MANCHAS Y CHORROS DE PINTURA) -->
+                <svg class="w-10 h-10 text-red-600 drop-shadow-[0_0_6px_rgba(220,38,38,0.8)]" viewBox="0 0 100 100" fill="currentColor">
+                    <!-- Círculo de la cara con trazo irregular -->
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="240 10" stroke-linecap="round"/>
+                    <!-- Ojos -->
+                    <circle cx="34" cy="38" r="6"/>
+                    <circle cx="66" cy="38" r="6"/>
+                    <!-- Sonrisa ancha -->
+                    <path d="M 24 55 Q 50 88 76 55" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+                    <!-- Chorros de pintura cayendo desde la sonrisa -->
+                    <path d="M 40 76 L 38 95" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M 50 81 L 52 98" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M 60 76 L 63 92" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M 30 70 L 25 85" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
                 </svg>
             </div>
             <div>
@@ -43,10 +51,12 @@
             <div class="text-center space-y-2">
                 <div class="inline-flex p-3 bg-red-50 text-red-600 rounded-full font-bold mb-1 border border-red-100 justify-center">
                     <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8"/>
-                        <circle cx="35" cy="40" r="6"/>
-                        <circle cx="65" cy="40" r="6"/>
-                        <path d="M 25 60 Q 50 85 75 60" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"/>
+                        <circle cx="34" cy="38" r="6"/>
+                        <circle cx="66" cy="38" r="6"/>
+                        <path d="M 24 55 Q 50 88 76 55" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+                        <path d="M 40 76 L 38 95" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M 50 81 L 52 98" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
                     </svg>
                 </div>
                 <h2 class="text-2xl font-black text-slate-900">Acceso a Plataforma Forense</h2>
@@ -63,28 +73,28 @@
             <div id="login-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Credenciales incorrectas. Verifique la contraseña.</div>
         </div>
 
-        <!-- 2. PORTADA PRINCIPAL (CASOS Y BASE DE PERFILES) -->
+        <!-- 2. PORTADA PRINCIPAL (NOTICIAS ACADÉMICAS Y BASE DE PERFILES) -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
             <!-- NAVEGACIÓN INTERNA -->
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">INVESTIGACIÓN Y REGISTROS FORENSES</h2>
-                    <p class="text-xs text-slate-500 font-medium">Biotecnología aplicadas a la resolución de casos biológicos</p>
+                    <p class="text-xs text-slate-500 font-medium">Biotecnología y artículos científicos aplicados a la criminalística</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Casos e Investigaciones</button>
+                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Artículos y Noticias</button>
                     <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
                     <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2.5 text-xs font-bold rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar Perfiles</button>
                 </div>
             </div>
 
-            <!-- SECCIÓN A: CASOS INVESTIGATIVOS -->
+            <!-- SECCIÓN A: NOTICIAS ACADÉMICAS Y CIENTÍFICAS -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
 
                 <div class="text-center pt-4">
-                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Casos Reales</button>
+                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
                 </div>
             </div>
 
@@ -95,23 +105,24 @@
 
         </div>
 
-        <!-- 3. VISTA DEDICADA DE DETALLE DE CASO -->
+        <!-- 3. VISTA DEDICADA DE DETALLE DE NOTICIA (ESTILO ARTÍCULO UNIVERSITARIO) -->
         <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
             <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200">← Volver al Panel Principal</button>
             
             <div class="space-y-3 border-b border-slate-100 pb-6">
                 <span id="det-cat" class="text-xs font-extrabold text-blue-900 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-100 uppercase tracking-wider"></span>
                 <h2 id="det-titulo" class="text-2xl md:text-3xl font-black text-slate-900 leading-tight"></h2>
-                <div class="flex items-center space-x-6 text-xs text-slate-500 font-semibold pt-1">
+                <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-semibold pt-1">
+                    <span>🏛️ Institución: <strong id="det-institucion" class="text-slate-800"></strong></span>
                     <span>📍 Ubicación: <strong id="det-lugar" class="text-slate-800"></strong></span>
                     <span>📅 Fecha: <strong id="det-fecha" class="text-slate-800"></strong></span>
                 </div>
             </div>
 
             <div class="space-y-6">
-                <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Caso de estudio">
+                <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Investigación científica">
                 <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4">
-                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Informe Completo de la Investigación</h3>
+                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Resumen del Artículo y Aplicación Práctica</h3>
                     <p id="det-texto" class="text-slate-800 text-sm leading-relaxed whitespace-pre-line font-medium"></p>
                 </div>
             </div>
@@ -195,67 +206,73 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // BASE DE NOTICIAS REALES CON REDACCIÓN INTEGRADA
+        // BASE DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS REALES
         const baseNoticias = [
             {
                 id: 1,
-                categoria: "Genealogía Genética",
-                titulo: "La captura del 'Golden State Killer'",
-                lugar: "California, Estados Unidos",
-                fecha: "Abril de 2018",
+                categoria: "Biomedicina y Bioenergética",
+                titulo: "Respiración mitocondrial: Clave para detectar fragilidad y perfiles biológicos",
+                institucion: "Universidad de Chile",
+                lugar: "Santiago, Chile",
+                fecha: "Actualidad",
                 imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
-                resumen: "Resolución histórica de docenas de crímenes sin resolver mediante genealogía genética cruzada.",
-                texto: "El caso del 'Golden State Killer' permaneció sin resolver durante más de cuatro décadas en el estado de California. Las investigaciones policiales tradicionales no habían logrado identificar al responsable a pesar de contar con muestras biológicas recuperadas en múltiples escenas del crimen.\n\nEn 2018, un equipo especializado utilizó genealogía genética forense. Tomaron el perfil de ADN obtenido de las evidencias biológicas antiguas y lo ingresaron en GEDmatch, una base de datos genealógica pública utilizada por personas que buscan rastrear sus ancestros. El análisis permitió identificar coincidencias con parientes lejanos del sospechoso (primos terceros y cuartos).\n\nA través de la reconstrucción paso a paso del árbol genealógico familiar, los investigadores delimitaron el linaje hasta Joseph James DeAngelo, un exoficial de policía de 72 años. La policía confirmó su coincidencia mediante una muestra de ADN obtenida directamente de un objeto descartado en su basura, logrando su arresto definitivo."
+                resumen: "Investigación pionera sobre la función mitocondrial celular y su relación con biomarcadores de resistencia.",
+                texto: "Un equipo de científicos de la Universidad de Chile ha profundizado en cómo la respiración mitocondrial celular actúa como un indicador fundamental del estado biológico y la fragilidad en organismos.\n\nEn el ámbito de la biotecnología aplicada y la criminalística, el estudio de la mitocondria y su ADN asociado (ADN mitocondrial) es vital cuando las muestras biológicas se encuentran altamente degradadas o expuestas a condiciones extremas (como incendios o largos periodos de tiempo), donde el ADN nuclear común ya no puede ser amplificado.\n\nComprender el metabolismo celular y la producción de energía mitocondrial permite a los laboratorios forenses modernos optimizar las técnicas de extracción en restos óseos antiguos, mejorando sustancialmente las tasas de identificación genética y el análisis de perfiles biológicos complejos."
             },
             {
                 id: 2,
-                categoria: "ADN de Contacto (Touch DNA)",
-                titulo: "Identificación por células epiteliales en objetos",
-                lugar: "Laboratorios de Investigación, Reino Unido",
-                fecha: "Año 2021",
+                categoria: "Genealogía Genética",
+                titulo: "La captura del 'Golden State Killer' mediante bases genealógicas",
+                institucion: "Investigación Internacional / GEDmatch",
+                lugar: "California, Estados Unidos",
+                fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
-                resumen: "Obtención de perfiles genéticos completos a partir de toques breves sobre superficies.",
-                texto: "Tradicionalmente, la recolección de ADN forense requería muestras visibles de fluidos corporales como sangre o saliva. Sin embargo, el desarrollo del denominado 'Touch DNA' revolucionó la recolección de indicios biológicos.\n\nCuando una persona manipula una superficie durante apenas unos segundos —como una manilla de puerta, el volante de un vehículo o un casquillo de bala— desprende de forma natural células epiteliales de la piel. Aunque la cantidad de material genético presente suele ser microscópica (inferior a 100 picogramos), los kits de amplificación molecular modernos por reacción en cadena de la polimerasa (PCR) permiten copiar y multiplicar esas mínimas trazas hasta obtener un perfil genético completo apto para comparación judicial."
+                resumen: "Uso de bases de datos públicas para cruzar perfiles genéticos y resolver casos de décadas de antigüedad.",
+                texto: "El caso del 'Golden State Killer' marcó un antes y un después en la historia judicial mundial. Durante más de 40 años, un violador y asesino serial mantuvo en zozobra a California sin que la policía tradicional pudiera identificarlo con las huellas o evidencias clásicas.\n\nLa revolución científica llegó cuando los investigadores decidieron aplicar la genealogía genética forense. Subieron el perfil genético obtenido de las evidencias biológicas a una base de datos pública de genealogía. Al encontrar coincidencias con parientes lejanos, los genetistas forenses reconstruyeron extensos árboles genealógicos familiares hasta acorralar y confirmar la identidad del ex-policía Joseph DeAngelo."
             },
             {
                 id: 3,
-                categoria: "Fenotipación Forense",
-                titulo: "Retratos biológicos a partir de ADN antiguo",
-                lugar: "Parabon NanoLabs, Virginia, EE.UU.",
-                fecha: "Año 2023",
+                categoria: "ADN de Contacto (Touch DNA)",
+                titulo: "Identificación molecular a partir de células epiteliales invisibles",
+                institucion: "Forensic Science Laboratories",
+                lugar: "Londres, Reino Unido",
+                fecha: "Año 2021",
                 imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
-                resumen: "Predicción de características físicas y facciones faciales a través del análisis de marcadores genéticos.",
-                texto: "En escenarios donde se encuentran restos óseos sin identificar o perfiles genéticos que no generan ninguna coincidencia en las bases de datos policiales, la investigación puede quedar completamente paralizada.\n\nLa fenotipación forense utiliza las variaciones en el ADN (SNPs) relacionadas con rasgos físicos externos. Mediante algoritmos computacionales avanzados, esta tecnología analiza marcadores específicos para determinar con alta precisión estadística el color de ojos, el tono de piel, la pigmentación del cabello, la morfología facial y el origen biogeográfico. El resultado es un retrato robot biológico tridimensional que orienta la búsqueda de los investigadores."
+                resumen: "Extracción de perfiles genéticos completos tras la manipulación breve de objetos.",
+                texto: "Tradicionalmente, las pruebas biológicas requerían charcos visibles de sangre o fluidos. Hoy en día, la técnica conocida como 'Touch DNA' permite recuperar células de la piel que las personas desprenden al tocar un objeto por apenas unos segundos (como manillas de puertas, volantes o herramientas).\n\nMediante los ciclos de amplificación ultrasensible por PCR, los laboratorios logran replicar trazas menores a un nanogramo hasta obtener un perfil STR legible y con validez legal irrefutable ante los tribunales."
             },
             {
                 id: 4,
-                categoria: "ADN Ambiental (eDNA)",
-                titulo: "Rastreo de presencia humana mediante partículas en el aire",
-                lugar: "Canadá / Australia",
-                fecha: "Año 2024",
+                categoria: "Fenotipación Forense",
+                titulo: "Construcción de retratos robot biológicos mediante marcadores SNPs",
+                institucion: "Parabon NanoLabs",
+                lugar: "Virginia, Estados Unidos",
+                fecha: "Año 2023",
                 imagen: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=500",
-                resumen: "Captura de material genético humano en suspensión en sistemas de ventilación.",
-                simple: "Las personas desprenden constantemente material biológico microscópico en el entorno a través de partículas de piel y respiración. Los laboratorios forenses han comenzado a aplicar análisis de ADN ambiental (eDNA) filtrando partículas capturadas en sistemas de aire acondicionado y superficies de ventilación para determinar qué personas estuvieron dentro de un espacio cerrado, incluso si no tocaron directamente ningún objeto."
+                resumen: "Predicción de color de ojos, piel, cabello y rasgos ancestrales a partir de restos óseos.",
+                texto: "Cuando se descubren osamentas antiguas o muestras sin coincidencias en los registros policiales, la fenotipación forense ofrece una salida revolucionaria. Analizando polimorfismos de nucleótido único (SNPs), los sistemas bioinformáticos predicen con alta precisión estadística las características físicas externas y los orígenes biogeográficos del individuo, orientando con efectividad las pesquisas policiales."
             },
             {
                 id: 5,
                 categoria: "Microbioma Forense",
-                titulo: "La firma bacteriana única de la piel",
-                lugar: "Universidad de Colorado, EE.UU.",
+                titulo: "La firma bacteriana cutánea como evidencia de manipulación",
+                institucion: "Universidad de Colorado",
+                lugar: "Colorado, Estados Unidos",
                 fecha: "Año 2022",
                 imagen: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
-                resumen: "Identificación de individuos por la composición bacteriana dejada al contacto.",
-                texto: "Cada individuo posee una comunidad bacteriana única viviendo en la superficie de las manos. Al sujetar un teclado, un teléfono o un dispositivo, se transfiere una firma biológica microbiana. La secuenciación del microbioma permite diferenciar individuos basándose en las poblaciones bacterianas detectadas, constituyendo una herramienta complementaria indispensable cuando el ADN humano se encuentra degradado."
+                resumen: "Uso de comunidades microbianas personales para vincular sospechosos con dispositivos.",
+                texto: "Cada persona alberga una comunidad única de bacterias en su piel. Al utilizar teclados, teléfonos o pantallas táctiles, transferimos nuestra firma microbiana personal. La secuenciación genética del microbioma permite corroborar quién manipuló un objeto específico, aportando una capa adicional de certeza incluso cuando el ADN humano presenta interferencias o mezclas."
             },
             {
                 id: 6,
                 categoria: "Epigenética Forense",
-                titulo: "Determinación de la edad biológica por metilación de ADN",
+                titulo: "Estimación precisa de la edad biológica mediante metilación del ADN",
+                institucion: "Universidad de Friburgo",
                 lugar: "Friburgo, Alemania",
                 fecha: "Año 2025",
                 imagen: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
-                resumen: "Estimación precisa del rango de edad cronológica a partir de muestras biológicas.",
-                texto: "El perfil de ADN clásico determina la identidad de un individuo, pero no revela su edad actual. La epigenética analiza los niveles de metilación en sitios específicos del ADN, los cuales se alteran de forma constante a medida que el cuerpo envejece. Mediante este análisis, los laboratorios pueden calcular la edad exacta de una persona que dejó una muestra biológica con un margen de error de solo dos a tres años."
+                resumen: "Cálculo de la edad cronológica de un sospechoso midiendo marcas químicas celulares.",
+                texto: "La epigenética estudia las modificaciones químicas que se acumulan en el ADN a lo largo del ciclo vital humano. Al analizar los patrones de metilación en genes específicos, los científicos forenses pueden calcular la edad exacta de una persona a partir de una muestra de sangre o tejido con un margen de error mínimo de apenas dos años."
             }
         ];
 
@@ -355,12 +372,12 @@
                             <div class="p-5 space-y-2">
                                 <span class="text-[10px] font-extrabold text-blue-900 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 uppercase tracking-wider">${n.categoria}</span>
                                 <h3 class="font-bold text-slate-900 text-base leading-snug">${n.titulo}</h3>
-                                <p class="text-xs text-slate-500 font-semibold">📍 ${n.lugar}</p>
+                                <p class="text-xs text-slate-500 font-semibold">🏛️ ${n.institucion} · 📍 ${n.lugar}</p>
                                 <p class="text-xs text-slate-600 leading-relaxed font-normal">${n.resumen}</p>
                             </div>
                         </div>
                         <div class="px-5 pb-5 pt-0 flex justify-end">
-                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-black text-blue-900 hover:underline">Leer Caso Completo →</button>
+                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-black text-blue-900 hover:underline">Leer Artículo Completo →</button>
                         </div>
                     </div>
                 `;
@@ -382,10 +399,11 @@
 
             document.getElementById('det-cat').innerText = n.categoria;
             document.getElementById('det-titulo').innerText = n.titulo;
+            document.getElementById('det-institucion').innerText = n.institucion;
             document.getElementById('det-lugar').innerText = n.lugar;
             document.getElementById('det-fecha').innerText = n.fecha;
             document.getElementById('det-imagen').src = n.imagen;
-            document.getElementById('det-texto').innerText = n.texto || n.simple;
+            document.getElementById('det-texto').innerText = n.texto;
 
             history.pushState({noticiaId: id}, "", "#noticia-" + id);
             mostrarVista('view-detalle-noticia');
@@ -434,7 +452,6 @@
             });
         }
 
-        // FICHA DETALLADA Y GRANDE DE PERFIL
         function verPerfil(id) {
             const s = sujetos.find(item => item.id === id);
             if(!s) return;
@@ -491,7 +508,6 @@
             history.pushState({id: id}, "", "#" + id);
             mostrarVista('view-perfil');
 
-            // QR LIMPIO DIRECTO AL ID DEL PERFIL
             const urlPerfilLimpia = window.location.href.split('#')[0] + "#" + s.id;
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
@@ -596,7 +612,6 @@
             }
         }
 
-        // DETECCIÓN AL CARGAR Y ESCANEAR QR
         window.onload = function() {
             const hash = window.location.hash.replace('#', '');
             if(hash.startsWith('noticia-')) {
