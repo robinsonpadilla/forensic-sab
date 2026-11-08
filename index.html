@@ -221,7 +221,7 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
         
-        // ID centralizado y sincronizado en la nube para red global
+        // ID de almacenamiento compartido en la nube global
         const BLOB_URL = "https://jsonblob.com/api/jsonBlob/1346618790215565312";
 
         const baseNoticias = [
@@ -370,24 +370,25 @@
         let sujetos = [];
         let rolActual = null;
 
-        // Carga centralizada desde la nube con revalidación forzada
-        async function cargarDatosNube() {
+        // Carga síncrona / asíncrona robusta desde la nube global con marca de tiempo anti-caché
+        async function cargarDatosNube(forzarRecarga = false) {
             try {
-                const res = await fetch(BLOB_URL + "?t=" + new Date().getTime());
+                const res = await fetch(BLOB_URL + "?t=" + new Date().getTime(), { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
                         sujetos = data;
                         localStorage.setItem('sab_sujetos_cloud_cache', JSON.stringify(sujetos));
-                        return;
+                        return sujetos;
                     }
                 }
             } catch(e) {
-                console.warn("Usando caché local por falta de red.");
+                console.warn("Red no disponible, cargando caché local.");
             }
             
             const local = JSON.parse(localStorage.getItem('sab_sujetos_cloud_cache'));
             sujetos = (local && local.length >= perfilesBaseOficiales.length) ? local : perfilesBaseOficiales;
+            return sujetos;
         }
 
         async function guardarDatosNube() {
@@ -399,7 +400,7 @@
                     body: JSON.stringify(sujetos)
                 });
             } catch(e) {
-                console.error("Error sincronizando en la nube:", e);
+                console.error("Error al actualizar la nube:", e);
             }
         }
 
@@ -449,7 +450,7 @@
             setTimeout(() => err.classList.add('hidden'), 3500);
         }
 
-        function validarQRAuth() {
+        async function validarQRAuth() {
             const val = document.getElementById('pass-qr').value.trim().toLowerCase();
             if(val === PASS_ADMIN || val === PASS_VISITANTE) {
                 rolActual = val === PASS_ADMIN ? 'admin' : 'visitante';
@@ -459,6 +460,7 @@
                     document.getElementById('btn-admin-panel').classList.remove('hidden');
                 }
                 
+                await cargarDatosNube(true);
                 const hash = window.location.hash.replace('#', '');
                 if (hash && sujetos.some(s => s.id === hash)) {
                     verPerfil(hash);
@@ -482,6 +484,7 @@
             } else {
                 document.getElementById('btn-admin-panel').classList.add('hidden');
             }
+            limiteNoticias = 3;
             renderizarNoticias();
             renderizarDashboard();
             mostrarVista('view-dashboard');
@@ -601,7 +604,8 @@
                 sujetos.forEach(s => {
                     const qrContenedor = document.getElementById(`mini-qr-${s.id}`);
                     if (qrContenedor && qrContenedor.innerHTML === "") {
-                        const urlLimpia = window.location.origin + window.location.pathname + "#" + s.id;
+                        const baseUrl = window.location.href.split('#')[0];
+                        const urlLimpia = baseUrl + "#" + s.id;
                         new QRCode(qrContenedor, {
                             text: urlLimpia,
                             width: 56,
@@ -615,12 +619,13 @@
             }, 100);
         }
 
-        function verPerfil(id) {
+        async function verPerfil(id) {
+            await cargarDatosNube(true);
             let s = sujetos.find(item => item.id === id);
             if(!s) return;
 
             s.ultimoIngreso = obtenerFechaActualFormateada();
-            guardarDatosNube();
+            await guardarDatosNube();
 
             const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
             const fechaNacFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
@@ -688,7 +693,8 @@
                 const qrContainer = document.getElementById('qrcode');
                 if(qrContainer) {
                     qrContainer.innerHTML = "";
-                    const urlLimpia = window.location.origin + window.location.pathname + "#" + s.id;
+                    const baseUrl = window.location.href.split('#')[0];
+                    const urlLimpia = baseUrl + "#" + s.id;
                     new QRCode(qrContainer, {
                         text: urlLimpia,
                         width: 160,
@@ -742,7 +748,7 @@
             });
         }
 
-        function guardarSujeto(e) {
+        async function guardarSujeto(e) {
             e.preventDefault();
             const idx = parseInt(document.getElementById('sujeto-edit-idx').value);
             const fechaNac = document.getElementById('fecha-nacimiento').value;
@@ -775,7 +781,7 @@
                 sujetos.push(nuevoSujeto);
             }
 
-            guardarDatosNube();
+            await guardarDatosNube();
             limpiarFormulario();
             actualizarListaAdmin();
             renderizarDashboard();
@@ -807,10 +813,10 @@
             }
         }
 
-        function eliminarSujeto(index) {
+        async function eliminarSujeto(index) {
             if(confirm("¿Desea eliminar permanentemente este registro forense?")) {
                 sujetos.splice(index, 1);
-                guardarDatosNube();
+                await guardarDatosNube();
                 actualizarListaAdmin();
                 renderizarDashboard();
             }
@@ -818,19 +824,20 @@
 
         function volverAlDashboard() {
             history.pushState("", document.title, window.location.pathname);
+            limiteNoticias = 3;
+            renderizarNoticias();
             mostrarVista('view-dashboard');
             mostrarSeccion('noticias');
         }
 
         async function procesarRutaHash() {
-            await cargarDatosNube();
+            await cargarDatosNube(true);
             const hash = window.location.hash.replace('#', '');
 
             if(hash.startsWith('noticia-')) {
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
-                // Al escanear el QR o abrir por enlace directo, pedirá clave de seguridad si no ha iniciado sesión
                 if(!rolActual) {
                     mostrarVista('view-qr-auth');
                 } else {
