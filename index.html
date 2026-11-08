@@ -365,14 +365,13 @@
             }
         });
 
-        // SINCRONIZACIÓN GLOBAL: Almacenamiento compartido mediante localStorage sincronizado y URL state
+        // Sincronización global y persistente
         let sujetosGuardados = JSON.parse(localStorage.getItem('sab_sujetos_global'));
         let sujetos = sujetosGuardados && sujetosGuardados.length >= perfilesBaseOficiales.length ? sujetosGuardados : perfilesBaseOficiales;
 
         let rolActual = null;
         let sujetoPendienteQR = null;
 
-        // Escucha en tiempo real cambios entre pestañas y otras cuentas en el mismo navegador/PC
         window.addEventListener('storage', function(e) {
             if (e.key === 'sab_sujetos_global') {
                 sujetos = JSON.parse(e.newValue) || perfilesBaseOficiales;
@@ -382,7 +381,6 @@
 
         function guardarDatosLocal() {
             localStorage.setItem('sab_sujetos_global', JSON.stringify(sujetos));
-            // Actualización por evento nativo para sincronizar ventanas simultáneas
             window.dispatchEvent(new Event('storage'));
         }
 
@@ -497,3 +495,393 @@
                 btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
             } else {
                 secNoticias.classList.add('hidden');
+                secRegistros.classList.remove('hidden');
+                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                renderizarDashboard();
+            }
+        }
+
+        function renderizarNoticias() {
+            const contenedor = document.getElementById('contenedor-noticias');
+            contenedor.innerHTML = '';
+            
+            const noticiasAmostrar = baseNoticias.slice(0, limiteNoticias);
+
+            noticiasAmostrar.forEach(n => {
+                contenedor.innerHTML += `
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <img src="${n.imagen}" class="w-full h-44 object-cover" alt="${n.titulo}">
+                            <div class="p-5 space-y-2">
+                                <span class="text-[10px] font-extrabold text-blue-900 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 uppercase tracking-wider">${n.categoria}</span>
+                                <h3 class="font-bold text-slate-900 text-base leading-snug">${n.titulo}</h3>
+                                <p class="text-xs text-slate-500 font-semibold">🏛️ ${n.institucion} · 📍 ${n.lugar}</p>
+                                <p class="text-xs text-slate-600 leading-relaxed font-normal">${n.resumen}</p>
+                            </div>
+                        </div>
+                        <div class="px-5 pb-5 pt-0 flex justify-end">
+                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-black text-blue-900 hover:underline">Leer Artículo Completo →</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const btnCargar = document.getElementById('btn-cargar-mas');
+            if(limiteNoticias >= baseNoticias.length) {
+                btnCargar.style.display = 'none';
+            } else {
+                btnCargar.style.display = 'block';
+            }
+        }
+
+        function cargarMasNoticias() {
+            if(limiteNoticias < baseNoticias.length) {
+                limiteNoticias += 3;
+                renderizarNoticias();
+            }
+        }
+
+        function verDetalleNoticia(id) {
+            const n = baseNoticias.find(item => item.id === id);
+            if(!n) return;
+
+            document.getElementById('det-cat').innerText = n.categoria;
+            document.getElementById('det-titulo').innerText = n.titulo;
+            document.getElementById('det-institucion').innerText = n.institucion;
+            document.getElementById('det-lugar').innerText = n.lugar;
+            document.getElementById('det-fecha').innerText = n.fecha;
+            document.getElementById('det-imagen').src = n.imagen;
+            document.getElementById('det-texto').innerText = n.texto;
+
+            history.pushState({noticiaId: id}, "", "#noticia-" + id);
+            mostrarVista('view-detalle-noticia');
+        }
+
+        function renderizarDashboard() {
+            const contenedor = document.getElementById('lista-sujetos');
+            contenedor.innerHTML = '';
+            
+            sujetos.forEach(s => {
+                const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
+                contenedor.innerHTML += `
+                    <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:border-blue-900 hover:shadow-lg transition flex flex-col justify-between space-y-4">
+                        <div onclick="verPerfil('${s.id}')" class="flex items-center space-x-4 cursor-pointer">
+                            <img src="${s.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shadow">
+                            <div class="space-y-1">
+                                <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">${s.id}</span>
+                                <h3 class="text-slate-900 font-black text-sm md:text-base">${s.nombre}</h3>
+                                <p class="text-xs text-slate-600 font-semibold">Edad: <strong class="text-slate-900">${edadCalculada} años</strong> | Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-100 pt-3">
+                            <button onclick="verPerfil('${s.id}')" class="text-xs text-blue-700 font-bold hover:underline">Ver Ficha Completa →</button>
+                            <div id="mini-qr-${s.id}" class="p-1 bg-white border border-slate-200 rounded-lg shadow-sm"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            setTimeout(() => {
+                sujetos.forEach(s => {
+                    const qrContenedor = document.getElementById(`mini-qr-${s.id}`);
+                    if (qrContenedor && qrContenedor.innerHTML === "") {
+                        const urlBase = window.location.origin + window.location.pathname;
+                        const payloadQR = { 
+                            id: s.id, 
+                            nombre: s.nombre, 
+                            fechaNac: s.fechaNac, 
+                            edad: calcularEdad(s.fechaNac) || s.edad, 
+                            estado: s.estado, 
+                            adn: s.adn, 
+                            historia: s.historia || "",
+                            coincidencia: s.coincidencia || '99.8%',
+                            foto: s.foto || FOTO_DEFAULT,
+                            ultimoIngreso: s.ultimoIngreso || obtenerFechaActualFormateada()
+                        };
+                        const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
+                        const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
+
+                        new QRCode(qrContenedor, {
+                            text: urlFinalQR,
+                            width: 56,
+                            height: 56,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.L
+                        });
+                    }
+                });
+            }, 100);
+        }
+
+        function verPerfil(id, objetoExterno = null) {
+            let s = objetoExterno || sujetos.find(item => item.id === id);
+            if(!s) return;
+
+            if (!objetoExterno) {
+                s.ultimoIngreso = obtenerFechaActualFormateada();
+                guardarDatosLocal();
+            }
+
+            if(!sujetos.some(existente => existente.id === s.id)) {
+                sujetos.push(s);
+                guardarDatosLocal();
+            }
+
+            const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
+            const fechaNacFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
+
+            const detalle = document.getElementById('detalle-perfil');
+            detalle.innerHTML = `
+                <div class="flex flex-col md:flex-row gap-8 items-center border-b border-slate-200 pb-8">
+                    <img src="${s.foto || FOTO_DEFAULT}" class="w-44 h-44 object-cover rounded-2xl border-4 border-slate-900 shadow-xl">
+                    
+                    <div class="space-y-3 text-center md:text-left flex-grow">
+                        <span class="text-xs bg-blue-900 text-white font-extrabold px-4 py-1.5 rounded-full tracking-wider">${s.id}</span>
+                        <h2 class="text-3xl font-black text-slate-900 leading-tight">${s.nombre}</h2>
+                        
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">F. Nacimiento:</span>
+                                <span class="text-sm font-black text-slate-900">${fechaNacFormateada}</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Edad Registrada:</span>
+                                <span class="text-sm font-black text-slate-900">${edadCalculada} AÑOS</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Estado Vital:</span>
+                                <span class="text-sm font-black ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Último Ingreso:</span>
+                                <span class="text-xs font-black text-slate-700">${s.ultimoIngreso || 'N/D'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTORIAL TANATOLÓGICO Y PERICIAL -->
+                <div class="space-y-2 bg-amber-50/70 border border-amber-200/80 p-6 rounded-2xl mt-6">
+                    <h3 class="text-xs font-black text-amber-900 uppercase tracking-wider flex items-center gap-2">
+                        <span>📋</span> Historial Tanatológico y Reporte Pericial
+                    </h3>
+                    <p class="text-xs md:text-sm text-slate-800 leading-relaxed font-medium">
+                        ${s.historia || 'Sin observaciones registradas en los archivos forenses recientes.'}
+                    </p>
+                </div>
+
+                <div class="space-y-3 bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-4">
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        <span class="text-slate-700 uppercase tracking-wider">Perfil Genético STR (Marcadores Moleculares):</span>
+                        <span class="text-blue-900 font-black bg-blue-100 px-3 py-1 rounded-full">${s.coincidencia || '99.8%'} COINCIDENCIA</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-xl font-mono text-sm text-emerald-400 border border-slate-800 shadow-inner overflow-x-auto">
+                        ${s.adn}
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-inner">
+                    <div id="qrcode" class="mb-3 p-3 bg-white rounded-xl shadow-md border border-slate-200"></div>
+                    <span class="text-slate-800 text-xs font-black tracking-widest uppercase">CÓDIGO QR AUTÓNOMO DE ESTE PERFIL</span>
+                </div>
+            `;
+
+            history.pushState({id: s.id}, "", "#" + s.id);
+            mostrarVista('view-perfil');
+
+            const urlBase = window.location.origin + window.location.pathname;
+            const payloadQR = { 
+                id: s.id, 
+                nombre: s.nombre, 
+                fechaNac: s.fechaNac, 
+                edad: edadCalculada, 
+                estado: s.estado, 
+                adn: s.adn, 
+                historia: s.historia || "",
+                coincidencia: s.coincidencia || '99.8%',
+                foto: s.foto || FOTO_DEFAULT,
+                ultimoIngreso: s.ultimoIngreso
+            };
+            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
+            const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
+
+            setTimeout(() => {
+                const qrContainer = document.getElementById('qrcode');
+                if(qrContainer) {
+                    qrContainer.innerHTML = "";
+                    new QRCode(qrContainer, {
+                        text: urlFinalQR,
+                        width: 160,
+                        height: 160,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.L
+                    });
+                }
+            }, 50);
+        }
+
+        function procesarFotoLocal(e) {
+            const archivo = e.target.files[0];
+            if (archivo) {
+                const lector = new FileReader();
+                lector.onload = function(event) {
+                    document.getElementById('foto-base64').value = event.target.result;
+                    document.getElementById('preview-img').src = event.target.result;
+                    document.getElementById('preview-contenedor').classList.remove('hidden');
+                };
+                lector.readAsDataURL(archivo);
+            }
+        }
+
+        function abrirPanelAdmin() {
+            limpiarFormulario();
+            actualizarListaAdmin();
+            mostrarVista('view-admin');
+        }
+
+        function actualizarListaAdmin() {
+            const contenedor = document.getElementById('lista-admin-sujetos');
+            contenedor.innerHTML = '<h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Perfiles Existentes</h3>';
+            
+            sujetos.forEach((s, index) => {
+                contenedor.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <img src="${s.foto || FOTO_DEFAULT}" class="w-10 h-10 object-cover rounded-lg border">
+                            <div>
+                                <span class="text-blue-900 font-extrabold">${s.id}</span> - <span class="text-slate-900 font-bold">${s.nombre}</span>
+                            </div>
+                        </div>
+                        <div class="space-x-3">
+                            <button type="button" onclick="editarSujeto(${index})" class="text-blue-700 hover:underline font-bold">[ Editar ]</button>
+                            <button type="button" onclick="eliminarSujeto(${index})" class="text-rose-600 hover:underline font-bold">[ Eliminar ]</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function guardarSujeto(e) {
+            e.preventDefault();
+            const idx = parseInt(document.getElementById('sujeto-edit-idx').value);
+            const fechaNac = document.getElementById('fecha-nacimiento').value;
+            const fotoBase64 = document.getElementById('foto-base64').value;
+
+            let fotoFinal = FOTO_DEFAULT;
+            if (idx >= 0 && sujetos[idx]) {
+                fotoFinal = sujetos[idx].foto || FOTO_DEFAULT;
+            }
+            if (fotoBase64) {
+                fotoFinal = fotoBase64;
+            }
+
+            const nuevoSujeto = {
+                id: document.getElementById('sujeto-id').value.trim(),
+                nombre: document.getElementById('nombre').value.trim(),
+                fechaNac: fechaNac,
+                edad: calcularEdad(fechaNac),
+                estado: document.getElementById('estado').value,
+                coincidencia: "99.8%",
+                foto: fotoFinal,
+                adn: document.getElementById('adn').value.trim(),
+                historia: document.getElementById('historia').value.trim(),
+                ultimoIngreso: (idx >= 0 && sujetos[idx]) ? sujetos[idx].ultimoIngreso : obtenerFechaActualFormateada()
+            };
+
+            if (idx >= 0) {
+                sujetos[idx] = nuevoSujeto;
+            } else {
+                sujetos.push(nuevoSujeto);
+            }
+
+            guardarDatosLocal();
+            limpiarFormulario();
+            actualizarListaAdmin();
+            renderizarDashboard();
+            mostrarVista('view-dashboard');
+            mostrarSeccion('registros');
+        }
+
+        function limpiarFormulario() {
+            document.getElementById('form-sujeto').reset();
+            document.getElementById('sujeto-edit-idx').value = '-1';
+            document.getElementById('foto-base64').value = '';
+            document.getElementById('preview-contenedor').classList.add('hidden');
+        }
+
+        function editarSujeto(index) {
+            const s = sujetos[index];
+            document.getElementById('sujeto-edit-idx').value = index;
+            document.getElementById('sujeto-id').value = s.id;
+            document.getElementById('nombre').value = s.nombre;
+            document.getElementById('fecha-nacimiento').value = s.fechaNac || '';
+            document.getElementById('estado').value = s.estado;
+            document.getElementById('adn').value = s.adn;
+            document.getElementById('historia').value = s.historia || '';
+
+            if(s.foto) {
+                document.getElementById('foto-base64').value = s.foto;
+                document.getElementById('preview-img').src = s.foto;
+                document.getElementById('preview-contenedor').classList.remove('hidden');
+            }
+        }
+
+        function eliminarSujeto(index) {
+            if(confirm("¿Desea eliminar permanentemente este registro forense?")) {
+                sujetos.splice(index, 1);
+                guardarDatosLocal();
+                actualizarListaAdmin();
+                renderizarDashboard();
+            }
+        }
+
+        function volverAlDashboard() {
+            history.pushState("", document.title, window.location.pathname);
+            mostrarVista('view-dashboard');
+            mostrarSeccion('noticias');
+        }
+
+        window.onload = function() {
+            const hash = window.location.hash.replace('#', '');
+            
+            if(hash.startsWith('profileData=')) {
+                try {
+                    const jsonRaw = decodeURIComponent(escape(atob(hash.replace('profileData=', ''))));
+                    sujetoPendienteQR = JSON.parse(jsonRaw);
+                    mostrarVista('view-qr-auth');
+                } catch(e) {
+                    console.error("Error al procesar QR", e);
+                }
+            } else if(hash.startsWith('noticia-')) {
+                const idNoticia = parseInt(hash.replace('noticia-', ''));
+                verDetalleNoticia(idNoticia);
+            } else if(hash && sujetos.some(s => s.id === hash)) {
+                sujetoPendienteQR = sujetos.find(s => s.id === hash);
+                mostrarVista('view-qr-auth');
+            }
+        };
+
+        window.onpopstate = function(event) {
+            const hash = window.location.hash.replace('#', '');
+            if(hash.startsWith('profileData=')) {
+                try {
+                    sujetoPendienteQR = JSON.parse(decodeURIComponent(escape(atob(hash.replace('profileData=', '')))));
+                    mostrarVista('view-qr-auth');
+                } catch(e) {}
+            } else if(hash.startsWith('noticia-')) {
+                const idNoticia = parseInt(hash.replace('noticia-', ''));
+                verDetalleNoticia(idNoticia);
+            } else if(hash && sujetos.some(s => s.id === hash)) {
+                sujetoPendienteQR = sujetos.find(s => s.id === hash);
+                mostrarVista('view-qr-auth');
+            } else {
+                mostrarVista('view-dashboard');
+                mostrarSeccion('noticias');
+            }
+        };
+    </script>
+</body>
+</html>
