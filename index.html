@@ -9,6 +9,11 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        @media print {
+            body { background: white; }
+            header, button, footer { display: none !important; }
+            #view-perfil { box-shadow: none; border: none; padding: 0; margin: 0; width: 100%; max-width: 100%; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-100">
@@ -84,11 +89,10 @@
         <!-- 3. PORTADA PRINCIPAL (CON ZONAS SEPARADAS) -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
-            <!-- NAVEGACIÓN ENTRE SECCIONES -->
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">PANEL DE CONTROL GENERAL</h2>
-                    <p class="text-xs text-slate-500 font-medium">Seleccione una sección para ver los boletines científicos o la base de perfiles</p>
+                    <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Noticias</button>
@@ -97,11 +101,11 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS -->
+            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS (9 TOTALES) -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
                 <div class="text-center pt-4">
-                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
+                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones (Mostrando 3 de 9)</button>
                 </div>
             </div>
 
@@ -112,7 +116,7 @@
 
         </div>
 
-        <!-- 4. VISTA DETALLE DE NOTICIA (ORDENADA EN MÚLTIPLES PÁRRAFOS) -->
+        <!-- 4. VISTA DETALLE DE NOTICIA -->
         <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
             <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200">← Volver al Panel Principal</button>
             
@@ -129,29 +133,32 @@
             <div class="space-y-6">
                 <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Investigación">
                 <div class="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl space-y-4">
-                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Desarrollo Completo de la Investigación</h3>
+                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Desarrollo Científico y Biotecnología Forense</h3>
                     <p id="det-texto" class="text-slate-800 text-sm md:text-base leading-relaxed whitespace-pre-line font-medium"></p>
                 </div>
             </div>
         </div>
 
-        <!-- 5. FICHA INDIVIDUAL DE PERFIL CON QR DINÁMICO -->
+        <!-- 5. FICHA INDIVIDUAL DE PERFIL CON FOTO, FECHA DE NACIMIENTO, ÚLTIMO INGRESO E IMPRESIÓN -->
         <div id="view-perfil" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
-            <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
+            <div class="flex justify-between items-center">
+                <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
+                <button onclick="window.print()" class="text-xs bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-xl transition shadow">🖨️ Imprimir Ficha Oficial</button>
+            </div>
             
             <div id="detalle-perfil"></div>
         </div>
 
-        <!-- 6. PANEL DE ADMINISTRACIÓN / FORMULARIO MODAL DE CREACIÓN Y EDICIÓN -->
+        <!-- 6. PANEL DE ADMINISTRACIÓN / FORMULARIO -->
         <div id="view-admin" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-3xl shadow-xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-200 pb-4">
                 <h2 class="text-lg font-black text-slate-900">PANEL DE GESTIÓN DE PERFILES</h2>
                 <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 text-slate-700 font-bold px-3.5 py-2 rounded-xl hover:bg-slate-200 transition">Cerrar Panel</button>
             </div>
 
-            <!-- FORMULARIO FUNCIONAL PARA CREAR Y EDITAR -->
             <form id="form-sujeto" onsubmit="guardarSujeto(event)" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
                 <input type="hidden" id="sujeto-edit-idx" value="-1">
+                <input type="hidden" id="foto-base64">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -163,8 +170,8 @@
                         <input type="text" id="nombre" placeholder="Nombre y Apellido" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-1">Edad:</label>
-                        <input type="number" id="edad" placeholder="Ej: 35" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Fecha de Nacimiento:</label>
+                        <input type="date" id="fecha-nacimiento" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium" onchange="calcularEdadInput()">
                     </div>
                     <div>
                         <label class="text-xs font-bold text-slate-700 block mb-1">Estado Vital:</label>
@@ -173,6 +180,15 @@
                             <option value="FALLECIDO">FALLECIDO</option>
                         </select>
                     </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Fotografía del Perfil (Archivo local):</label>
+                        <input type="file" id="archivo-foto" accept="image/*" onchange="procesarFotoLocal(event)" class="w-full bg-white border border-slate-300 p-2 rounded-xl text-xs text-slate-600">
+                    </div>
+                </div>
+
+                <div id="preview-contenedor" class="hidden flex items-center space-x-3 bg-white p-3 rounded-xl border border-slate-200">
+                    <img id="preview-img" class="w-12 h-12 object-cover rounded-lg border border-slate-300">
+                    <span class="text-xs text-slate-600 font-semibold">Fotografía cargada correctamente</span>
                 </div>
 
                 <div>
@@ -198,8 +214,9 @@
     <script>
         const PASS_VISITANTE = "profe angelica";
         const PASS_ADMIN = "saezypadillamolecular";
+        const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS AMPLIADOS EN PÁRRAFOS
+        // 9 ARTÍCULOS CIENTÍFICOS PROFUNDOS Y EXTENSOS VINCULADOS A LA BIOTECNOLOGÍA FORENSE
         const baseNoticias = [
             {
                 id: 1,
@@ -209,8 +226,8 @@
                 lugar: "Santiago, Chile",
                 fecha: "Actualidad",
                 imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
-                resumen: "Investigación pionera de la Universidad de Chile sobre la función bioenergética mitocondrial como biomarcador de vitalidad y resistencia celular.",
-                texto: "Un equipo multidisciplinario de científicos e investigadores de la Universidad de Chile ha desarrollado un exhaustivo estudio que demuestra cómo el nivel de respiración y rendimiento mitocondrial funciona como un biomarcador fundamental para diagnosticar el estado fisiológico, la fragilidad muscular y el envejecimiento biológico en organismos.\n\nEn la criminalística y la biotecnología forense, este conocimiento resulta de vital importancia. A diferencia del ADN nuclear presente en el núcleo celular, cada célula contiene cientos de mitocondrias, las cuales poseen su propio material genético independiente (ADN mitocondrial o mtDNA). Cuando las muestras biológicas halladas en una escena se encuentran gravemente alteradas por la acción del fuego, radiación solar, humedad o el paso prolongado de los años, el ADN nuclear se fragmenta e inhabilita. En cambio, el ADN mitocondrial permanece utilizable gracias a su alta tasa de copias por célula.\n\nLos descubrimientos en respiración celular permiten a los peritos de laboratorio optimizar las técnicas de amplificación enzimática, haciendo posible reconstruir linajes maternos e identificar restos orgánicos antiguos donde antes resultaba técnicamente imposible."
+                resumen: "Estudio pionero de la Universidad de Chile sobre la función bioenergética mitocondrial como biomarcador de vitalidad y resistencia celular en peritajes.",
+                texto: "Un equipo multidisciplinario de científicos e investigadores de la Universidad de Chile ha desarrollado un exhaustivo estudio que demuestra cómo el nivel de respiración y rendimiento mitocondrial funciona como un biomarcador fundamental para diagnosticar el estado fisiológico y la fragilidad biológica en organismos.\n\nEn la criminalística y la biotecnología forense, este conocimiento resulta de vital importancia. A diferencia del ADN nuclear presente en el núcleo celular, cada célula contiene cientos de mitocondrias, las cuales poseen su propio material genético independiente (ADN mitocondrial o mtDNA). Cuando las muestras biológicas halladas en una escena se encuentran gravemente alteradas por la acción del fuego, radiación solar, humedad o el paso prolongado de los años, el ADN nuclear se fragmenta e inhabilita. En cambio, el ADN mitocondrial permanece utilizable gracias a su alta tasa de copias por célula.\n\nLos descubrimientos en respiración celular permiten a los peritos de laboratorio optimizar las técnicas de amplificación enzimática, haciendo posible reconstruir linajes maternos e identificar restos orgánicos antiguos donde antes resultaba técnicamente imposible."
             },
             {
                 id: 2,
@@ -220,8 +237,8 @@
                 lugar: "California, Estados Unidos",
                 fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
-                resumen: "El cruce sin precedentes de muestras de ADN con árboles genealógicos digitales para resolver crímenes impunes de más de 40 años.",
-                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los methods comparativos tradicionales contra las bases de datos criminales de la policía (como CODIS) jamás arrojaron un resultado positivo.\n\nEn 2018, la investigadora Rae Fitzpatrick y su equipo aplicaron un enfoque revolucionario: la genealogía genética forense. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a GEDmatch, una plataforma pública utilizada por ciudadanos para rastrear sus antepasados. El sistema detectó coincidencias con primos terceros y cuartos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares que abarcaban varias generaciones hasta converger en Joseph James DeAngelo, un expolicía de 72 años. Una vez acotado el objetivo, la policía obtuvo ADN fresco de una servilleta desechada por DeAngelo en la vía pública, logrando una coincidencia del 100% que cerró uno de los casos más fríos e impunes de la historia."
+                resumen: "El cruce sin precedentes de muestras de ADN genómico con árboles genealógicos digitales para resolver crímenes impunes de más de 40 años.",
+                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los métodos comparativos tradicionales contra las bases de datos criminales de la policía jamás arrojaron un resultado positivo.\n\nEn 2018, los investigadores aplicaron un enfoque revolucionario en biotecnología forense: la genealogía genética. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a plataformas públicas de parentesco. El sistema detectó coincidencias con parientes lejanos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares hasta converger en el autor, demostrando el enorme potencial investigativo de la genómica moderna combinada con bases de datos públicas."
             },
             {
                 id: 3,
@@ -231,8 +248,74 @@
                 lugar: "Londres, Reino Unido",
                 fecha: "Año 2021",
                 imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
-                resumen: "Recuperación y amplificación por PCR de depósitos microscópicos de piel dejados al contacto de segundos.",
-                texto: "Durante décadas, el levantamiento de evidencias biológicas en la escena del crimen dependía exclusivamente de la detección a simple vista o con luces ultravioleta de manchas hemáticas, semen u otros fluidos orgánicos. Sin embargo, el avance del denominado 'Touch DNA' o ADN de contacto transformó el trabajo pericial contemporáneo.\n\nCada vez que un ser humano manipula una herramienta, empuña un arma de fuego o sostiene una manilla durante apenas un par de segundos, transfiere involuntariamente microgramos de células epiteliales muertas desprendidas de las capas superficiales de la piel. Aunque la masa de ADN recuperada suele ser inferior a los 100 picogramos, las modernas técnicas de Reacción en Cadena de la Polimerasa de Baja Copia (LCN-PCR) logran duplicar estas secuencias repetitivas en tándem (STR) millones de veces.\n\nEsto permite a los científicos forenses reconstruir la identidad exacta del último portador de un objeto, proveyendo a la justicia de evidencias de un valor probatorio inobjetable."
+                resumen: "Recuperación y amplificación por PCR de depósitos microscópicos de piel dejados al contacto breve con superficies.",
+                texto: "Durante décadas, el levantamiento de evidencias biológicas en la escena del crimen dependía exclusivamente de la detección a simple vista o con luces ultravioleta de manchas hemáticas o fluidos orgánicos. Sin embargo, el avance del denominado 'Touch DNA' o ADN de contacto transformó el trabajo pericial contemporáneo.\n\nCada vez que un ser humano manipula una herramienta, empuña un arma de fuego o sostiene una manilla durante apenas un par de segundos, transfiere involuntariamente microgramos de células epiteliales muertas desprendidas de la piel. Aunque la masa de ADN recuperada suele ser inferior a los 100 picogramos, las modernas técnicas de Reacción en Cadena de la Polimerasa de Baja Copia (LCN-PCR) logran duplicar estas secuencias STR millones de veces.\n\nEsto permite a los científicos forenses reconstruir la identidad exacta del último portador de un objeto, proveyendo a la justicia de evidencias de un valor probatorio inobjetable."
+            },
+            {
+                id: 4,
+                categoria: "Biometría y Fenotipación",
+                titulo: "Predicción de rasgos faciales y ancestría mediante ADN fenotípico",
+                institucion: "Parabon NanoLabs",
+                lugar: "Virginia, Estados Unidos",
+                fecha: "Año 2022",
+                imagen: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
+                resumen: "Uso de marcadores informativos de ancestría (AIMs) para reconstruir el rostro y color de ojos de sospechosos mediante secuenciación masiva.",
+                texto: "La fenotipación ADN forense representa uno de los saltos tecnológicos más impactantes en la biotecnología aplicada a la justicia. Cuando un perfil genético extraído de una escena no coincide con ningún registro criminal previo en las bases de datos institucionales, los genetistas recurren a la lectura de polimorfismos específicos que determinan los rasgos externos visibles (LEV).\n\nMediante la secuenciación de marcadores informativos de ancestría (AIMs) y loci asociados a la pigmentación, la forma de la estructura ósea facial, el color de ojos y cabello, los laboratorios pueden generar compuestos visuales tridimensionales del sospechoso.\n\nEsta técnica orienta de manera directa las líneas de investigación policiales en casos complejos donde no existen testigos presenciales ni huellas dactilares útiles."
+            },
+            {
+                id: 5,
+                categoria: "Toxicología y Farmacogenética",
+                titulo: "Detección ultra sensible de metabolitos y biomarcadores en tejidos duros",
+                institucion: "Instituto de Ciencias Forenses",
+                lugar: "Madrid, España",
+                fecha: "Año 2023",
+                imagen: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
+                resumen: "Análisis cromatográfico avanzado para identificar trazas de sustancias farmacológicas y toxinas en cabellos y fragmentos óseos.",
+                texto: "La toxicología forense moderna ha superado las limitaciones de los análisis sanguíneos tradicionales gracias al acople de la cromatografía líquida de alta resolución con espectrometría de masas en Tándem (LC-MS/MS).\n\nEsta herramienta biotecnológica permite aislar e identificar metabolitos de fármacos, estupefacientes o metales pesados incluso cuando el cuerpo se encuentra en avanzados estados de descomposición o osificación, acumulados en matrices complejas como el pelo o la dentina.\n\nConocer el perfil farmacogenético del individuo ayuda a determinar si existieron patrones de consumo crónico, intoxicaciones accidentales o administraciones subrepticias de sustancias con total precisión forense."
+            },
+            {
+                id: 6,
+                categoria: "Entomología Forense Molecular",
+                titulo: "Determinación de intervalos post-mortem mediante ADN entomológico",
+                institucion: "Australian Centre for Taphonomic Research",
+                lugar: "Sídney, Australia",
+                fecha: "Año 2023",
+                imagen: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500",
+                resumen: "Extracción del contenido estomacal de larvas necrófagas para identificar perfiles genéticos humanos y estimar data de muerte.",
+                texto: "La entomología forense estudia la sucesión de insectos en restos humanos para estimar el intervalo post-mortem (IPM). Sin embargo, la biotecnología molecular ha llevado esta disciplina un paso más allá al integrar la identificación genética de los restos digeridos dentro de los insectos.\n\nCuando un cadáver se encuentra desarticulado o incompleto, las larvas de moscas y escarabajos que se han alimentado de los tejidos blandos retienen en su tracto digestivo células humanas intactas.\n\nMediante la extracción y amplificación de ADN de las larvas, los peritos pueden cotejar la identidad genética de la víctima y analizar toxinas o fármacos presentes en el cuerpo a través del metabolismo del propio insecto."
+            },
+            {
+                id: 7,
+                categoria: "Epigenética Forense",
+                titulo: "Relojes epigenéticos: Estimación precisa de la edad cronológica a partir de metilación",
+                institucion: "Max Planck Institute",
+                lugar: "Múnich, Alemania",
+                fecha: "Año 2024",
+                imagen: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=500",
+                resumen: "Estudio de patrones de metilación del ADN en CpG para calcular la edad exacta de un donante anónimo de fluidos biológicos.",
+                texto: "La epigenética forense estudia los cambios químicos en la molécula de ADN —principalmente la metilación en dinucleótidos de citosina-guanina (CpG)— que ocurren de manera predecible a lo largo de la vida de un ser humano debido al envejecimiento y factores ambientales.\n\nLos denominados 'relojes epigenéticos' permiten a los laboratorios determinar con un margen de error menor a tres años la edad cronológica de un individuo a partir de una muestra biológica anónima (como sangre, saliva o semen).\n\nEsta información biotecnológica es crucial en investigaciones criminales para descartar o acotar rangos etarios de sospechosos o víctimas desfiguradas sin requerir registros documentales previos."
+            },
+            {
+                id: 8,
+                categoria: "Microbioma Humano y Tanatología",
+                titulo: "El microbioma de la escena: Rastreo bacteriano post-mortem",
+                institucion: "Forsyth Institute",
+                lugar: "Boston, Estados Unidos",
+                fecha: "Año 2024",
+                imagen: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=500",
+                resumen: "Mapeo de comunidades microbianas corporales y ambientales para conectar objetos y sospechosos con lugares específicos.",
+                texto: "Cada ser humano alberga un ecosistema único de microorganismos en su piel, intestino y mucosas, conocido como microbioma. Tras el deceso, las comunidades bacterianas internas y externas experimentan cambios sucesionales altamente predecibles conocidos como 'tanatomicrobioma'.\n\nLa biotecnología forense contemporánea utiliza la secuenciación masiva del gen 16S rRNA para caracterizar estos perfiles microbianos en la escena del crimen.\n\nComparando las firmas bacterianas halladas en prendas de vestir o herramientas con las de un sospechoso, los peritos pueden establecer vínculos espaciales irrefutables sobre la presencia de una persona en un lugar determinado, incluso días después de haber abandonado el sitio."
+            },
+            {
+                id: 9,
+                categoria: "Nanotecnología y Sensores de ADN",
+                titulo: "Biosensores portátiles de lectura rápida para identificación STR in situ",
+                institucion: "MIT Biotechnology Group",
+                lugar: "Massachusetts, Estados Unidos",
+                fecha: "Actualidad",
+                imagen: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500",
+                resumen: "Desarrollo de dispositivos nanofluídicos basados en grafeno para secuenciar perfiles genéticos en minutos directamente en el terreno.",
+                texto: "El futuro inmediato de la biotecnología forense se encuentra en la portabilidad y automatización de los análisis genéticos. Tradicionalmente, el procesamiento de perfiles STR requería complejos equipos de laboratorio y días de espera.\n\nNuevos desarrollos basados en nanotecnología y biosensores de grafeno permiten realizar reacciones de amplificación y lectura electroquímica de marcadores moleculares en dispositivos del tamaño de un teléfono celular.\n\nEstos equipos de lectura rápida en terreno permiten a las policías y peritos verificar identidades en controles fronterizos o escenas del crimen críticas con una precisión equiparable a la de los centros de referencia más avanzados del mundo."
             }
         ];
 
@@ -240,8 +323,8 @@
 
         // BASE DE DATOS DE PERFILES PERSISTENTE
         let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
-            { id: "SAB-8395", nombre: "Carlos Mendoza R.", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", adn: "STR-D13S317: 12,14 | vWA: 17,18" },
-            { id: "SAB-1002", nombre: "Elena Vásquez S.", edad: 30, estado: "VIVO", coincidencia: "99.4%", adn: "STR-D13S317: 11,13 | vWA: 16,19" }
+            { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18", ultimoIngreso: "05/06/2026 14:22" },
+            { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19", ultimoIngreso: "06/06/2026 09:15" }
         ];
 
         let rolActual = null;
@@ -249,6 +332,33 @@
 
         function guardarDatosLocal() {
             localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
+        }
+
+        function calcularEdad(fechaNacStr) {
+            if (!fechaNacStr) return 0;
+            const nac = new Date(fechaNacStr);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - nac.getFullYear();
+            const m = hoy.getMonth() - nac.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) { edad--; }
+            return edad;
+        }
+
+        function calcularEdadInput() {
+            const val = document.getElementById('fecha-nacimiento').value;
+            if (val) {
+                // Opcional por si deseas mostrar la edad estimada en tiempo real
+            }
+        }
+
+        function obtenerFechaActualFormateada() {
+            const d = new Date();
+            const dia = String(d.getDate()).padStart(2, '0');
+            const mes = String(d.getMonth() + 1).padStart(2, '0');
+            const anio = d.getFullYear();
+            const hora = String(d.getHours()).padStart(2, '0');
+            const min = String(d.getMinutes()).padStart(2, '0');
+            return `${dia}/${mes}/${anio} ${hora}:${min}`;
         }
 
         function mostrarVista(vistaId) {
@@ -286,6 +396,17 @@
                 if(rolActual === 'admin') {
                     document.getElementById('btn-admin-panel').classList.remove('hidden');
                 }
+                
+                // Actualizar último ingreso del sujeto al abrir por QR
+                sujetoPendienteQR.ultimoIngreso = obtenerFechaActualFormateada();
+                const idxExistente = sujetos.findIndex(s => s.id === sujetoPendienteQR.id);
+                if(idxExistente !== -1) {
+                    sujetos[idxExistente] = sujetoPendienteQR;
+                } else {
+                    sujetos.push(sujetoPendienteQR);
+                }
+                guardarDatosLocal();
+
                 verPerfil(sujetoPendienteQR.id, sujetoPendienteQR);
                 sujetoPendienteQR = null;
             } else {
@@ -364,14 +485,21 @@
                 `;
             });
 
+            const btnCargar = document.getElementById('btn-cargar-mas');
             if(limiteNoticias >= baseNoticias.length) {
-                document.getElementById('btn-cargar-mas').classList.add('hidden');
+                btnCargar.innerText = "✓ Todas las investigaciones cargadas (9 de 9)";
+                btnCargar.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btnCargar.innerText = `➕ Cargar Más Investigaciones (Mostrando ${limiteNoticias} de 9)`;
+                btnCargar.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
 
         function cargarMasNoticias() {
-            limiteNoticias += 3;
-            renderizarNoticias();
+            if(limiteNoticias < baseNoticias.length) {
+                limiteNoticias += 3;
+                renderizarNoticias();
+            }
         }
 
         function verDetalleNoticia(id) {
@@ -395,14 +523,16 @@
             contenedor.innerHTML = '';
             
             sujetos.forEach(s => {
+                const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
                 contenedor.innerHTML += `
-                    <div onclick="verPerfil('${s.id}')" class="bg-white border border-slate-200 p-5 rounded-2xl cursor-pointer hover:border-blue-900 hover:shadow-lg transition flex justify-between items-center">
-                        <div>
+                    <div onclick="verPerfil('${s.id}')" class="bg-white border border-slate-200 p-5 rounded-2xl cursor-pointer hover:border-blue-900 hover:shadow-lg transition flex items-center space-x-5">
+                        <img src="${s.foto || FOTO_DEFAULT}" class="w-20 h-20 object-cover rounded-xl border border-slate-200 shadow">
+                        <div class="space-y-1">
                             <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">${s.id}</span>
-                            <h3 class="text-slate-900 font-black text-base mt-1">${s.nombre}</h3>
-                            <p class="text-xs text-slate-500 font-semibold">Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span> | Edad: ${s.edad} años</p>
+                            <h3 class="text-slate-900 font-black text-base">${s.nombre}</h3>
+                            <p class="text-xs text-slate-600 font-semibold">Edad: <strong class="text-slate-900">${edadCalculada} años</strong> | Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
+                            <p class="text-xs text-slate-400">Último Ingreso: ${s.ultimoIngreso || 'No registrado'}</p>
                         </div>
-                        <span class="text-xs text-blue-700 font-bold">Ver Ficha →</span>
                     </div>
                 `;
             });
@@ -412,20 +542,51 @@
             let s = objetoExterno || sujetos.find(item => item.id === id);
             if(!s) return;
 
+            // Actualizar último ingreso al abrir perfil de manera normal
+            if (!objetoExterno) {
+                s.ultimoIngreso = obtenerFechaActualFormateada();
+                guardarDatosLocal();
+            }
+
             if(!sujetos.some(existente => existente.id === s.id)) {
                 sujetos.push(s);
                 guardarDatosLocal();
             }
 
+            const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
+            const fechaNacFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
+
             const detalle = document.getElementById('detalle-perfil');
             detalle.innerHTML = `
-                <div class="border-b border-slate-200 pb-4 space-y-2">
-                    <span class="text-xs bg-blue-900 text-white font-extrabold px-3.5 py-1.5 rounded-full">${s.id}</span>
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-900">${s.nombre}</h2>
-                    <p class="text-xs text-slate-600 font-semibold">Edad: ${s.edad} años | Estado Vital: <strong class="${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</strong></p>
+                <div class="flex flex-col md:flex-row gap-8 items-center border-b border-slate-200 pb-8">
+                    <img src="${s.foto || FOTO_DEFAULT}" class="w-44 h-44 object-cover rounded-2xl border-4 border-slate-900 shadow-xl">
+                    
+                    <div class="space-y-3 text-center md:text-left flex-grow">
+                        <span class="text-xs bg-blue-900 text-white font-extrabold px-4 py-1.5 rounded-full tracking-wider">${s.id}</span>
+                        <h2 class="text-3xl font-black text-slate-900 leading-tight">${s.nombre}</h2>
+                        
+                        <div class="grid grid-cols-2 gap-3 pt-2">
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">F. Nacimiento:</span>
+                                <span class="text-sm font-black text-slate-900">${fechaNacFormateada}</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Edad Registrada:</span>
+                                <span class="text-sm font-black text-slate-900">${edadCalculada} AÑOS</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Sexo / Estado:</span>
+                                <span class="text-sm font-black ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Último Ingreso:</span>
+                                <span class="text-xs font-black text-slate-700">${s.ultimoIngreso || 'N/D'}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="space-y-3 bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-4">
+                <div class="space-y-3 bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-6">
                     <div class="flex justify-between items-center text-xs font-bold">
                         <span class="text-slate-700 uppercase tracking-wider">Perfil Genético STR (Marcadores Moleculares):</span>
                         <span class="text-blue-900 font-black bg-blue-100 px-3 py-1 rounded-full">${s.coincidencia || '99.8%'} COINCIDENCIA</span>
@@ -445,7 +606,17 @@
             mostrarVista('view-perfil');
 
             const urlBase = window.location.origin + window.location.pathname;
-            const payloadQR = { id: s.id, nombre: s.nombre, edad: s.edad, estado: s.estado, adn: s.adn, coincidencia: s.coincidencia || '99.8%' };
+            const payloadQR = { 
+                id: s.id, 
+                nombre: s.nombre, 
+                fechaNac: s.fechaNac, 
+                edad: edadCalculada, 
+                estado: s.estado, 
+                adn: s.adn, 
+                coincidencia: s.coincidencia || '99.8%',
+                foto: s.foto || FOTO_DEFAULT,
+                ultimoIngreso: s.ultimoIngreso
+            };
             const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
             const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
 
@@ -458,6 +629,19 @@
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.L
             });
+        }
+
+        function procesarFotoLocal(e) {
+            const archivo = e.target.files[0];
+            if (archivo) {
+                const lector = new FileReader();
+                lector.onload = function(event) {
+                    document.getElementById('foto-base64').value = event.target.result;
+                    document.getElementById('preview-img').src = event.target.result;
+                    document.getElementById('preview-contenedor').classList.remove('hidden');
+                };
+                lector.readAsDataURL(archivo);
+            }
         }
 
         function abrirPanelAdmin() {
@@ -473,8 +657,11 @@
             sujetos.forEach((s, index) => {
                 contenedor.innerHTML += `
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
-                        <div>
-                            <span class="text-blue-900 font-extrabold">${s.id}</span> - <span class="text-slate-900 font-bold">${s.nombre}</span>
+                        <div class="flex items-center space-x-3">
+                            <img src="${s.foto || FOTO_DEFAULT}" class="w-10 h-10 object-cover rounded-lg border">
+                            <div>
+                                <span class="text-blue-900 font-extrabold">${s.id}</span> - <span class="text-slate-900 font-bold">${s.nombre}</span>
+                            </div>
                         </div>
                         <div class="space-x-3">
                             <button type="button" onclick="editarSujeto(${index})" class="text-blue-700 hover:underline font-bold">[ Editar ]</button>
@@ -488,14 +675,22 @@
         function guardarSujeto(e) {
             e.preventDefault();
             const idx = parseInt(document.getElementById('sujeto-edit-idx').value);
-            
+            const fechaNac = document.getElementById('fecha-nacimiento').value;
+            const fotoBase64 = document.getElementById('foto-base64').value;
+
+            const sujetoExistente = idx >= 0 ? sujetos[idx] : null;
+            const fotoFinal = fotoBase64 ? fotoBase64 : (sujetoExistente ? sujetoExistente.foto : FOTO_DEFAULT);
+
             const nuevoSujeto = {
                 id: document.getElementById('sujeto-id').value.trim(),
                 nombre: document.getElementById('nombre').value.trim(),
-                edad: document.getElementById('edad').value,
+                fechaNac: fechaNac,
+                edad: calcularEdad(fechaNac),
                 estado: document.getElementById('estado').value,
                 coincidencia: "99.8%",
-                adn: document.getElementById('adn').value.trim()
+                foto: fotoFinal,
+                adn: document.getElementById('adn').value.trim(),
+                ultimoIngreso: sujetoExistente ? sujetoExistente.ultimoIngreso : obtenerFechaActualFormateada()
             };
 
             if (idx >= 0) {
@@ -515,6 +710,8 @@
         function limpiarFormulario() {
             document.getElementById('form-sujeto').reset();
             document.getElementById('sujeto-edit-idx').value = '-1';
+            document.getElementById('foto-base64').value = '';
+            document.getElementById('preview-contenedor').classList.add('hidden');
         }
 
         function editarSujeto(index) {
@@ -522,9 +719,15 @@
             document.getElementById('sujeto-edit-idx').value = index;
             document.getElementById('sujeto-id').value = s.id;
             document.getElementById('nombre').value = s.nombre;
-            document.getElementById('edad').value = s.edad;
+            document.getElementById('fecha-nacimiento').value = s.fechaNac || '';
             document.getElementById('estado').value = s.estado;
             document.getElementById('adn').value = s.adn;
+
+            if(s.foto) {
+                document.getElementById('foto-base64').value = s.foto;
+                document.getElementById('preview-img').src = s.foto;
+                document.getElementById('preview-contenedor').classList.remove('hidden');
+            }
         }
 
         function eliminarSujeto(index) {
