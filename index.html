@@ -6,8 +6,6 @@
     <title>BASE DE DATOS FORENSE SAB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Supabase JS Client v2 para Sincronización en la Nube en Tiempo Real -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
@@ -24,7 +22,6 @@
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-3">
             <div class="bg-slate-950 p-2 rounded-xl border border-red-600/50 shadow flex items-center justify-center">
-                <!-- CARA SONRIENTE ROJA CLÁSICA Y SIMPLE -->
                 <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
                     <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"/>
                     <circle cx="35" cy="38" r="6"/>
@@ -75,7 +72,7 @@
             <div class="text-center space-y-2">
                 <div class="inline-flex p-3 bg-amber-50 text-amber-700 rounded-2xl font-bold mb-1 border border-amber-100 justify-center text-xl">🔐</div>
                 <h2 class="text-xl font-black text-slate-900">Verificación de Seguridad QR</h2>
-                <p class="text-xs text-slate-500">Ha escaneado un código QR institucional. Ingrese su clave para desplegar el perfil correspondiente.</p>
+                <p class="text-xs text-slate-500">Ha escaneado un código QR institucional. Ingrese su clave para desplegar el perfil correspondiente en su dispositivo.</p>
             </div>
 
             <div class="space-y-4">
@@ -94,7 +91,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">PANEL DE CONTROL GENERAL</h2>
-                    <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses (Sincronizado en la Nube)</p>
+                    <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses autónomos</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Noticias</button>
@@ -103,12 +100,9 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS (EMPIEZA CON 3 Y CARGA MÁS SIN LÍMITE VISIBLE) -->
+            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS (LAS 9 VISIBLES DE INICIO) -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
-                <div class="text-center pt-4">
-                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
-                </div>
             </div>
 
             <!-- SECCIÓN B: BASE DE PERFILES REGISTRADOS -->
@@ -141,7 +135,7 @@
             </div>
         </div>
 
-        <!-- 5. FICHA INDIVIDUAL DE PERFIL CON QR DINÁMICO E INDIVIDUAL -->
+        <!-- 5. FICHA INDIVIDUAL DE PERFIL CON QR AUTÓNOMO E IMPRESIÓN -->
         <div id="view-perfil" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
             <div class="flex justify-between items-center">
                 <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
@@ -214,20 +208,11 @@
     </footer>
 
     <script>
-        // CONFIGURACIÓN DE SUPABASE (Opcional: Si dejas vacías estas variables, usará localStorage automáticamente)
-        const SUPABASE_URL = ""; // Pega aquí tu URL de Supabase (ej: https://xxx.supabase.co)
-        const SUPABASE_ANON_KEY = ""; // Pega aquí tu Anon Key de Supabase
-
-        let supabaseClient = null;
-        if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
-
         const PASS_VISITANTE = "profe angelica";
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // 9 ARTÍCULOS CIENTÍFICOS PROFUNDOS Y EXTENSOS VINCULADOS A LA BIOTECNOLOGÍA FORENSE
+        // 9 ARTÍCULOS CIENTÍFICOS PROFUNDOS Y EXTENSOS
         const baseNoticias = [
             {
                 id: 1,
@@ -330,83 +315,17 @@
             }
         ];
 
-        let limiteNoticias = 3; // Inicia mostrando 3
+        // BASE DE DATOS LOCAL PERSISTENTE
+        let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
+            { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18", ultimoIngreso: "05/06/2026 14:22" },
+            { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19", ultimoIngreso: "06/06/2026 09:15" }
+        ];
 
-        let sujetos = [];
         let rolActual = null;
         let sujetoPendienteQR = null;
 
-        // CARGA INICIAL DE DATOS (SUPABASE + LOCALSTORAGE FALLBACK)
-        async function cargarDatosRemotos() {
-            if (supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient.from('sujetos').select('*');
-                    if (!error && data && data.length > 0) {
-                        sujetos = data.map(item => ({
-                            id: item.id,
-                            nombre: item.nombre,
-                            fechaNac: item.fecha_nac,
-                            edad: item.edad,
-                            estado: item.estado,
-                            coincidencia: item.coincidencia,
-                            foto: item.foto || FOTO_DEFAULT,
-                            adn: item.adn,
-                            ultimoIngreso: item.ultimo_ingreso
-                        }));
-                    } else {
-                        cargarLocalStorageFallback();
-                    }
-                } catch (e) {
-                    cargarLocalStorageFallback();
-                }
-            } else {
-                cargarLocalStorageFallback();
-            }
-            renderizarDashboard();
-        }
-
-        function cargarLocalStorageFallback() {
-            sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
-                { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18", ultimoIngreso: "05/06/2026 14:22" },
-                { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19", ultimoIngreso: "06/06/2026 09:15" }
-            ];
-        }
-
-        async function guardarDatosRemotos(nuevoSujeto) {
-            // Guardar localmente
+        function guardarDatosLocal() {
             localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
-
-            // Si Supabase está configurado, sincronizar allá en tiempo real
-            if (supabaseClient) {
-                try {
-                    await supabaseClient.from('sujetos').upsert({
-                        id: nuevoSujeto.id,
-                        nombre: nuevoSujeto.nombre,
-                        fecha_nac: nuevoSujeto.fechaNac,
-                        edad: nuevoSujeto.edad,
-                        estado: nuevoSujeto.estado,
-                        coincidencia: nuevoSujeto.coincidencia,
-                        foto: nuevoSujeto.foto,
-                        adn: nuevoSujeto.adn,
-                        ultimo_ingreso: nuevoSujeto.ultimoIngreso
-                    });
-                } catch (e) {
-                    console.error("Error sincronizando con Supabase", e);
-                }
-            }
-        }
-
-        async function eliminarDatosRemotos(id) {
-            sujetos = sujetos.filter(s => s.id !== id);
-            localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
-
-            if (supabaseClient) {
-                try {
-                    await supabaseClient.from('sujetos').delete().eq('id', id);
-                } catch (e) {
-                    console.error("Error eliminando en Supabase", e);
-                }
-            }
         }
 
         function calcularEdad(fechaNacStr) {
@@ -436,14 +355,14 @@
             document.getElementById(vistaId).classList.remove('hidden');
         }
 
-        async function autenticarUsuario() {
+        function autenticarUsuario() {
             const val = document.getElementById('pass-unica').value.trim();
             if(val === PASS_ADMIN) {
                 rolActual = 'admin';
-                await iniciarSesionExitoso();
+                iniciarSesionExitoso();
             } else if(val === PASS_VISITANTE) {
                 rolActual = 'visitante';
-                await iniciarSesionExitoso();
+                iniciarSesionExitoso();
             } else {
                 mostrarErrorLogin();
             }
@@ -455,7 +374,7 @@
             setTimeout(() => err.classList.add('hidden'), 3500);
         }
 
-        async function validarQRAuth() {
+        function validarQRAuth() {
             const val = document.getElementById('pass-qr').value.trim();
             if(val === PASS_ADMIN || val === PASS_VISITANTE) {
                 rolActual = val === PASS_ADMIN ? 'admin' : 'visitante';
@@ -472,7 +391,7 @@
                 } else {
                     sujetos.push(sujetoPendienteQR);
                 }
-                await guardarDatosRemotos(sujetoPendienteQR);
+                guardarDatosLocal();
 
                 verPerfil(sujetoPendienteQR.id, sujetoPendienteQR);
                 sujetoPendienteQR = null;
@@ -483,7 +402,7 @@
             }
         }
 
-        async function iniciarSesionExitoso() {
+        function iniciarSesionExitoso() {
             document.getElementById('user-status').classList.remove('hidden');
             document.getElementById('rol-actual').innerText = rolActual.toUpperCase();
             
@@ -492,7 +411,6 @@
             } else {
                 document.getElementById('btn-admin-panel').classList.add('hidden');
             }
-            await cargarDatosRemotos();
             renderizarNoticias();
             renderizarDashboard();
             mostrarVista('view-dashboard');
@@ -528,14 +446,11 @@
             }
         }
 
-        // BOLETÍN DE NOTICIAS CON SISTEMA "CARGAR MÁS" (DE 3 EN 3, HASTA LAS 9, SIN CONTADOR MÁXIMO)
         function renderizarNoticias() {
             const contenedor = document.getElementById('contenedor-noticias');
             contenedor.innerHTML = '';
             
-            const noticiasAmostrar = baseNoticias.slice(0, limiteNoticias);
-
-            noticiasAmostrar.forEach(n => {
+            baseNoticias.forEach(n => {
                 contenedor.innerHTML += `
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
                         <div>
@@ -553,20 +468,6 @@
                     </div>
                 `;
             });
-
-            const btnCargar = document.getElementById('btn-cargar-mas');
-            if(limiteNoticias >= baseNoticias.length) {
-                if(btnCargar) btnCargar.style.display = 'none'; // Oculta el botón misteriosamente al llegar al final
-            } else {
-                if(btnCargar) btnCargar.style.display = 'block';
-            }
-        }
-
-        function cargarMasNoticias() {
-            if(limiteNoticias < baseNoticias.length) {
-                limiteNoticias += 3;
-                renderizarNoticias();
-            }
         }
 
         function verDetalleNoticia(id) {
@@ -611,12 +512,12 @@
 
             if (!objetoExterno) {
                 s.ultimoIngreso = obtenerFechaActualFormateada();
-                guardarDatosRemotos(s);
+                guardarDatosLocal();
             }
 
             if(!sujetos.some(existente => existente.id === s.id)) {
                 sujetos.push(s);
-                guardarDatosRemotos(s);
+                guardarDatosLocal();
             }
 
             const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
@@ -671,7 +572,7 @@
             history.pushState({id: s.id}, "", "#" + s.id);
             mostrarVista('view-perfil');
 
-            // GENERACIÓN DINÁMICA E INSTANTÁNEA DEL CÓDIGO QR (Garantizado con setTimeout para DOM visible)
+            // GENERACIÓN DINÁMICA E INSTANTÁNEA DEL CÓDIGO QR AUTÓNOMO
             setTimeout(() => {
                 const urlBase = window.location.origin + window.location.pathname;
                 const payloadQR = { 
@@ -737,14 +638,14 @@
                         </div>
                         <div class="space-x-3">
                             <button type="button" onclick="editarSujeto(${index})" class="text-blue-700 hover:underline font-bold">[ Editar ]</button>
-                            <button type="button" onclick="eliminarSujeto('${s.id}')" class="text-rose-600 hover:underline font-bold">[ Eliminar ]</button>
+                            <button type="button" onclick="eliminarSujeto(${index})" class="text-rose-600 hover:underline font-bold">[ Eliminar ]</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        async function guardarSujeto(e) {
+        function guardarSujeto(e) {
             e.preventDefault();
             const idx = parseInt(document.getElementById('sujeto-edit-idx').value);
             const fechaNac = document.getElementById('fecha-nacimiento').value;
@@ -771,7 +672,7 @@
                 sujetos.push(nuevoSujeto);
             }
 
-            await guardarDatosRemotos(nuevoSujeto);
+            guardarDatosLocal();
             limpiarFormulario();
             actualizarListaAdmin();
             renderizarDashboard();
@@ -802,9 +703,10 @@
             }
         }
 
-        async function eliminarSujeto(id) {
+        function eliminarSujeto(index) {
             if(confirm("¿Desea eliminar permanentemente este registro forense?")) {
-                await eliminarDatosRemotos(id);
+                sujetos.splice(index, 1);
+                guardarDatosLocal();
                 actualizarListaAdmin();
                 renderizarDashboard();
             }
@@ -816,10 +718,10 @@
             mostrarSeccion('noticias');
         }
 
-        // CARGA AUTOMÁTICA Y LECTURA DE QR EXTERNO
-        window.onload = async function() {
-            await cargarDatosRemotos();
+        // CARGA AUTOMÁTICA Y LECTURA DE QR EXTERNO (AUTÓNOMO)
+        window.onload = function() {
             renderizarNoticias();
+            renderizarDashboard();
 
             const hash = window.location.hash.replace('#', '');
             
@@ -840,7 +742,7 @@
             }
         };
 
-        window.onpopstate = async function(event) {
+        window.onpopstate = function(event) {
             const hash = window.location.hash.replace('#', '');
             if(hash.startsWith('profileData=')) {
                 try {
