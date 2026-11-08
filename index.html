@@ -16,8 +16,8 @@
     <!-- BARRA SUPERIOR INSTITUCIONAL SAB -->
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-3">
-            <div class="relative group">
-                <img id="logo-institucional" src="https://colegiosanantonio.cl/wp-content/uploads/2021/03/logo-web.png" alt="Logo SAB Rengo" class="w-12 h-12 object-contain bg-white p-1 rounded shadow cursor-pointer">
+            <div class="bg-white p-1.5 rounded-lg shadow border border-slate-700 flex items-center justify-center">
+                <img id="logo-institucional" src="https://colegiosanantonio.cl/wp-content/uploads/2021/03/logo-web.png" alt="Logo SAB Rengo" class="w-10 h-10 object-contain">
             </div>
             <div>
                 <h1 class="text-base md:text-lg font-bold tracking-wide text-amber-400">SAB // FORENSIC LAB</h1>
@@ -27,10 +27,10 @@
         <div id="user-status" class="text-xs text-slate-300 hidden flex items-center space-x-3">
             <span>SESIÓN: <span id="rol-actual" class="text-amber-400 font-semibold uppercase"></span></span>
             <div id="btn-cambiar-logo" class="hidden">
-                <label for="input-logo-file" class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1 rounded cursor-pointer border border-slate-700">📷 Cambiar Logo</label>
+                <label for="input-logo-file" class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1.5 rounded cursor-pointer border border-slate-700 text-xs font-medium">📷 Cambiar Logo</label>
                 <input type="file" id="input-logo-file" accept="image/*" onchange="subirLogoLocal(event)" class="hidden">
             </div>
-            <button onclick="cerrarSesion()" class="text-red-400 hover:text-red-300 font-medium bg-slate-800 px-3 py-1 rounded transition">[ Cerrar Sesión ]</button>
+            <button onclick="cerrarSesion()" class="text-red-400 hover:text-red-300 font-medium bg-slate-800 px-3 py-1.5 rounded transition">[ Cerrar Sesión ]</button>
         </div>
     </header>
 
@@ -41,7 +41,7 @@
             <div class="text-center space-y-2">
                 <div class="inline-block p-3 bg-blue-50 text-blue-900 rounded-full font-bold text-xl mb-1 border border-blue-100">🛡️</div>
                 <h2 class="text-xl font-bold text-slate-900">Acceso a Plataforma Forense</h2>
-                <p class="text-xs text-slate-500">Ingrese su clave institucional para autenticar su cuenta de Visitante o Administrador.</p>
+                <p class="text-xs text-slate-500">Ingrese su clave institucional para autenticar su cuenta.</p>
             </div>
 
             <div class="space-y-4">
@@ -66,39 +66,37 @@
                 <div class="flex items-center gap-2">
                     <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-900 text-white transition">Casos y Noticias</button>
                     <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
-                    <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2 text-xs font-semibold rounded-lg bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar</button>
+                    <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2 text-xs font-semibold rounded-lg bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar Perfiles</button>
                 </div>
             </div>
 
             <!-- SECCIÓN A: NOTICIAS REALES EXTENDIDAS -->
             <div id="seccion-noticias" class="space-y-6">
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias">
-                    <!-- Noticias renderizadas dinámicamente -->
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
 
                 <div class="text-center pt-2">
                     <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-6 py-2.5 rounded-lg text-xs transition shadow">➕ Ver Más Casos e Investigaciones</button>
                 </div>
 
-                <!-- ASISTENTE IA FORENSE CORREGIDO Y AVANZADO -->
+                <!-- ASISTENTE IA FORENSE MEJORADO -->
                 <div class="bg-white border border-slate-200 p-6 rounded-xl shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
                             <span class="text-lg">🤖</span>
                             <h3 class="font-bold text-slate-900 text-sm">Asistente Virtual SAB-AI (Especialista Forense)</h3>
                         </div>
-                        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">● Motor Neural Activo</span>
+                        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">● Sistema Activo</span>
                     </div>
-                    <p class="text-xs text-slate-500">Haz una pregunta sobre biotecnología criminalística, análisis de ADN, dactiloscopia o casos reales:</p>
+                    <p class="text-xs text-slate-500">Haz una pregunta sobre criminalística, genética, STR o saluda al asistente:</p>
                     
-                    <div id="ia-chat-output" class="text-xs text-slate-700 bg-slate-50 p-4 rounded-xl h-40 overflow-y-auto font-mono border border-slate-200 space-y-3">
-                        <div><strong class="text-blue-900">SAB-AI:</strong> Saludos. Estoy preparado para responder preguntas sobre técnicas moleculares, genética y criminalística. ¿Qué deseas consultar hoy?</div>
+                    <div id="ia-chat-output" class="text-xs text-slate-700 bg-slate-50 p-4 rounded-xl h-40 overflow-y-auto border border-slate-200 space-y-3">
+                        <div><strong class="text-blue-900">SAB-AI:</strong> ¡Hola! Soy SAB-AI, tu asistente virtual de criminalística y biotecnología del Colegio San Antonio del Baluarte. ¿En qué puedo ayudarte hoy?</div>
                     </div>
 
                     <div class="flex gap-2">
-                        <input type="text" id="ia-pregunta" placeholder="Ej: ¿En qué consiste el análisis de fenotipación forense?" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') procesarConsultaIA()">
-                        <button onclick="procesarConsultaIA()" class="bg-blue-900 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-xs font-semibold transition shrink-0">Consultar IA</button>
+                        <input type="text" id="ia-pregunta" placeholder="Ej: Hola / ¿Cómo funcionan los marcadores STR?" class="w-full bg-slate-50 border border-slate-300 p-2.5 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') procesarConsultaIA()">
+                        <button onclick="procesarConsultaIA()" class="bg-blue-900 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-xs font-semibold transition shrink-0">Preguntar</button>
                     </div>
                 </div>
             </div>
@@ -110,13 +108,44 @@
 
         </div>
 
-        <!-- 3. FICHA INDIVIDUAL DE PERFIL -->
+        <!-- 3. VISTA DEDICADA DE DETALLE DE NOTICIA (PÁGINA COMPLETA) -->
+        <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-2xl shadow-xl space-y-6">
+            <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg transition border border-slate-200">← Volver al Panel Principal</button>
+            
+            <div class="space-y-4 border-b border-slate-100 pb-6">
+                <span id="det-cat" class="text-[10px] font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 uppercase"></span>
+                <h2 id="det-titulo" class="text-2xl md:text-3xl font-black text-slate-900"></h2>
+                <div class="flex items-center space-x-4 text-xs text-slate-500 font-medium">
+                    <span>📍 <span id="det-lugar"></span></span>
+                    <span>📅 <span id="det-fecha"></span></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                <div class="md:col-span-1">
+                    <img id="det-imagen" class="w-full h-56 object-cover rounded-xl border border-slate-200 shadow-sm" alt="Caso forense">
+                </div>
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-blue-50/70 border-l-4 border-blue-900 p-5 rounded-r-xl space-y-2">
+                        <h4 class="font-bold text-blue-900 text-xs uppercase tracking-wider">1. Explicación Sencilla (Resumen del Caso)</h4>
+                        <p id="det-simple" class="text-slate-800 text-sm leading-relaxed"></p>
+                    </div>
+
+                    <div class="bg-slate-50 border-l-4 border-slate-700 p-5 rounded-r-xl space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">2. Análisis Científico Técnico (Profundización)</h4>
+                        <p id="det-tecnico" class="text-slate-800 text-sm leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. FICHA INDIVIDUAL DE PERFIL -->
         <div id="view-perfil" class="w-full max-w-2xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-xl relative">
             <button onclick="volverAlDashboard()" class="mb-6 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 rounded-lg transition border border-slate-200 cursor-pointer">← Volver al Panel</button>
             <div id="detalle-perfil"></div>
         </div>
 
-        <!-- 4. PANEL DE ADMINISTRACIÓN -->
+        <!-- 5. PANEL DE ADMINISTRACIÓN -->
         <div id="view-admin" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-200 pb-4">
                 <h2 class="text-base font-bold text-slate-900">Panel de Administración de Registros</h2>
@@ -177,37 +206,6 @@
         </div>
 
     </main>
-
-    <!-- VENTANA MODAL NOTICIA DETALLADA -->
-    <div id="modal-noticia" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
-        <div class="bg-white max-w-2xl w-full rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-200 space-y-5 my-8">
-            <div class="flex justify-between items-start border-b border-slate-100 pb-4">
-                <div>
-                    <span id="modal-categoria" class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase"></span>
-                    <h3 id="modal-titulo" class="font-bold text-slate-900 text-lg md:text-xl mt-2"></h3>
-                    <div class="flex items-center space-x-4 text-xs text-slate-500 mt-1">
-                        <span>📍 <span id="modal-lugar"></span></span>
-                        <span>📅 <span id="modal-fecha"></span></span>
-                    </div>
-                </div>
-                <button onclick="cerrarNoticiaModal()" class="text-slate-400 hover:text-slate-700 font-bold text-xl p-1">✕</button>
-            </div>
-
-            <div class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed">
-                <div class="bg-blue-50 border-l-4 border-blue-900 p-4 rounded-r-xl">
-                    <h4 class="font-bold text-blue-900 text-xs uppercase mb-1">1. Explicación Sencilla (Para todos)</h4>
-                    <p id="modal-simple" class="text-slate-700"></p>
-                </div>
-
-                <div class="bg-slate-50 border-l-4 border-slate-700 p-4 rounded-r-xl space-y-2">
-                    <h4 class="font-bold text-slate-900 text-xs uppercase mb-1">2. Análisis Científico Técnico (Para profundizar)</h4>
-                    <p id="modal-tecnico" class="text-slate-700 font-mono text-xs leading-relaxed"></p>
-                </div>
-            </div>
-
-            <button onclick="cerrarNoticiaModal()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 rounded-xl text-xs transition">Cerrar Análisis de Caso</button>
-        </div>
-    </div>
 
     <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white">
         SAB FORENSIC SYSTEM · Colegio San Antonio del Baluarte (Rengo) · 2026
@@ -297,7 +295,6 @@
 
         let rolActual = null;
 
-        // Cargar logo guardado previamente si existe
         if(localStorage.getItem('sab_logo')) {
             document.getElementById('logo-institucional').src = localStorage.getItem('sab_logo');
         }
@@ -321,7 +318,7 @@
         }
 
         function mostrarVista(vistaId) {
-            ['view-login', 'view-dashboard', 'view-perfil', 'view-admin'].forEach(id => {
+            ['view-login', 'view-dashboard', 'view-detalle-noticia', 'view-perfil', 'view-admin'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(vistaId).classList.remove('hidden');
@@ -410,7 +407,7 @@
                             </div>
                         </div>
                         <div class="px-5 pb-5 pt-0 flex justify-end">
-                            <button onclick="abrirNoticia(${n.id})" class="text-xs font-bold text-blue-900 hover:underline">Analizar Caso Completo →</button>
+                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-bold text-blue-900 hover:underline">Analizar Caso Completo →</button>
                         </div>
                     </div>
                 `;
@@ -426,26 +423,20 @@
             renderizarNoticias();
         }
 
-        function abrirNoticia(id) {
+        function verDetalleNoticia(id) {
             const n = baseNoticias.find(item => item.id === id);
             if(!n) return;
 
-            document.getElementById('modal-categoria').innerText = n.categoria;
-            document.getElementById('modal-titulo').innerText = n.titulo;
-            document.getElementById('modal-lugar').innerText = n.lugar;
-            document.getElementById('modal-fecha').innerText = n.fecha;
-            document.getElementById('modal-simple').innerText = n.simple;
-            document.getElementById('modal-tecnico').innerText = n.tecnico;
+            document.getElementById('det-cat').innerText = n.categoria;
+            document.getElementById('det-titulo').innerText = n.titulo;
+            document.getElementById('det-lugar').innerText = n.lugar;
+            document.getElementById('det-fecha').innerText = n.fecha;
+            document.getElementById('det-imagen').src = n.imagen;
+            document.getElementById('det-simple').innerText = n.simple;
+            document.getElementById('det-tecnico').innerText = n.tecnico;
 
-            const modal = document.getElementById('modal-noticia');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function cerrarNoticiaModal() {
-            const modal = document.getElementById('modal-noticia');
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
+            history.pushState({noticiaId: id}, "", "#noticia-" + id);
+            mostrarVista('view-detalle-noticia');
         }
 
         function calcularEdad(fechaNacStr) {
@@ -491,8 +482,8 @@
             });
         }
 
-        function verPerfil(id, datosExternos = null) {
-            let s = datosExternos || sujetos.find(item => item.id === id);
+        function verPerfil(id) {
+            const s = sujetos.find(item => item.id === id);
             if(!s) return;
 
             const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
@@ -529,22 +520,16 @@
             history.pushState({id: id}, "", "#" + id);
             mostrarVista('view-perfil');
 
-            // Codificar datos esenciales en el QR para sincronización instantánea móvil
-            const payloadQR = encodeURIComponent(JSON.stringify({
-                id: s.id,
-                nombre: s.nombre,
-                fechaNac: s.fechaNac,
-                sexo: s.sexo,
-                estado: s.estado,
-                coincidencia: s.coincidencia,
-                adn: s.adn
-            }));
-
+            // QR LIMPIO Y ESTÁNDAR (Fácil de escanear por cualquier cámara)
+            const urlPerfilLimpia = window.location.href.split('#')[0] + "#" + s.id;
             document.getElementById('qrcode').innerHTML = "";
             new QRCode(document.getElementById("qrcode"), {
-                text: window.location.href.split('#')[0] + "#data=" + payloadQR,
-                width: 140,
-                height: 140
+                text: urlPerfilLimpia,
+                width: 150,
+                height: 150,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.M
             });
         }
 
@@ -640,7 +625,7 @@
             }
         }
 
-        // MOTOR REESTRUCTURADO DE IA FORENSE (SAB-AI)
+        // IA FORENSE CONVERSACIONAL REAL
         function procesarConsultaIA() {
             const input = document.getElementById('ia-pregunta');
             const output = document.getElementById('ia-chat-output');
@@ -654,22 +639,20 @@
 
             let respuesta = "";
 
-            if(query.includes('str') || query.includes('repet') || query.includes('marcadores')) {
-                respuesta = "Los marcadores STR (Short Tandem Repeats) son secuencias repetitivas del ADN (como AATG repetido 10 veces). Cada ser humano hereda una combinación de números de repeticiones de su padre y de su madre. Al examinar 20 marcadores distintos en el laboratorio, la probabilidad de que dos personas tengan el mismo perfil exacto es de menos de 1 en un billón.";
+            if(query.includes('hola') || query.includes('buenos dias') || query.includes('saludos') || query.includes('como estas')) {
+                respuesta = "¡Hola! Estoy excelente y listo para ayudarte a investigar conceptos de genética y criminalística. ¿Qué duda tienes hoy?";
+            } else if(query.includes('str') || query.includes('repet') || query.includes('marcadores')) {
+                respuesta = "Los marcadores STR (Short Tandem Repeats) son secuencias repetitivas del ADN (como AATG repetido 10 veces). Heredamos una combinación de nuestros padres, y al examinar 20 marcadores distintos en el laboratorio, la probabilidad de coincidencia es menor a 1 en un billón.";
             } else if(query.includes('golden') || query.includes('genealogía') || query.includes('deangelo') || query.includes('arbol')) {
-                respuesta = "La genealogía genética forense combina el ADN del crimen con bases de datos públicas de árbol genealógico. Se analiza el ADN con microarrays para encontrar primos lejanos del sospechoso y luego se reconstruyen los árboles familiares hasta acotar la identidad del autor.";
+                respuesta = "La genealogía genética forense combina el ADN del crimen con bases de datos públicas de árboles genealógicos para encontrar parientes lejanos del sospechoso, rastreando su linaje hasta dar con el autor.";
             } else if(query.includes('fenotip') || query.includes('rostro') || query.includes('ojos') || query.includes('pelo') || query.includes('piel')) {
-                respuesta = "La fenotipación forense lee SNPs (variaciones de letras en el ADN) para deducir el aspecto físico de alguien no registrado: determina el color exacto de ojos, tipo de piel y origen de antepasados para dibujar un retrato robot biológico.";
+                respuesta = "La fenotipación forense lee variaciones en el ADN (SNPs) para deducir el aspecto físico de alguien no registrado: color exacto de ojos, tipo de piel y origen ancestral para armar un retrato robot biológico.";
             } else if(query.includes('contacto') || query.includes('touch') || query.includes('tocar') || query.includes('celula')) {
-                respuesta = "El ADN de contacto recolecta las diminutas células invisibles de la piel que quedan al tocar una superficie unos segundos. Mediante la técnica de PCR (que copia y amplifica el ADN millones de veces), se puede obtener un perfil legible a partir de picogramos de muestra.";
-            } else if(query.includes('epigenet') || query.includes('edad') || query.includes('años')) {
-                respuesta = "La epigenética mide la metilación del ADN (marcas químicas acumuladas con el tiempo). Nos permite calcular la edad real de un sospechoso o víctima a partir de una muestra de sangre con un margen de error de solo 2 años.";
-            } else if(query.includes('microbioma') || query.includes('bacteria')) {
-                respuesta = "El microbioma forense analiza las especies de bacterias únicas que viven en las manos de cada persona. Al tocar un objeto, dejamos una 'huella bacteriana' que permite diferenciar incluso a gemelos idénticos.";
+                respuesta = "El ADN de contacto recolecta diminutas células de la piel que dejamos al tocar una superficie por pocos segundos. Mediante PCR (amplificación molecular), se obtiene un perfil legible a partir de mínimas trazas.";
             } else if(query.includes('sab') || query.includes('colegio') || query.includes('rengo') || query.includes('baluarte')) {
-                respuesta = "Esta plataforma interactiva pertenece al Colegio San Antonio del Baluarte de Rengo (SAB) y ha sido diseñada para la enseñanza práctica e institucional de la biotecnología criminalística.";
+                respuesta = "Esta plataforma fue desarrollada institucionalmente para el Colegio San Antonio del Baluarte de Rengo (SAB) con el fin de enseñar biotecnología criminalística de manera práctica.";
             } else {
-                respuesta = `Analizando tu consulta sobre "${textoPregunta}": En la investigación criminalística moderna, el análisis biotecnológico convierte muestras microscópicas en evidencia científica incontrovertible utilizando secuenciación genética y herramientas bioinformáticas de alta precisión.`;
+                respuesta = `Respecto a "${textoPregunta}": La biotecnología criminalística moderna convierte muestras biológicas microscópicas en evidencia científica contundente mediante secuenciación genética y análisis bioinformático.`;
             }
 
             setTimeout(() => {
@@ -678,21 +661,12 @@
             }, 400);
         }
 
-        // DETECCIÓN INTELIGENTE DE QR Y SINCRONIZACIÓN MÓVIL
+        // DETECCIÓN DE QR MÓVIL Y NAVEGACIÓN
         window.onload = function() {
             const hash = window.location.hash.replace('#', '');
-            
-            if(hash.startsWith('data=')) {
-                try {
-                    const jsonStr = decodeURIComponent(hash.replace('data=', ''));
-                    const datosQR = JSON.parse(jsonStr);
-                    rolActual = 'visitante';
-                    document.getElementById('user-status').classList.remove('hidden');
-                    document.getElementById('rol-actual').innerText = "VISITANTE (QR MÓVIL)";
-                    verPerfil(datosQR.id, datosQR);
-                } catch(e) {
-                    console.error("Error al decodificar QR", e);
-                }
+            if(hash.startsWith('noticia-')) {
+                const idNoticia = parseInt(hash.replace('noticia-', ''));
+                verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
                 rolActual = 'visitante';
                 document.getElementById('user-status').classList.remove('hidden');
@@ -702,11 +676,12 @@
         };
 
         window.onpopstate = function(event) {
-            if(window.location.hash) {
-                const hash = window.location.hash.replace('#', '');
-                if(!hash.startsWith('data=')) {
-                    verPerfil(hash);
-                }
+            const hash = window.location.hash.replace('#', '');
+            if(hash.startsWith('noticia-')) {
+                const idNoticia = parseInt(hash.replace('noticia-', ''));
+                verDetalleNoticia(idNoticia);
+            } else if(hash && sujetos.some(s => s.id === hash)) {
+                verPerfil(hash);
             } else {
                 mostrarVista('view-dashboard');
                 mostrarSeccion('noticias');
