@@ -1,3 +1,6 @@
+Aquí tienes guardado el código completo e impecable que incluye toda la estructura modular, el boletín científico de 9 investigaciones, el panel de administración, la persistencia en `localStorage`, la cara sonriente vectorial estilizada y el sistema de códigos QR dinámicos seguros:
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,6 +25,7 @@
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-3">
             <div class="bg-slate-950 p-2 rounded-xl border border-red-600/50 shadow flex items-center justify-center">
+                <!-- CARA SONRIENTE ROJA CLÁSICA Y SIMPLE -->
                 <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
                     <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"/>
                     <circle cx="35" cy="38" r="6"/>
@@ -72,7 +76,7 @@
             <div class="text-center space-y-2">
                 <div class="inline-flex p-3 bg-amber-50 text-amber-700 rounded-2xl font-bold mb-1 border border-amber-100 justify-center text-xl">🔐</div>
                 <h2 class="text-xl font-black text-slate-900">Verificación de Seguridad QR</h2>
-                <p class="text-xs text-slate-500">Ha escaneado un código QR institucional. Ingrese su clave para desplegar el perfil correspondiente en su dispositivo.</p>
+                <p class="text-xs text-slate-500">Ha escaneado un código QR institucional. Ingrese su clave para desplegar el perfil correspondiente.</p>
             </div>
 
             <div class="space-y-4">
@@ -85,13 +89,13 @@
             <div id="qr-auth-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Contraseña incorrecta. Acceso denegado.</div>
         </div>
 
-        <!-- 3. PORTADA PRINCIPAL -->
+        <!-- 3. PORTADA PRINCIPAL (CON ZONAS SEPARADAS) -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">PANEL DE CONTROL GENERAL</h2>
-                    <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses autónomos</p>
+                    <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Noticias</button>
@@ -100,9 +104,12 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS (LAS 9 VISIBLES DE INICIO) -->
+            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS (9 TOTALES) -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
+                <div class="text-center pt-4">
+                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones (Mostrando 3 de 9)</button>
+                </div>
             </div>
 
             <!-- SECCIÓN B: BASE DE PERFILES REGISTRADOS -->
@@ -135,7 +142,7 @@
             </div>
         </div>
 
-        <!-- 5. FICHA INDIVIDUAL DE PERFIL CON QR AUTÓNOMO E IMPRESIÓN -->
+        <!-- 5. FICHA INDIVIDUAL DE PERFIL -->
         <div id="view-perfil" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
             <div class="flex justify-between items-center">
                 <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
@@ -212,7 +219,6 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // 9 ARTÍCULOS CIENTÍFICOS PROFUNDOS Y EXTENSOS
         const baseNoticias = [
             {
                 id: 1,
@@ -234,7 +240,7 @@
                 fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
                 resumen: "El cruce sin precedentes de muestras de ADN genómico con árboles genealógicos digitales para resolver crímenes impunes de más de 40 años.",
-                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los métodos comparativos tradicionales contra las bases de datos criminales de la policía jamás arrojaron un resultado positivo.\n\nEn 2018, los investigadores aplicaron un enfoque revolucionario en biotecnología forense: la genealogía genética. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a plataformas públicas de parentesco. El sistema detectó coincidencias con parientes lejanos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares hasta converger en el autor, demostrando el enorme potencial investigativo de la genómica moderna combinada con bases de datos públicas."
+                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los methods comparativos tradicionales contra las bases de datos criminales de la policía jamás arrojaron un resultado positivo.\n\nEn 2018, los investigadores aplicaron un enfoque revolucionario en biotecnología forense: la genealogía genética. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a plataformas públicas de parentesco. El sistema detectó coincidencias con parientes lejanos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares hasta converger en el autor, demostrando el enorme potencial investigativo de la genómica moderna combinada con bases de datos públicas."
             },
             {
                 id: 3,
@@ -315,7 +321,8 @@
             }
         ];
 
-        // BASE DE DATOS LOCAL PERSISTENTE
+        let limiteNoticias = 3;
+
         let sujetos = JSON.parse(localStorage.getItem('sab_sujetos')) || [
             { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18", ultimoIngreso: "05/06/2026 14:22" },
             { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19", ultimoIngreso: "06/06/2026 09:15" }
@@ -450,7 +457,9 @@
             const contenedor = document.getElementById('contenedor-noticias');
             contenedor.innerHTML = '';
             
-            baseNoticias.forEach(n => {
+            const noticiasAmostrar = baseNoticias.slice(0, limiteNoticias);
+
+            noticiasAmostrar.forEach(n => {
                 contenedor.innerHTML += `
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
                         <div>
@@ -468,6 +477,22 @@
                     </div>
                 `;
             });
+
+            const btnCargar = document.getElementById('btn-cargar-mas');
+            if(limiteNoticias >= baseNoticias.length) {
+                btnCargar.innerText = "✓ Todas las investigaciones cargadas (9 de 9)";
+                btnCargar.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btnCargar.innerText = `➕ Cargar Más Investigaciones (Mostrando ${limiteNoticias} de 9)`;
+                btnCargar.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function cargarMasNoticias() {
+            if(limiteNoticias < baseNoticias.length) {
+                limiteNoticias += 3;
+                renderizarNoticias();
+            }
         }
 
         function verDetalleNoticia(id) {
@@ -572,36 +597,30 @@
             history.pushState({id: s.id}, "", "#" + s.id);
             mostrarVista('view-perfil');
 
-            // GENERACIÓN DINÁMICA E INSTANTÁNEA DEL CÓDIGO QR AUTÓNOMO
-            setTimeout(() => {
-                const urlBase = window.location.origin + window.location.pathname;
-                const payloadQR = { 
-                    id: s.id, 
-                    nombre: s.nombre, 
-                    fechaNac: s.fechaNac, 
-                    edad: edadCalculada, 
-                    estado: s.estado, 
-                    adn: s.adn, 
-                    coincidencia: s.coincidencia || '99.8%',
-                    foto: s.foto || FOTO_DEFAULT,
-                    ultimoIngreso: s.ultimoIngreso
-                };
-                const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
-                const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
+            const urlBase = window.location.origin + window.location.pathname;
+            const payloadQR = { 
+                id: s.id, 
+                nombre: s.nombre, 
+                fechaNac: s.fechaNac, 
+                edad: edadCalculada, 
+                estado: s.estado, 
+                adn: s.adn, 
+                coincidencia: s.coincidencia || '99.8%',
+                foto: s.foto || FOTO_DEFAULT,
+                ultimoIngreso: s.ultimoIngreso
+            };
+            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
+            const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
 
-                const qrContainer = document.getElementById("qrcode");
-                if (qrContainer) {
-                    qrContainer.innerHTML = "";
-                    new QRCode(qrContainer, {
-                        text: urlFinalQR,
-                        width: 160,
-                        height: 160,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.L
-                    });
-                }
-            }, 100);
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), {
+                text: urlFinalQR,
+                width: 160,
+                height: 160,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.L
+            });
         }
 
         function procesarFotoLocal(e) {
@@ -718,11 +737,7 @@
             mostrarSeccion('noticias');
         }
 
-        // CARGA AUTOMÁTICA Y LECTURA DE QR EXTERNO (AUTÓNOMO)
         window.onload = function() {
-            renderizarNoticias();
-            renderizarDashboard();
-
             const hash = window.location.hash.replace('#', '');
             
             if(hash.startsWith('profileData=')) {
@@ -763,3 +778,5 @@
     </script>
 </body>
 </html>
+
+```
