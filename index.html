@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAB - Colegio San Antonio del Baluarte de Rengo</title>
+    <title>BASE DE DATOS FORENSE SAB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background-attachment: fixed;
+            color: #1e293b; 
+        }
+        .pattern-bg {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-100">
+<body class="min-h-screen flex flex-col pattern-bg">
 
-    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO REAL DE RED JOHN -->
+    <!-- BARRA SUPERIOR INSTITUCIONAL CON LOGO DEL COLEGIO -->
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-4">
-            <div class="bg-slate-950 p-1 rounded-xl border border-red-900 shadow-lg flex items-center justify-center">
-                <!-- LOGO REAL RED JOHN (IMAGEN CANÓNICA) -->
-                <img id="logo-red-john" src="https://upload.wikimedia.org/wikipedia/commons/ thumb/8/87/Red_John_symbol.svg/1200px-Red_John_symbol.svg.png" 
-                     onerror="this.onerror=null; this.src='https://static.wikia.nocookie.net/thementalist/images/6/6b/Red_john_face.png/revision/latest?cb=20131125024419';" 
-                     alt="Red John Face" class="w-10 h-10 object-contain">
+            <div class="bg-white p-1 rounded-xl border border-slate-700 shadow flex items-center justify-center">
+                <img id="logo-institucional" src="baluarte.png" alt="Logo Colegio San Antonio del Baluarte" class="w-10 h-10 object-contain">
             </div>
             <div>
-                <h1 class="text-lg md:text-xl font-black tracking-wider text-amber-400">SAB // FORENSIC LAB</h1>
+                <h1 class="text-base md:text-lg font-black tracking-wider text-amber-400">BASE DE DATOS FORENSE SAB</h1>
                 <p class="text-xs text-slate-300 font-medium">Colegio San Antonio del Baluarte · Rengo</p>
             </div>
         </div>
@@ -36,50 +42,65 @@
     <main class="flex-grow flex items-center justify-center p-4 md:p-6">
 
         <!-- 1. PANTALLA DE ACCESO ÚNICO -->
-        <div id="view-login" class="max-w-md w-full bg-white border border-slate-200 p-8 rounded-2xl shadow-xl space-y-6">
+        <div id="view-login" class="max-w-md w-full bg-white/95 backdrop-blur border border-slate-200 p-8 rounded-3xl shadow-2xl space-y-6">
             <div class="text-center space-y-2">
-                <div class="inline-flex p-3 bg-red-50 text-red-600 rounded-full font-bold mb-1 border border-red-100 justify-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Red_John_symbol.svg/1200px-Red_John_symbol.svg.png" 
-                         onerror="this.onerror=null; this.src='https://static.wikia.nocookie.net/thementalist/images/6/6b/Red_john_face.png/revision/latest?cb=20131125024419';" 
-                         class="w-10 h-10 object-contain">
+                <div class="inline-flex p-3 bg-blue-50 text-blue-900 rounded-2xl font-bold mb-1 border border-blue-100 justify-center shadow-inner">
+                    <img src="baluarte.png" alt="Logo" class="w-10 h-10 object-contain">
                 </div>
-                <h2 class="text-2xl font-black text-slate-900">Acceso a Plataforma Forense</h2>
-                <p class="text-xs text-slate-500">Ingrese su clave institucional para autenticar su perfil de acceso.</p>
+                <h2 class="text-2xl font-black text-slate-900">Acceso Institucional</h2>
+                <p class="text-xs text-slate-500">Ingrese su contraseña para acceder a la plataforma y perfiles forenses.</p>
             </div>
 
             <div class="space-y-4">
                 <div>
-                    <label class="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Contraseña Institucional:</label>
+                    <label class="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Contraseña de Acceso:</label>
                     <input type="password" id="pass-unica" placeholder="Ingrese su clave..." class="w-full bg-slate-50 border border-slate-300 p-3 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition" onkeypress="if(event.key === 'Enter') autenticarUsuario()">
                 </div>
-                <button onclick="autenticarUsuario()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md tracking-wider uppercase">Ingresar al Sistema</button>
+                <button onclick="autenticarUsuario()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg tracking-wider uppercase">Ingresar al Sistema</button>
             </div>
-            <div id="login-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Credenciales incorrectas. Verifique la contraseña.</div>
+            <div id="login-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Contraseña incorrecta. Verifique sus credenciales.</div>
+        </div>
+
+        <!-- PANTALLA DE BLOQUEO DE CLAVE PARA ACCESOS POR QR MÓVIL -->
+        <div id="view-qr-auth" class="max-w-md w-full bg-white/95 backdrop-blur border border-slate-200 p-8 rounded-3xl shadow-2xl space-y-6 hidden">
+            <div class="text-center space-y-2">
+                <div class="inline-flex p-3 bg-amber-50 text-amber-800 rounded-2xl font-bold mb-1 border border-amber-100 justify-center shadow-inner">🔐</div>
+                <h2 class="text-xl font-black text-slate-900">Verificación de Seguridad QR</h2>
+                <p class="text-xs text-slate-500">Ha escaneado un código QR institucional restringido. Ingrese la contraseña de visitante o administrador para visualizar la ficha.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Contraseña de Consulta:</label>
+                    <input type="password" id="pass-qr" placeholder="Ingrese clave..." class="w-full bg-slate-50 border border-slate-300 p-3 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-blue-600 transition" onkeypress="if(event.key === 'Enter') validarQRAuth()">
+                </div>
+                <button onclick="validarQRAuth()" class="w-full bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold py-3.5 rounded-xl text-sm transition shadow-md tracking-wider uppercase">Desbloquear Ficha</button>
+            </div>
+            <div id="qr-auth-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Contraseña incorrecta. Acceso denegado.</div>
         </div>
 
         <!-- 2. PORTADA PRINCIPAL -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
             
             <!-- NAVEGACIÓN INTERNA -->
-            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
+            <div class="flex flex-col md:flex-row justify-between items-center bg-white/9ontal backdrop-blur p-5 rounded-3xl border border-slate-200 shadow-sm gap-4">
                 <div>
-                    <h2 class="text-xl font-black text-slate-900">INVESTIGACIÓN Y REGISTROS FORENSES</h2>
-                    <p class="text-xs text-slate-500 font-medium">Biotecnología y herramientas de cotejo de ADN</p>
+                    <h2 class="text-xl font-black text-slate-900">PANEL DE INVESTIGACIÓN Y ARTÍCULOS</h2>
+                    <p class="text-xs text-slate-500 font-medium">Biotecnología y artículos científicos avanzados aplicados a la criminalística</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Artículos</button>
-                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
-                    <button onclick="mostrarSeccion('comparador')" id="tab-comparador" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🔬 Cotejo / Comparador ADN</button>
+                <div class="flex items-center gap-2">
+                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Artículos y Casos</button>
+                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
                     <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2.5 text-xs font-bold rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Gestionar Perfiles</button>
                 </div>
             </div>
 
-            <!-- SECCIÓN A: NOTICIAS ACADÉMICAS -->
+            <!-- SECCIÓN A: ARTÍCULOS Y NOTICIAS ACADÉMICAS PROFUNDAS -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
 
                 <div class="text-center pt-4">
-                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
+                    <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Artículos Científicos</button>
                 </div>
             </div>
 
@@ -88,36 +109,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="lista-sujetos"></div>
             </div>
 
-            <!-- SECCIÓN C: MÓDULO DE COTEJO Y COMPARACIÓN DE ADN -->
-            <div id="seccion-comparador" class="hidden space-y-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xl">
-                <div class="border-b border-slate-200 pb-4">
-                    <h3 class="text-lg font-black text-slate-900">MÓDULO DE COTEJO Y COMPARACIÓN GENÉTICA</h3>
-                    <p class="text-xs text-slate-500">Seleccione un perfil para analizar y comparar su código STR contra la base de datos institucional.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-3">
-                        <label class="text-xs font-bold text-slate-700 block">Seleccionar Perfil a Comparar:</label>
-                        <select id="select-comparar" class="w-full bg-slate-50 border border-slate-300 p-3 rounded-xl text-xs font-bold text-slate-800">
-                            <!-- Opciones cargadas dinámicamente -->
-                        </select>
-                        <button onclick="ejecutarComparacion()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider shadow">Ejecutar Análisis de Muestra</button>
-                    </div>
-
-                    <div id="resultado-comparacion" class="bg-slate-50 p-5 rounded-2xl border border-slate-200 flex flex-col justify-center items-center text-center">
-                        <span class="text-4xl mb-2">🧬</span>
-                        <p class="text-xs text-slate-500 font-medium">Seleccione un sujeto y presione "Ejecutar Análisis" para evaluar la coincidencia genética.</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- 3. DETALLE DE NOTICIA -->
-        <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
+        <!-- 3. VISTA DEDICADA DE DETALLE DE ARTÍCULO -->
+        <div id="view-detalle-noticia" class="w-full max-w-4xl hidden bg-white/95 backdrop-blur border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
             <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200">← Volver al Panel Principal</button>
             
-            <div class="space-y-3 border-b border-slate-100 pb-6">
+            <div class="space-y-3 border-b border-slate-200 pb-6">
                 <span id="det-cat" class="text-xs font-extrabold text-blue-900 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-100 uppercase tracking-wider"></span>
                 <h2 id="det-titulo" class="text-2xl md:text-3xl font-black text-slate-900 leading-tight"></h2>
                 <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-semibold pt-1">
@@ -129,22 +127,22 @@
 
             <div class="space-y-6">
                 <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Investigación científica">
-                <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4">
-                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Resumen del Artículo y Aplicación Práctica</h3>
-                    <p id="det-texto" class="text-slate-800 text-sm leading-relaxed whitespace-pre-line font-medium"></p>
+                <div class="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Contexto Académico y Análisis Metodológico</h3>
+                    <p id="det-texto" class="text-slate-800 text-sm md:text-base leading-relaxed whitespace-pre-line font-medium"></p>
                 </div>
             </div>
         </div>
 
         <!-- 4. FICHA INDIVIDUAL DE PERFIL -->
-        <div id="view-perfil" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
+        <div id="view-perfil" class="w-full max-w-3xl hidden bg-white/95 backdrop-blur border border-slate-200 p-6 md:p-10 rounded-3xl shadow-2xl relative space-y-6">
             <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2.5 rounded-xl transition border border-slate-200 cursor-pointer">← Volver a la Base de Perfiles</button>
             
             <div id="detalle-perfil"></div>
         </div>
 
         <!-- 5. PANEL DE ADMINISTRACIÓN -->
-        <div id="view-admin" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-3xl shadow-xl space-y-6">
+        <div id="view-admin" class="w-full max-w-3xl hidden bg-white/95 backdrop-blur border border-slate-200 p-6 md:p-8 rounded-3xl shadow-xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-200 pb-4">
                 <h2 class="text-lg font-black text-slate-900">PANEL DE CONTROL DE ADMINISTRACIÓN</h2>
                 <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 text-slate-700 font-bold px-3.5 py-2 rounded-xl hover:bg-slate-200 transition">Cerrar Panel</button>
@@ -183,7 +181,7 @@
                         <input type="text" id="coincidencia" value="99.8%" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block mb-1">Fotografía (Archivo de imagen local):</label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1">Fotografía (Archivo local):</label>
                         <input type="file" id="archivo-foto" accept="image/*" onchange="procesarFotoLocal(event)" class="w-full bg-white border border-slate-300 p-2 rounded-xl text-xs text-slate-600">
                     </div>
                 </div>
@@ -205,8 +203,8 @@
 
     </main>
 
-    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white font-medium">
-        SAB FORENSIC SYSTEM · Colegio San Antonio del Baluarte (Rengo) · 2026
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200 bg-white/80 font-medium">
+        BASE DE DATOS FORENSE SAB · Colegio San Antonio del Baluarte (Rengo) · 2026
     </footer>
 
     <script>
@@ -214,39 +212,40 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
+        // ARTÍCULOS CIENTÍFICOS Y NOTICIAS PROFUNDAS
         const baseNoticias = [
             {
                 id: 1,
-                categoria: "Biomedicina y Bioenergética",
+                categoria: "Biomedicina y Bioenergética Celular",
                 titulo: "Respiración mitocondrial: Clave para detectar fragilidad y perfiles biológicos",
                 institucion: "Universidad de Chile",
                 lugar: "Santiago, Chile",
                 fecha: "Actualidad",
                 imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
-                resumen: "Investigación pionera sobre la función mitocondrial celular y su relación con biomarcadores de resistencia.",
-                texto: "Un equipo de científicos de la Universidad de Chile ha profundizado en cómo la respiración mitocondrial celular actúa como un indicador fundamental del estado biológico y la fragilidad en organismos.\n\nEn el ámbito de la biotecnología aplicada y la criminalística, el estudio de la mitocondria y su ADN asociado (ADN mitocondrial) es vital cuando las muestras biológicas se encuentran altamente degradadas o expuestas a condiciones extremas (como incendios o largos periodos de tiempo), donde el ADN nuclear común ya no puede ser amplificado.\n\nComprender el metabolismo celular y la producción de energía mitocondrial permite a los laboratorios forenses modernos optimizar las técnicas de extracción en restos óseos antiguos, mejorando sustancialmente las tasas de identificación genética y el análisis de perfiles biológicos complejos."
+                resumen: "Investigación pionera de la Universidad de Chile sobre la función mitocondrial y su relación con biomarcadores de resistencia celular.",
+                texto: "Un equipo de científicos e investigadores de la Universidad de Chile ha publicado hallazgos fundamentales sobre cómo la respiración mitocondrial celular actúa como un indicador biológico crítico en la evaluación de la fragilidad y el estado metabólico.\n\nEn el contexto de la biotecnología aplicada y la investigación criminalística moderna, las mitocondrias poseen su propio material genético independiente (ADN mitocondrial o mtDNA). Esta característica resulta trascendental cuando los peritos forenses se enfrentan a muestras biológicas severamente degradadas por factores ambientales extremos, incendios estructurales o largos periodos de tiempo en fosas comunes, escenarios donde el ADN nuclear común ya no se encuentra disponible para su amplificación convencional.\n\nComprender el rendimiento bioenergético y la tasa respiratoria mitocondrial permite a los laboratorios forenses diseñar protocolos enzimáticos más precisos para la extracción de trazas genéticas complejas, optimizando significativamente la tasa de éxito en identificaciones humanas de alta complejidad."
             },
             {
                 id: 2,
-                categoria: "Genealogía Genética",
-                titulo: "La captura del 'Golden State Killer' mediante bases genealógicas",
+                categoria: "Genealogía Genética Forense",
+                titulo: "La captura del 'Golden State Killer' mediante bases genealógicas públicas",
                 institucion: "Investigación Internacional / GEDmatch",
                 lugar: "California, Estados Unidos",
                 fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
-                resumen: "Uso de bases de datos públicas para cruzar perfiles genéticos y resolver casos de décadas de antigüedad.",
-                texto: "El caso del 'Golden State Killer' marcó un antes y un después en la historia judicial mundial. Durante más de 40 años, un violador y asesino serial mantuvo en zozobra a California sin que la policía tradicional pudiera identificarlo con las huellas o evidencias clásicas.\n\nLa revolución científica llegó cuando los investigadores decidieron aplicar la genealogía genética forense. Subieron el perfil genético obtenido de las evidencias biológicas a una base de datos pública de genealogía. Al encontrar coincidencias con parientes lejanos, los genetistas forenses reconstruyeron extensos árboles genealógicos familiares hasta acorralar y confirmar la identidad del ex-policía Joseph DeAngelo."
+                resumen: "El uso revolucionario de plataformas de parentesco para cruzar perfiles genéticos y resolver crímenes congelados durante décadas.",
+                texto: "El caso del 'Golden State Killer' transformó de manera irreversible los paradigmas de la investigación criminal a nivel global. Durante más de cuarenta años, un prolífico violador y asesino en serie mantuvo en vilo a las autoridades de California sin que las huellas dactilares o los registros policiales tradicionales arrojaran pistas concluyentes.\n\nEl punto de inflexión científico se produjo cuando los investigadores decidieron aplicar una metodología innovadora: la genealogía genética forense. Tomando el perfil genético obtenido a partir de las muestras biológicas resguardadas en las escenas del crimen, el equipo lo ingresó en una base de datos genealógica de acceso público. Al identificar coincidencias parciales con parientes lejanos (primos segundos y terceros), los genetistas forenses y genealogistas profesionales construyeron extensos árboles genealógicos cruzando registros civiles e históricos hasta acotar el linaje familiar directo del sospechoso, logrando su captura definitiva tras cotejarlo con una muestra de ADN descartada."
             },
             {
                 id: 3,
-                categoria: "ADN de Contacto (Touch DNA)",
-                titulo: "Identificación molecular a partir de células epiteliales invisibles",
+                categoria: "Biometría y ADN de Contacto",
+                titulo: "Identificación molecular a partir de células epiteliales invisibles (Touch DNA)",
                 institucion: "Forensic Science Laboratories",
                 lugar: "Londres, Reino Unido",
                 fecha: "Año 2021",
                 imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
-                resumen: "Extracción de perfiles genéticos completos tras la manipulación breve de objetos.",
-                texto: "Tradicionalmente, las pruebas biológicas requerían charcos visibles de sangre o fluidos. Hoy en día, la técnica conocida como 'Touch DNA' permite recuperar células de la piel que las personas desprenden al tocar un objeto por apenas unos segundos (como manillas de puertas, volantes o herramientas).\n\nMediante los ciclos de amplificación ultrasensible por PCR, los laboratorios logran replicar trazas menores a un nanogramo hasta obtener un perfil STR legible y con validez legal irrefutable ante los tribunales."
+                resumen: "Extracción y amplificación de perfiles genéticos completos tras la manipulación breve y cotidiana de superficies y objetos.",
+                texto: "Tradicionalmente, las pruebas biológicas requerían depósitos evidentes de fluidos corporales, tales como manchas hemáticas o muestras de saliva. No obstante, el desarrollo y perfeccionamiento de la técnica conocida como 'Touch DNA' o ADN de contacto ha expandido drásticamente las capacidades de la escena del crimen.\n\nCuando un individuo entra en contacto físico con un objeto —incluso durante un lapso de pocos segundos, como al sostener un volante, accionar una cerradura o tocar un casquillo de bala— transfiere de manera involuntaria células epiteliales descamadas de su piel. A pesar de que la cantidad de material genético recuperado suele encontrarse en el rango de los picogramos, la optimización de los ciclos térmicos en los sistemas de Reacción en Cadena de la Polimerasa (PCR) permite amplificar estas trazas microscópicas hasta generar un perfil STR plenamente legible y con rigor probatorio ante tribunales."
             }
         ];
 
@@ -258,13 +257,14 @@
         ];
 
         let rolActual = null;
+        let sujetoPendienteQR = null;
 
         function guardarDatos() {
             localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
         }
 
         function mostrarVista(vistaId) {
-            ['view-login', 'view-dashboard', 'view-detalle-noticia', 'view-perfil', 'view-admin'].forEach(id => {
+            ['view-login', 'view-qr-auth', 'view-dashboard', 'view-detalle-noticia', 'view-perfil', 'view-admin'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(vistaId).classList.remove('hidden');
@@ -279,14 +279,32 @@
                 rolActual = 'visitante';
                 iniciarSesionExitoso();
             } else {
-                mostrarError();
+                mostrarErrorLogin();
             }
         }
 
-        function mostrarError() {
+        function mostrarErrorLogin() {
             const err = document.getElementById('login-error');
             err.classList.remove('hidden');
             setTimeout(() => err.classList.add('hidden'), 3500);
+        }
+
+        function validarQRAuth() {
+            const val = document.getElementById('pass-qr').value.trim();
+            if(val === PASS_ADMIN || val === PASS_VISITANTE) {
+                rolActual = val === PASS_ADMIN ? 'admin' : 'visitante';
+                document.getElementById('user-status').classList.remove('hidden');
+                document.getElementById('rol-actual').innerText = rolActual.toUpperCase() + " (QR)";
+                if(rolActual === 'admin') {
+                    document.getElementById('btn-admin-panel').classList.remove('hidden');
+                }
+                verPerfil(sujetoPendienteQR.id, sujetoPendienteQR);
+                sujetoPendienteQR = null;
+            } else {
+                const err = document.getElementById('qr-auth-error');
+                err.classList.remove('hidden');
+                setTimeout(() => err.classList.add('hidden'), 3500);
+            }
         }
 
         function iniciarSesionExitoso() {
@@ -300,7 +318,6 @@
             }
             renderizarNoticias();
             renderizarDashboard();
-            poblarSelectorComparador();
             mostrarVista('view-dashboard');
             mostrarSeccion('noticias');
         }
@@ -309,21 +326,21 @@
             rolActual = null;
             document.getElementById('user-status').classList.add('hidden');
             document.getElementById('pass-unica').value = '';
+            document.getElementById('pass-qr').value = '';
             history.pushState("", document.title, window.location.pathname);
             mostrarVista('view-login');
         }
 
         function mostrarSeccion(seccion) {
-            ['noticias', 'registros', 'comparador'].forEach(sec => {
-                document.getElementById('tab-' + sec).className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+            ['noticias', 'registros'].forEach(sec => {
+                document.getElementById('tab-' + sec).className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
                 document.getElementById('seccion-' + sec).classList.add('hidden');
             });
 
-            document.getElementById('tab-' + seccion).className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+            document.getElementById('tab-' + seccion).className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
             document.getElementById('seccion-' + seccion).classList.remove('hidden');
 
             if(seccion === 'registros') renderizarDashboard();
-            if(seccion === 'comparador') poblarSelectorComparador();
         }
 
         function renderizarNoticias() {
@@ -411,12 +428,10 @@
             });
         }
 
-        // MOSTRAR FICHA INDIVIDUAL Y GENERAR QR AUTOCONTENIDO PARA MÓVIL
         function verPerfil(id, objetoSujeto = null) {
             let s = objetoSujeto || sujetos.find(item => item.id === id);
             if(!s) return;
 
-            // Si el sujeto viene del QR y no existe en el celular, lo agregamos a su memoria local
             if(!sujetos.some(existente => existente.id === s.id)) {
                 sujetos.push(s);
                 guardarDatos();
@@ -474,7 +489,6 @@
             history.pushState({id: s.id}, "", "#" + s.id);
             mostrarVista('view-perfil');
 
-            // CODIFICACIÓN DEL QR CON DATOS DE RESPALDO (Sin romper el formateador)
             const payloadQR = {
                 id: s.id,
                 nombre: s.nombre,
@@ -482,9 +496,10 @@
                 sexo: s.sexo,
                 estado: s.estado,
                 coincidencia: s.coincidencia,
-                adn: s.adn
+                adn: s.adn,
+                foto: s.foto
             };
-            const encodedData = btoa(JSON.stringify(payloadQR));
+            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
             const urlFinalQR = window.location.href.split('#')[0] + "#profileData=" + encodedData;
 
             document.getElementById('qrcode').innerHTML = "";
@@ -496,34 +511,6 @@
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.L
             });
-        }
-
-        // MÓDULO DE COTEJO DE ADN
-        function poblarSelectorComparador() {
-            const select = document.getElementById('select-comparar');
-            select.innerHTML = '';
-            sujetos.forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.id} - ${s.nombre}</option>`;
-            });
-        }
-
-        function ejecutarComparacion() {
-            const selectedId = document.getElementById('select-comparar').value;
-            const s = sujetos.find(item => item.id === selectedId);
-            if(!s) return;
-
-            const res = document.getElementById('resultado-comparacion');
-            res.innerHTML = `
-                <div class="space-y-3 w-full">
-                    <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">¡COINCIDENCIA ENCONTRADA EN LA BASE DE DATOS!</span>
-                    <h4 class="text-lg font-black text-slate-900">${s.nombre} (${s.id})</h4>
-                    <p class="text-xs text-slate-600">Porcentaje de Coincidencia Biométrica: <strong class="text-blue-900 text-sm font-black">${s.coincidencia}</strong></p>
-                    <div class="p-3 bg-slate-900 text-emerald-400 font-mono text-xs rounded-xl">
-                        ${s.adn}
-                    </div>
-                    <button onclick="verPerfil('${s.id}')" class="mt-2 bg-blue-900 text-white font-bold px-4 py-2 rounded-xl text-xs">Abrir Ficha Oficial Completa →</button>
-                </div>
-            `;
         }
 
         function volverAlDashboard() {
@@ -618,29 +605,23 @@
             }
         }
 
-        // MANEJO DE ESCANEO DE QR EN CUALQUIER DISPOSITIVO
         window.onload = function() {
             const hash = window.location.hash.replace('#', '');
             
             if(hash.startsWith('profileData=')) {
                 try {
-                    const jsonRaw = atob(hash.replace('profileData=', ''));
-                    const sujetoQR = JSON.parse(jsonRaw);
-                    rolActual = 'visitante';
-                    document.getElementById('user-status').classList.remove('hidden');
-                    document.getElementById('rol-actual').innerText = "VISITANTE (QR)";
-                    verPerfil(sujetoQR.id, sujetoQR);
+                    const jsonRaw = decodeURIComponent(escape(atob(hash.replace('profileData=', ''))));
+                    sujetoPendienteQR = JSON.parse(jsonRaw);
+                    mostrarVista('view-qr-auth');
                 } catch(e) {
-                    console.error("Error al sincronizar QR", e);
+                    console.error("Error al procesar QR", e);
                 }
             } else if(hash.startsWith('noticia-')) {
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
-                rolActual = 'visitante';
-                document.getElementById('user-status').classList.remove('hidden');
-                document.getElementById('rol-actual').innerText = "VISITANTE (QR)";
-                verPerfil(hash);
+                sujetoPendienteQR = sujetos.find(s => s.id === hash);
+                mostrarVista('view-qr-auth');
             }
         };
 
@@ -648,14 +629,15 @@
             const hash = window.location.hash.replace('#', '');
             if(hash.startsWith('profileData=')) {
                 try {
-                    const sujetoQR = JSON.parse(atob(hash.replace('profileData=', '')));
-                    verPerfil(sujetoQR.id, sujetoQR);
+                    sujetoPendienteQR = JSON.parse(decodeURIComponent(escape(atob(hash.replace('profileData=', '')))));
+                    mostrarVista('view-qr-auth');
                 } catch(e) {}
             } else if(hash.startsWith('noticia-')) {
                 const idNoticia = parseInt(hash.replace('noticia-', ''));
                 verDetalleNoticia(idNoticia);
             } else if(hash && sujetos.some(s => s.id === hash)) {
-                verPerfil(hash);
+                sujetoPendienteQR = sujetos.find(s => s.id === hash);
+                mostrarVista('view-qr-auth');
             } else {
                 mostrarVista('view-dashboard');
                 mostrarSeccion('noticias');
