@@ -140,7 +140,7 @@
             <div class="flex items-center gap-4 text-xs font-mono-tech">
                 <div class="hidden sm:flex items-center gap-2 bg-slate-950/70 border border-slate-800 px-3 py-1 rounded-full">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span class="text-emerald-400 font-semibold">ESTADO: NUBE SINCRONIZADA</span>
+                    <span class="text-emerald-400 font-semibold">ESTADO: OPERATIVO</span>
                 </div>
 
                 <div id="user-badge" class="hidden items-center gap-2 bg-cyan-950/40 border border-cyan-800/50 px-3 py-1 rounded">
@@ -537,12 +537,8 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC WITH CLOUD SYNCHRONIZATION -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Configuración de JSONBin.io (Base de datos remota 100% gratuita)
-        const JSONBIN_BIN_ID = '67389a9be41b4d34e44f8423'; // ID público compartido de prueba
-        const JSONBIN_API_KEY = '$2a$10$tZ8S09w2H1FzB2Y5x1XvIu1K5GgQ1w3L2Z6fK2V3b8R0p9s1q4m5u'; // Key pública de prueba
-
         // Default initial data for testing
         const INITIAL_SUBJECTS = [
             {
@@ -613,59 +609,29 @@
         let currentSubjectId = null;
         let qrScanner = null;
 
-        // Initialize App & Load from Cloud
+        // Initialize App
         window.addEventListener('DOMContentLoaded', () => {
-            loadSubjectsFromCloud();
+            loadSubjectsFromStorage();
             checkUrlHash();
         });
 
-        // Sincronización con la nube (Reemplazo del localStorage aislado)
-        async function loadSubjectsFromCloud() {
-            try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.record && Array.isArray(data.record.subjects)) {
-                        subjects = data.record.subjects;
-                    } else {
-                        subjects = [...INITIAL_SUBJECTS];
-                        saveSubjectsToCloud();
-                    }
-                } else {
+        // Load subjects from localStorage or set defaults
+        function loadSubjectsFromStorage() {
+            const stored = localStorage.getItem('sab_forensic_subjects');
+            if (stored) {
+                try {
+                    subjects = JSON.parse(stored);
+                } catch(e) {
                     subjects = [...INITIAL_SUBJECTS];
                 }
-            } catch(e) {
-                // Fallback local si hay problemas de red temporales
-                const stored = localStorage.getItem('sab_forensic_subjects');
-                subjects = stored ? JSON.parse(stored) : [...INITIAL_SUBJECTS];
-            }
-
-            populateSubjectSelector();
-            renderAdminTable();
-
-            if (subjects.length > 0) {
-                loadProfileById(subjects[0].id);
+            } else {
+                subjects = [...INITIAL_SUBJECTS];
+                saveSubjectsToStorage();
             }
         }
 
-        async function saveSubjectsToCloud() {
-            // Guardar localmente como respaldo inmediato
+        function saveSubjectsToStorage() {
             localStorage.setItem('sab_forensic_subjects', JSON.stringify(subjects));
-
-            try {
-                await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify({ subjects: subjects })
-                });
-            } catch(e) {
-                console.error("Error al sincronizar con la nube:", e);
-            }
         }
 
         // Authentication Handler
@@ -990,7 +956,7 @@
             }
         }
 
-        async function saveSubject(e) {
+        function saveSubject(e) {
             e.preventDefault();
             const editId = document.getElementById('edit-id').value;
             const name = document.getElementById('field-name').value.trim();
@@ -1026,7 +992,7 @@
                 subjects.unshift(newSubject);
             }
 
-            await saveSubjectsToCloud();
+            saveSubjectsToStorage();
             populateSubjectSelector();
             renderAdminTable();
             closeModalSubject();
@@ -1038,10 +1004,10 @@
             }
         }
 
-        async function deleteSubject(id) {
+        function deleteSubject(id) {
             if (confirm(`¿Está seguro de eliminar permanentemente al sujeto [${id}] de la base de datos?`)) {
                 subjects = subjects.filter(s => s.id !== id);
-                await saveSubjectsToCloud();
+                saveSubjectsToStorage();
                 populateSubjectSelector();
                 renderAdminTable();
                 if (subjects.length > 0) {
