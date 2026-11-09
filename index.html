@@ -22,7 +22,6 @@
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-3">
             <div class="bg-slate-950 p-2 rounded-xl border border-red-600/50 shadow flex items-center justify-center">
-                <!-- CARA SONRIENTE ROJA CLÁSICA Y SIMPLE -->
                 <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
                     <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"/>
                     <circle cx="35" cy="38" r="6"/>
@@ -86,9 +85,8 @@
             <div id="qr-auth-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Contraseña incorrecta. Acceso denegado.</div>
         </div>
 
-        <!-- 3. PORTADA PRINCIPAL (CON ZONAS SEPARADAS) -->
+        <!-- 3. PORTADA PRINCIPAL -->
         <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
-            
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">PANEL DE CONTROL GENERAL</h2>
@@ -101,7 +99,6 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
                 <div class="text-center pt-4">
@@ -109,11 +106,9 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN B: BASE DE PERFILES REGISTRADOS -->
             <div id="seccion-registros" class="hidden space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="lista-sujetos"></div>
             </div>
-
         </div>
 
         <!-- 4. VISTA DETALLE DE NOTICIA -->
@@ -229,7 +224,6 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
         
-        // ID de almacenamiento compartido en la nube global
         const BLOB_URL = "https://jsonblob.com/api/jsonBlob/1346618790215565312";
 
         const baseNoticias = [
@@ -378,7 +372,6 @@
         let sujetos = [];
         let rolActual = null;
 
-        // Carga robusta desde la nube
         async function cargarDatosNube(forzarRecarga = false) {
             try {
                 const res = await fetch(BLOB_URL + "?t=" + new Date().getTime(), { cache: 'no-store' });
@@ -412,7 +405,6 @@
             }
         }
 
-        // Sincronización Global Manual
         async function forzarSincronizacionGlobal() {
             if(confirm("¿Desea forzar la actualización y sincronización de todos los perfiles en la nube para que se reflejen en los celulares y otros dispositivos?")) {
                 await guardarDatosNube();
@@ -542,7 +534,6 @@
         function renderizarNoticias() {
             const contenedor = document.getElementById('contenedor-noticias');
             contenedor.innerHTML = '';
-            
             const noticiasAmostrar = baseNoticias.slice(0, limiteNoticias);
 
             noticiasAmostrar.forEach(n => {
@@ -660,11 +651,9 @@
             detalle.innerHTML = `
                 <div class="flex flex-col md:flex-row gap-8 items-center border-b border-slate-200 pb-8">
                     <img src="${s.foto || FOTO_DEFAULT}" class="w-44 h-44 object-cover rounded-2xl border-4 border-slate-900 shadow-xl">
-                    
                     <div class="space-y-3 text-center md:text-left flex-grow">
                         <span class="text-xs bg-blue-900 text-white font-extrabold px-4 py-1.5 rounded-full tracking-wider">${s.id}</span>
                         <h2 class="text-3xl font-black text-slate-900 leading-tight">${s.nombre}</h2>
-                        
                         <div class="grid grid-cols-2 gap-3 pt-2">
                             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                                 <span class="text-[10px] font-bold text-slate-500 uppercase block">F. Nacimiento:</span>
@@ -686,7 +675,6 @@
                     </div>
                 </div>
 
-                <!-- HISTORIAL TANATOLÓGICO Y PERICIAL -->
                 <div class="space-y-2 bg-amber-50/70 border border-amber-200/80 p-6 rounded-2xl mt-6">
                     <h3 class="text-xs font-black text-amber-900 uppercase tracking-wider flex items-center gap-2">
                         <span>📋</span> Historial Tanatológico y Reporte Pericial
