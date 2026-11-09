@@ -152,8 +152,16 @@
         <!-- 6. PANEL DE ADMINISTRACIÓN / FORMULARIO -->
         <div id="view-admin" class="w-full max-w-3xl hidden bg-white border border-slate-200 p-6 md:p-8 rounded-3xl shadow-xl space-y-6">
             <div class="flex justify-between items-center border-b border-slate-200 pb-4">
-                <h2 class="text-lg font-black text-slate-900">PANEL DE GESTIÓN DE PERFILES</h2>
-                <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 text-slate-700 font-bold px-3.5 py-2 rounded-xl hover:bg-slate-200 transition">Cerrar Panel</button>
+                <div>
+                    <h2 class="text-lg font-black text-slate-900">PANEL DE GESTIÓN DE PERFILES</h2>
+                    <p class="text-xs text-slate-500 font-medium">Edite registros y sincronice cambios en todos los dispositivos</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="forzarSincronizacionGlobal()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3.5 py-2.5 rounded-xl transition shadow flex items-center gap-1.5 uppercase tracking-wider">
+                        <span>🔄</span> Forzar Sincronización Global
+                    </button>
+                    <button onclick="volverAlDashboard()" class="text-xs bg-slate-100 text-slate-700 font-bold px-3.5 py-2.5 rounded-xl hover:bg-slate-200 transition">Cerrar</button>
+                </div>
             </div>
 
             <form id="form-sujeto" onsubmit="guardarSujeto(event)" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
@@ -401,6 +409,17 @@
                 });
             } catch(e) {
                 console.error("Error al actualizar la nube:", e);
+            }
+        }
+
+        // Función de Sincronización Global Manual para Administradores
+        async function forzarSincronizacionGlobal() {
+            if(confirm("¿Desea forzar la actualización y sincronización de todos los perfiles en la nube para que se reflejen en los celulares y otros dispositivos?")) {
+                await guardarDatosNube();
+                await cargarDatosNube(true);
+                renderizarDashboard();
+                actualizarListaAdmin();
+                alert("✅ ¡Sincronización global completada con éxito! Todos los dispositivos mostrarán los datos actualizados.");
             }
         }
 
