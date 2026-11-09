@@ -22,7 +22,6 @@
     <header class="bg-slate-900 border-b border-slate-800 text-white p-4 shadow-md flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="flex items-center space-x-3">
             <div class="bg-slate-950 p-2 rounded-xl border border-red-600/50 shadow flex items-center justify-center">
-                <!-- CARA SONRIENTE ROJA CLÁSICA Y SIMPLE -->
                 <svg class="w-8 h-8 text-red-600" viewBox="0 0 100 100" fill="currentColor">
                     <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="8"/>
                     <circle cx="35" cy="38" r="6"/>
@@ -196,6 +195,11 @@
                     <input type="text" id="adn" value="STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11" required class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-mono">
                 </div>
 
+                <div>
+                    <label class="text-xs font-bold text-slate-700 block mb-1">Historial Tanatológico / Reporte Pericial Breve:</label>
+                    <textarea id="historia" rows="3" placeholder="Ej: Suscrito a investigaciones previas..." class="w-full bg-white border border-slate-300 p-3 rounded-xl text-xs text-slate-800 font-medium">Sujeto bajo vigilancia pericial preventiva. Muestras biológicas estables en cadena de custodia institucional.</textarea>
+                </div>
+
                 <div class="flex gap-3 pt-2">
                     <button type="submit" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-xl text-xs transition shadow-md tracking-wider uppercase">Guardar Perfil</button>
                     <button type="button" onclick="limpiarFormulario()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-3 rounded-xl text-xs transition">Limpiar</button>
@@ -320,542 +324,444 @@
 
         let limiteNoticias = 3;
 
-        // LOS 30 PERFILES FIJOS OFICIALES DE LA BASE INSTITUCIONAL
+        // LOS 30 PERFILES OFICIALES DE LA CLASE CON HISTORIALES TANATOLÓGICOS PROFESIONALES
         const perfilesBaseOficiales = [
-            { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2008-05-10", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 12:00" },
-            { id: "SAB-8395", nombre: "Carlos Mendoza R.", fechaNac: "1990-05-14", edad: 36, estado: "FALLECIDO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 17,18 | TPOX: 9,12", ultimoIngreso: "05/06/2026 14:22" },
-            { id: "SAB-1002", nombre: "Elena Vásquez S.", fechaNac: "1995-11-20", edad: 30, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19 | TPOX: 8,10", ultimoIngreso: "06/06/2026 09:15" },
-            { id: "SAB-9241", nombre: "Róbinson Felipe Rafael Padilla R.", fechaNac: "2010-02-15", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 10:30" },
-            { id: "SAB-1005", nombre: "Sofía Valentina Rojas", fechaNac: "2009-03-12", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 15,17 | TPOX: 9,11", ultimoIngreso: "01/11/2026 11:00" },
-            { id: "SAB-1006", nombre: "Matías Ignacio Soto", fechaNac: "2008-07-22", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 16,20 | TPOX: 8,12", ultimoIngreso: "02/11/2026 14:10" },
-            { id: "SAB-1007", nombre: "Valentina Paz Castillo", fechaNac: "2009-09-05", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,14 | vWA: 17,19 | TPOX: 7,10", ultimoIngreso: "03/11/2026 16:45" },
-            { id: "SAB-1008", nombre: "Lucas Andrés Herrera", fechaNac: "2008-11-30", edad: 17, estado: "FALLECIDO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 18,18 | TPOX: 8,8", ultimoIngreso: "04/11/2026 08:20" },
-            { id: "SAB-1009", nombre: "Isidora Belén Morales", fechaNac: "2010-01-18", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 16,17 | TPOX: 9,10", ultimoIngreso: "05/11/2026 12:30" },
-            { id: "SAB-1010", nombre: "Benjamín Alonso Silva", fechaNac: "2009-06-25", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 15,19 | TPOX: 8,11", ultimoIngreso: "06/11/2026 15:50" },
-            { id: "SAB-1011", nombre: "Camila Andrea Fuentes", fechaNac: "2008-04-03", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,14 | vWA: 16,18 | TPOX: 11,11", ultimoIngreso: "07/11/2026 09:00" },
-            { id: "SAB-1012", nombre: "Joaquín Alejandro Contreras", fechaNac: "2009-12-14", edad: 16, estado: "FALLECIDO", coincidencia: "99.2%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 8,13 | vWA: 14,16 | TPOX: 7,9", ultimoIngreso: "07/11/2026 18:00" },
-            { id: "SAB-1013", nombre: "Antonia Javiera Alarcón", fechaNac: "2010-05-09", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 17,20 | TPOX: 8,10", ultimoIngreso: "08/11/2026 11:15" },
-            { id: "SAB-1014", nombre: "Diego Esteban Parra", fechaNac: "2008-08-19", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 15,18 | TPOX: 9,12", ultimoIngreso: "08/11/2026 13:40" },
-            { id: "SAB-1015", nombre: "Florencia Ignacia Bravo", fechaNac: "2009-10-01", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,11 | vWA: 16,16 | TPOX: 8,9", ultimoIngreso: "08/11/2026 14:00" },
-            { id: "SAB-1016", nombre: "Vicente Emilio Muñoz", fechaNac: "2008-02-14", edad: 18, estado: "VIVO", coincidencia: "99.4%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,15 | vWA: 19,21 | TPOX: 10,12", ultimoIngreso: "08/11/2026 14:10" },
-            { id: "SAB-1017", nombre: "Martina Paz Reyes", fechaNac: "2010-04-20", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 17,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 14:15" },
-            { id: "SAB-1018", nombre: "Agustín Ignacio Garrido", fechaNac: "2009-01-11", edad: 17, estado: "FALLECIDO", coincidencia: "99.1%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,12 | vWA: 13,15 | TPOX: 6,8", ultimoIngreso: "08/11/2026 14:20" },
-            { id: "SAB-1019", nombre: "Emilia Rosa Sepúlveda", fechaNac: "2008-06-17", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,14 | vWA: 18,22 | TPOX: 11,13", ultimoIngreso: "08/11/2026 14:25" },
-            { id: "SAB-1020", nombre: "Maximiliano Andrés Espinoza", fechaNac: "2010-08-28", edad: 16, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19 | TPOX: 8,10", ultimoIngreso: "08/11/2026 14:30" },
-            { id: "SAB-1021", nombre: "Trinidad Paz Valenzuela", fechaNac: "2009-11-04", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 15,17 | TPOX: 9,11", ultimoIngreso: "08/11/2026 14:35" },
-            { id: "SAB-1022", nombre: "Vicente Alejandro Lagos", fechaNac: "2008-03-29", edad: 18, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 17,20 | TPOX: 7,12", ultimoIngreso: "08/11/2026 14:40" },
-            { id: "SAB-1023", nombre: "Catalina Ignacia San Martín", fechaNac: "2010-07-15", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 18,19 | TPOX: 10,11", ultimoIngreso: "08/11/2026 14:45" },
-            { id: "SAB-1024", nombre: "Tomás Ignacio Araya", fechaNac: "2009-05-08", edad: 17, estado: "FALLECIDO", coincidencia: "99.3%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 8,11 | vWA: 14,16 | TPOX: 6,9", ultimoIngreso: "08/11/2026 14:50" },
-            { id: "SAB-1025", nombre: "Josefa Belén Pizarro", fechaNac: "2008-12-02", edad: 17, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 16,18 | TPOX: 8,10", ultimoIngreso: "08/11/2026 14:55" },
-            { id: "SAB-1026", nombre: "Ignacio Javier Olivares", fechaNac: "2010-03-21", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 17,19 | TPOX: 9,11", ultimoIngreso: "08/11/2026 15:00" },
-            { id: "SAB-1027", nombre: "Isabel Cristina Saavedra", fechaNac: "2009-09-14", edad: 17, estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 15,17 | TPOX: 7,10", ultimoIngreso: "08/11/2026 15:05" },
-            { id: "SAB-1028", nombre: "Felipe Andrés Navarro", fechaNac: "2008-01-30", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 14,15 | vWA: 20,21 | TPOX: 11,12", ultimoIngreso: "08/11/2026 15:10" },
-            { id: "SAB-1029", nombre: "Rocío Belén Vergara", fechaNac: "2010-10-10", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,18 | TPOX: 8,11", ultimoIngreso: "08/11/2026 15:15" },
-            { id: "SAB-1030", nombre: "Esteban Alejandro Palma", fechaNac: "2009-04-05", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 17,19 | TPOX: 9,12", ultimoIngreso: "08/11/2026 15:20" }
+            { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2008-05-10", edad: 18, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Sujeto bajo seguimiento analítico preventivo en laboratorios de biotecnología. Muestra rastros de metabolitos estables en pruebas epiteliales y control genético riguroso sin alteraciones criminales.", ultimoIngreso: "08/11/2026 12:00" },
+            { id: "SAB-8395", nombre: "Róbinson Felipe Rafael Padilla R.", fechaNac: "2010-02-15", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", historia: "Principal analista operativo en el registro biomolecular SAB. Sin antecedentes tanatológicos; perfil bajo custodia y validación cruzada.", ultimoIngreso: "08/11/2026 12:05" },
+            { id: "SAB-1001", nombre: "Sofía Valentina Albornoz", fechaNac: "2009-03-12", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 15,19 | TPOX: 9,11", historia: "Especialista en identificación mitocondrial y análisis de perfiles genéticos degradados en muestras complejas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1002", nombre: "Matías Alejandro Rojas", fechaNac: "2008-07-22", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 16,17 | TPOX: 8,12", historia: "Perito junior asignado al levantamiento de evidencias biológicas y Touch DNA en superficies metálicas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1003", nombre: "Isidora Belén Contreras", fechaNac: "2009-11-05", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 14,16 | TPOX: 7,10", historia: "Investigadora en toxicología forense y cromatografía aplicada a fluidos corporales.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1004", nombre: "Benjamín Ignacio Soto", fechaNac: "2008-01-30", edad: 18, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 18,19 | TPOX: 10,12", historia: "Analista de patrones de metilación en relojes epigenéticos para estimación de edad cronológica.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1005", nombre: "Josefa Ignacia Morales", fechaNac: "2009-06-18", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 15,18 | TPOX: 8,11", historia: "Especialista en entomología forense y análisis de sucesión necrófaga en escenarios simulados.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1006", nombre: "Lucas Esteban Valenzuela", fechaNac: "2008-09-14", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,14 | vWA: 13,16 | TPOX: 9,10", historia: "Técnico en cadena de custodia y preservación de muestras biológicas bajo normativas internacionales.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1007", nombre: "Catalina Andrea Silva", fechaNac: "2009-12-01", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 16,18 | TPOX: 8,11", historia: "Investigadora en fenotipación y reconstrucción facial mediante marcadores de ancestría (AIMs).", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1008", nombre: "Vicente Emilio Fuentes", fechaNac: "2008-04-25", edad: 18, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 14,17 | TPOX: 7,9", historia: "Operador de sistemas nanofluídicos y biosensores portátiles para lectura rápida STR.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1009", nombre: "Antonia Paz Herrera", fechaNac: "2009-08-20", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 15,16 | TPOX: 9,12", historia: "Especialista en análisis de tanatomicrobioma y rastreo bacteriano post-mortem.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1010", nombre: "Joaquín Ignacio González", fechaNac: "2008-10-09", edad: 18, estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,15 | vWA: 17,19 | TPOX: 10,11", historia: "Coordinador de seguridad informática forense y encriptación de bases de datos genómicas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1011", nombre: "Florencia Trinidad Muñoz", fechaNac: "2009-02-28", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,12 | vWA: 14,18 | TPOX: 8,10", historia: "Analista de perfiles mitocondriales en restos óseos carbonizados.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1012", nombre: "Agustín Alonso Pérez", fechaNac: "2008-06-11", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,19 | TPOX: 9,11", historia: "Perito en dactiloscopia avanzada y revelado químico de impresiones latentes.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1013", nombre: "Emilia Sofía Castillo", fechaNac: "2009-05-19", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 15,17 | TPOX: 8,12", historia: "Investigadora en genética de poblaciones aplicada a la identificación de personas desaparecidas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1014", nombre: "Maximiliano Andrés Flores", fechaNac: "2008-12-03", edad: 18, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,13 | vWA: 13,18 | TPOX: 7,11", historia: "Especialista en espectrometría de masas aplicada a la detección de toxinas volátiles.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1015", nombre: "Martina Ignacia Reyes", fechaNac: "2009-10-27", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,10", historia: "Analista de ADN de contacto en armas y herramientas de asalto.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1016", nombre: "Alonso Gabriel Ramírez", fechaNac: "2008-03-17", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 15,19 | TPOX: 9,12", historia: "Perito en reconstrucción de trayectorias balísticas y análisis de residuos de disparo (GSR).", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1017", nombre: "Isabel Cristina Morales", fechaNac: "2009-07-08", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 16,17 | TPOX: 8,11", historia: "Investigadora en patología forense y análisis histopatológico de tejidos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1018", nombre: "Diego Alejandro Soto", fechaNac: "2008-08-29", edad: 18, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 14,18 | TPOX: 7,10", historia: "Técnico en levantamiento fotogramétrico de escenas del crimen complejas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1019", nombre: "Amanda Belén Torres", fechaNac: "2009-01-14", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 15,19 | TPOX: 9,11", historia: "Especialista en genética forense animal y cruce de evidencias biológicas zoosanitarias.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1020", nombre: "Matías Ignacio Campos", fechaNac: "2008-11-21", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 17,18 | TPOX: 8,12", historia: "Analista de bases de datos genealógicas públicas para la resolución de casos fríos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1021", nombre: "Renata Valentina Medina", fechaNac: "2009-04-03", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 14,16 | TPOX: 8,10", historia: "Investigadora en bioquímica forense y estabilidad enzimática en muestras líquidas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1022", nombre: "Gabriel Esteban Espinoza", fechaNac: "2008-05-26", edad: 18, estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,14 | vWA: 15,17 | TPOX: 7,9", historia: "Perito en análisis de fluidos biológicos y pruebas orientativas de campo.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1023", nombre: "Trinidad Paz Navarro", fechaNac: "2009-09-11", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 16,19 | TPOX: 9,12", historia: "Especialista en identificación odontológica forense y comparación de registros dentales.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1024", nombre: "Vicente Javier Rivas", fechaNac: "2008-02-07", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 13,18 | TPOX: 8,11", historia: "Operador de equipos de secuenciación masiva (NGS) para perfiles complejos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1025", nombre: "Javiera Ignacia Fuentes", fechaNac: "2009-06-25", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 15,18 | TPOX: 9,10", historia: "Investigadora en toxicología ambiental y presencia de metales pesados en tejidos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1026", nombre: "Cristóbal Andrés Bravo", fechaNac: "2008-10-18", edad: 18, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 14,17 | TPOX: 8,12", historia: "Analista de rastros papilares en superficies porosas y no porosas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1027", nombre: "Emilia Paz Contreras", fechaNac: "2009-12-15", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,12 | vWA: 16,19 | TPOX: 7,11", historia: "Especialista en peritaje caligráfico y análisis documentológico forense.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-1028", nombre: "Benjamín Alonso Vergara", fechaNac: "2008-07-04", edad: 18, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 15,18 | TPOX: 9,12", historia: "Coordinador general de operaciones periciales en el Colegio San Antonio del Baluarte.", ultimoIngreso: "08/11/2026" }
         ];
 
-        let sujetosGuardados = JSON.parse(localStorage.getItem('sab_sujetos'));
-        let sujetos = sujetosGuardados && sujetosGuardados.length >= perfilesBaseOficiales.length ? sujetosGuardados : perfilesBaseOficiales;
-
         let rolActual = null;
-        let sujetoPendienteQR = null;
+        let idQRPendiente = null;
 
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'sab_sujetos') {
-                sujetos = JSON.parse(e.newValue) || perfilesBaseOficiales;
-                renderizarDashboard();
+        function obtenerSujetos() {
+            let guardados = localStorage.getItem("sab_sujetos_v2");
+            if (!guardados) {
+                localStorage.setItem("sab_sujetos_v2", JSON.stringify(perfilesBaseOficiales));
+                return perfilesBaseOficiales;
             }
-        });
-
-        function guardarDatosLocal() {
-            localStorage.setItem('sab_sujetos', JSON.stringify(sujetos));
+            return JSON.parse(guardados);
         }
 
-        function calcularEdad(fechaNacStr) {
-            if (!fechaNacStr) return 0;
-            const nac = new Date(fechaNacStr);
-            const hoy = new Date();
-            let edad = hoy.getFullYear() - nac.getFullYear();
-            const m = hoy.getMonth() - nac.getMonth();
-            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) { edad--; }
-            return edad;
+        function guardarSujetosStorage(sujetos) {
+            localStorage.setItem("sab_sujetos_v2", JSON.stringify(sujetos));
         }
 
-        function obtenerFechaActualFormateada() {
-            const d = new Date();
-            const dia = String(d.getDate()).padStart(2, '0');
-            const mes = String(d.getMonth() + 1).padStart(2, '0');
-            const anio = d.getFullYear();
-            const hora = String(d.getHours()).padStart(2, '0');
-            const min = String(d.getMinutes()).padStart(2, '0');
-            return `${dia}/${mes}/${anio} ${hora}:${min}`;
-        }
-
-        function mostrarVista(vistaId) {
-            ['view-login', 'view-qr-auth', 'view-dashboard', 'view-detalle-noticia', 'view-perfil', 'view-admin'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(vistaId).classList.remove('hidden');
-        }
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idQR = urlParams.get('id');
+            if (idQR) {
+                idQRPendiente = idQR;
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-qr-auth').classList.remove('hidden');
+            }
+        };
 
         function autenticarUsuario() {
-            const val = document.getElementById('pass-unica').value.trim().toLowerCase();
-            if(val === PASS_ADMIN) {
-                rolActual = 'admin';
+            const pass = document.getElementById('pass-unica').value.trim();
+            const errorDiv = document.getElementById('login-error');
+
+            if (pass === PASS_ADMIN) {
+                rolActual = "admin";
                 iniciarSesionExitoso();
-            } else if(val === PASS_VISITANTE) {
-                rolActual = 'visitante';
+            } else if (pass === PASS_VISITANTE) {
+                rolActual = "visitante";
                 iniciarSesionExitoso();
             } else {
-                mostrarErrorLogin();
+                errorDiv.classList.remove('hidden');
             }
-        }
-
-        function mostrarErrorLogin() {
-            const err = document.getElementById('login-error');
-            err.classList.remove('hidden');
-            setTimeout(() => err.classList.add('hidden'), 3500);
         }
 
         function validarQRAuth() {
-            const val = document.getElementById('pass-qr').value.trim().toLowerCase();
-            if(val === PASS_ADMIN || val === PASS_VISITANTE) {
-                rolActual = val === PASS_ADMIN ? 'admin' : 'visitante';
+            const pass = document.getElementById('pass-qr').value.trim();
+            const errorDiv = document.getElementById('qr-auth-error');
+
+            if (pass === PASS_ADMIN || pass === PASS_VISITANTE) {
+                rolActual = (pass === PASS_ADMIN) ? "admin" : "visitante";
+                document.getElementById('view-qr-auth').classList.add('hidden');
+                document.getElementById('view-dashboard').classList.remove('hidden');
                 document.getElementById('user-status').classList.remove('hidden');
-                document.getElementById('rol-actual').innerText = rolActual.toUpperCase() + " (QR)";
-                if(rolActual === 'admin') {
+                document.getElementById('rol-actual').innerText = rolActual;
+                
+                if (rolActual === 'admin') {
                     document.getElementById('btn-admin-panel').classList.remove('hidden');
                 }
-                
-                sujetoPendienteQR.ultimoIngreso = obtenerFechaActualFormateada();
-                const idxExistente = sujetos.findIndex(s => s.id === sujetoPendienteQR.id);
-                if(idxExistente !== -1) {
-                    sujetos[idxExistente] = sujetoPendienteQR;
-                } else {
-                    sujetos.push(sujetoPendienteQR);
-                }
-                guardarDatosLocal();
 
-                verPerfil(sujetoPendienteQR.id, sujetoPendienteQR);
-                sujetoPendienteQR = null;
+                renderizarNoticias();
+                renderizarPerfiles();
+
+                if (idQRPendiente) {
+                    verPerfilPorId(idQRPendiente);
+                }
             } else {
-                const err = document.getElementById('qr-auth-error');
-                err.classList.remove('hidden');
-                setTimeout(() => err.classList.add('hidden'), 3500);
+                errorDiv.classList.remove('hidden');
             }
         }
 
         function iniciarSesionExitoso() {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
             document.getElementById('user-status').classList.remove('hidden');
-            document.getElementById('rol-actual').innerText = rolActual.toUpperCase();
-            
-            if(rolActual === 'admin') {
+            document.getElementById('rol-actual').innerText = rolActual;
+
+            if (rolActual === 'admin') {
                 document.getElementById('btn-admin-panel').classList.remove('hidden');
-            } else {
-                document.getElementById('btn-admin-panel').classList.add('hidden');
             }
+
             renderizarNoticias();
-            renderizarDashboard();
-            mostrarVista('view-dashboard');
-            mostrarSeccion('noticias');
+            renderizarPerfiles();
         }
 
         function cerrarSesion() {
             rolActual = null;
             document.getElementById('user-status').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-perfil').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-detalle-noticia').classList.add('hidden');
+            document.getElementById('view-login').classList.remove('hidden');
             document.getElementById('pass-unica').value = '';
-            document.getElementById('pass-qr').value = '';
-            history.pushState("", document.title, window.location.pathname);
-            mostrarVista('view-login');
+            document.getElementById('login-error').classList.add('hidden');
         }
 
         function mostrarSeccion(seccion) {
-            const btnNoticias = document.getElementById('tab-noticias');
-            const btnRegistros = document.getElementById('tab-registros');
             const secNoticias = document.getElementById('seccion-noticias');
             const secRegistros = document.getElementById('seccion-registros');
+            const tabNoticias = document.getElementById('tab-noticias');
+            const tabRegistros = document.getElementById('tab-registros');
 
-            if(seccion === 'noticias') {
+            if (seccion === 'noticias') {
                 secNoticias.classList.remove('hidden');
                 secRegistros.classList.add('hidden');
-                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
-                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                tabNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+                tabRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
             } else {
                 secNoticias.classList.add('hidden');
                 secRegistros.classList.remove('hidden');
-                btnRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
-                btnNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
-                renderizarDashboard();
+                tabRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+                tabNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
             }
         }
 
         function renderizarNoticias() {
             const contenedor = document.getElementById('contenedor-noticias');
-            contenedor.innerHTML = '';
-            
-            const noticiasAmostrar = baseNoticias.slice(0, limiteNoticias);
+            contenedor.innerHTML = "";
 
-            noticiasAmostrar.forEach(n => {
-                contenedor.innerHTML += `
-                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition">
-                        <div>
-                            <img src="${n.imagen}" class="w-full h-44 object-cover" alt="${n.titulo}">
-                            <div class="p-5 space-y-2">
-                                <span class="text-[10px] font-extrabold text-blue-900 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 uppercase tracking-wider">${n.categoria}</span>
-                                <h3 class="font-bold text-slate-900 text-base leading-snug">${n.titulo}</h3>
-                                <p class="text-xs text-slate-500 font-semibold">🏛️ ${n.institucion} · 📍 ${n.lugar}</p>
-                                <p class="text-xs text-slate-600 leading-relaxed font-normal">${n.resumen}</p>
-                            </div>
-                        </div>
-                        <div class="px-5 pb-5 pt-0 flex justify-end">
-                            <button onclick="verDetalleNoticia(${n.id})" class="text-xs font-black text-blue-900 hover:underline">Leer Artículo Completo →</button>
+            const visibles = baseNoticias.slice(0, limiteNoticias);
+            visibles.forEach(noticia => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <img src="${noticia.imagen}" class="w-full h-44 object-cover" alt="Noticia">
+                        <div class="p-5 space-y-2">
+                            <span class="text-[10px] font-extrabold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase tracking-wider">${noticia.categoria}</span>
+                            <h3 class="font-black text-slate-900 text-sm md:text-base leading-snug">${noticia.titulo}</h3>
+                            <p class="text-xs text-slate-600 line-clamp-3 font-medium">${noticia.resumen}</p>
                         </div>
                     </div>
+                    <div class="p-5 pt-0 flex justify-between items-center text-xs text-slate-500 font-semibold border-t border-slate-100 mt-2">
+                        <span>🏛️ ${noticia.institucion}</span>
+                        <button onclick="verDetalleNoticia(${noticia.id})" class="text-blue-900 hover:text-blue-700 font-bold uppercase tracking-wider">Leer artículo →</button>
+                    </div>
                 `;
+                contenedor.appendChild(card);
             });
 
-            const btnCargar = document.getElementById('btn-cargar-mas');
-            if(limiteNoticias >= baseNoticias.length) {
-                btnCargar.style.display = 'none';
-            } else {
-                btnCargar.style.display = 'block';
+            if (limiteNoticias >= baseNoticias.length) {
+                document.getElementById('btn-cargar-mas').classList.add('hidden');
             }
         }
 
         function cargarMasNoticias() {
-            if(limiteNoticias < baseNoticias.length) {
-                limiteNoticias += 3;
-                renderizarNoticias();
-            }
+            limiteNoticias += 3;
+            renderizarNoticias();
         }
 
         function verDetalleNoticia(id) {
-            const n = baseNoticias.find(item => item.id === id);
-            if(!n) return;
+            const noticia = baseNoticias.find(n => n.id === id);
+            if (!noticia) return;
 
-            document.getElementById('det-cat').innerText = n.categoria;
-            document.getElementById('det-titulo').innerText = n.titulo;
-            document.getElementById('det-institucion').innerText = n.institucion;
-            document.getElementById('det-lugar').innerText = n.lugar;
-            document.getElementById('det-fecha').innerText = n.fecha;
-            document.getElementById('det-imagen').src = n.imagen;
-            document.getElementById('det-texto').innerText = n.texto;
+            document.getElementById('det-cat').innerText = noticia.categoria;
+            document.getElementById('det-titulo').innerText = noticia.titulo;
+            document.getElementById('det-institucion').innerText = noticia.institucion;
+            document.getElementById('det-lugar').innerText = noticia.lugar;
+            document.getElementById('det-fecha').innerText = noticia.fecha;
+            document.getElementById('det-imagen').src = noticia.imagen;
+            document.getElementById('det-texto').innerText = noticia.texto;
 
-            history.pushState({noticiaId: id}, "", "#noticia-" + id);
-            mostrarVista('view-detalle-noticia');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-detalle-noticia').classList.remove('hidden');
         }
 
-        function renderizarDashboard() {
-            const contenedor = document.getElementById('lista-sujetos');
-            contenedor.innerHTML = '';
-            
-            sujetos.forEach(s => {
-                const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
-                contenedor.innerHTML += `
-                    <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:border-blue-900 hover:shadow-lg transition flex flex-col justify-between space-y-4">
-                        <div onclick="verPerfil('${s.id}')" class="flex items-center space-x-4 cursor-pointer">
-                            <img src="${s.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shadow">
-                            <div class="space-y-1">
-                                <span class="text-xs text-blue-900 font-extrabold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">${s.id}</span>
-                                <h3 class="text-slate-900 font-black text-sm md:text-base">${s.nombre}</h3>
-                                <p class="text-xs text-slate-600 font-semibold">Edad: <strong class="text-slate-900">${edadCalculada} años</strong> | Estado: <span class="font-extrabold ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span></p>
-                            </div>
+        function renderizarPerfiles() {
+            const lista = document.getElementById('lista-sujetos');
+            lista.innerHTML = "";
+            const sujetos = obtenerSujetos();
+
+            sujetos.forEach((sujeto, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:shadow-md transition flex items-center space-x-4";
+                card.innerHTML = `
+                    <img src="${sujeto.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shadow-sm flex-shrink-0">
+                    <div class="flex-grow min-w-0">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-extrabold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">${sujeto.id}</span>
+                            <span class="text-[10px] font-bold ${sujeto.estado === 'VIVO' ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-red-700 bg-red-50 border-red-200'} px-2 py-0.5 rounded border">${sujeto.estado}</span>
                         </div>
-                        <div class="flex justify-between items-center border-t border-slate-100 pt-3">
-                            <button onclick="verPerfil('${s.id}')" class="text-xs text-blue-700 font-bold hover:underline">Ver Ficha Completa →</button>
-                            <div id="mini-qr-${s.id}" class="p-1 bg-white border border-slate-200 rounded-lg shadow-sm"></div>
-                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm truncate mt-1">${sujeto.nombre}</h4>
+                        <p class="text-xs text-slate-500 font-medium">Edad: ${sujeto.edad || 'N/D'} años · ADN: ${sujeto.adn.substring(0, 22)}...</p>
+                    </div>
+                    <div class="flex flex-col gap-1.5 flex-shrink-0">
+                        <button onclick="verPerfil(${idx})" class="bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">Ver Ficha</button>
+                        ${rolActual === 'admin' ? `<button onclick="editarSujeto(${idx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg transition">Editar</button>` : ''}
                     </div>
                 `;
+                lista.appendChild(card);
             });
-
-            setTimeout(() => {
-                sujetos.forEach(s => {
-                    const qrContenedor = document.getElementById(`mini-qr-${s.id}`);
-                    if (qrContenedor && qrContenedor.innerHTML === "") {
-                        const urlBase = window.location.origin + window.location.pathname;
-                        const payloadQR = { 
-                            id: s.id, 
-                            nombre: s.nombre, 
-                            fechaNac: s.fechaNac, 
-                            edad: calcularEdad(s.fechaNac) || s.edad, 
-                            estado: s.estado, 
-                            adn: s.adn, 
-                            coincidencia: s.coincidencia || '99.8%',
-                            foto: s.foto || FOTO_DEFAULT,
-                            ultimoIngreso: s.ultimoIngreso || obtenerFechaActualFormateada()
-                        };
-                        const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
-                        const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
-
-                        new QRCode(qrContenedor, {
-                            text: urlFinalQR,
-                            width: 56,
-                            height: 56,
-                            colorDark: "#000000",
-                            colorLight: "#ffffff",
-                            correctLevel: QRCode.CorrectLevel.L
-                        });
-                    }
-                });
-            }, 100);
         }
 
-        function verPerfil(id, objetoExterno = null) {
-            let s = objetoExterno || sujetos.find(item => item.id === id);
-            if(!s) return;
+        function verPerfil(idx) {
+            const sujetos = obtenerSujetos();
+            const sujeto = sujetos[idx];
+            mostrarFichaDetalle(sujeto);
+        }
 
-            if (!objetoExterno) {
-                s.ultimoIngreso = obtenerFechaActualFormateada();
-                guardarDatosLocal();
+        function verPerfilPorId(idSujeto) {
+            const sujetos = obtenerSujetos();
+            const sujeto = sujetos.find(s => s.id === idSujeto);
+            if (sujeto) {
+                mostrarFichaDetalle(sujeto);
+            } else {
+                alert("Perfil no encontrado.");
+                volverAlDashboard();
             }
+        }
 
-            if(!sujetos.some(existente => existente.id === s.id)) {
-                sujetos.push(s);
-                guardarDatosLocal();
-            }
+        function mostrarFichaDetalle(sujeto) {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-detalle-noticia').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-perfil').classList.remove('hidden');
 
-            const edadCalculada = calcularEdad(s.fechaNac) || s.edad;
-            const fechaNacFormateada = s.fechaNac ? s.fechaNac.split('-').reverse().join('/') : 'NO REGISTRADA';
+            const contenedor = document.getElementById('detalle-perfil');
+            const urlQRActual = window.location.origin + window.location.pathname + "?id=" + sujeto.id;
 
-            const detalle = document.getElementById('detalle-perfil');
-            detalle.innerHTML = `
-                <div class="flex flex-col md:flex-row gap-8 items-center border-b border-slate-200 pb-8">
-                    <img src="${s.foto || FOTO_DEFAULT}" class="w-44 h-44 object-cover rounded-2xl border-4 border-slate-900 shadow-xl">
-                    
-                    <div class="space-y-3 text-center md:text-left flex-grow">
-                        <span class="text-xs bg-blue-900 text-white font-extrabold px-4 py-1.5 rounded-full tracking-wider">${s.id}</span>
-                        <h2 class="text-3xl font-black text-slate-900 leading-tight">${s.nombre}</h2>
-                        
-                        <div class="grid grid-cols-2 gap-3 pt-2">
-                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase block">F. Nacimiento:</span>
-                                <span class="text-sm font-black text-slate-900">${fechaNacFormateada}</span>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Edad Registrada:</span>
-                                <span class="text-sm font-black text-slate-900">${edadCalculada} AÑOS</span>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Sexo / Estado:</span>
-                                <span class="text-sm font-black ${s.estado === 'VIVO' ? 'text-emerald-600' : 'text-rose-600'}">${s.estado}</span>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase block">Último Ingreso:</span>
-                                <span class="text-xs font-black text-slate-700">${s.ultimoIngreso || 'N/D'}</span>
-                            </div>
+            contenedor.innerHTML = `
+                <div class="border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex items-center space-x-4">
+                        <img src="${sujeto.foto || FOTO_DEFAULT}" class="w-20 h-20 object-cover rounded-2xl border-2 border-slate-200 shadow-md">
+                        <div>
+                            <span class="text-xs font-extrabold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase">${sujeto.id}</span>
+                            <h2 class="text-xl md:text-2xl font-black text-slate-900 mt-1">${sujeto.nombre}</h2>
+                            <p class="text-xs text-slate-500 font-semibold">Estado Vital: <strong class="${sujeto.estado === 'VIVO' ? 'text-emerald-700' : 'text-red-700'}">${sujeto.estado}</strong> · Edad: ${sujeto.edad || 'N/D'} años</p>
                         </div>
                     </div>
+                    <div id="qrcode-box" class="bg-white p-2 border border-slate-200 rounded-xl shadow-sm flex flex-col items-center"></div>
                 </div>
 
-                <div class="space-y-3 bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-6">
-                    <div class="flex justify-between items-center text-xs font-bold">
-                        <span class="text-slate-700 uppercase tracking-wider">Perfil Genético STR (Marcadores Moleculares):</span>
-                        <span class="text-blue-900 font-black bg-blue-100 px-3 py-1 rounded-full">${s.coincidencia || '99.8%'} COINCIDENCIA</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Marcadores Genéticos STR / ADN</span>
+                        <p class="font-mono text-xs text-blue-900 font-bold bg-white p-3 rounded-xl border border-slate-200">${sujeto.adn}</p>
                     </div>
-                    <div class="p-4 bg-slate-900 rounded-xl font-mono text-sm text-emerald-400 border border-slate-800 shadow-inner overflow-x-auto">
-                        ${s.adn}
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Índice de Coincidencia Biomolecular</span>
+                        <p class="text-sm font-black text-slate-900 bg-white p-3 rounded-xl border border-slate-200">${sujeto.coincidencia || '99.9%'}</p>
                     </div>
                 </div>
 
-                <div class="mt-8 flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border border-slate-200 shadow-inner">
-                    <div id="qrcode" class="mb-3 p-3 bg-white rounded-xl shadow-md border border-slate-200"></div>
-                    <span class="text-slate-800 text-xs font-black tracking-widest uppercase">CÓDIGO QR AUTÓNOMO DE ESTE PERFIL</span>
+                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl space-y-2">
+                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Historial Tanatológico / Reporte Pericial Oficial</h3>
+                    <p class="text-xs md:text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-line">${sujeto.historia || 'Sin observaciones registradas en cadena de custodia.'}</p>
+                </div>
+
+                <div class="text-[10px] text-slate-400 text-center pt-2 font-semibold">
+                    Última actualización de registro: ${sujeto.ultimoIngreso || '08/11/2026'} · Colegio San Antonio del Baluarte (Rengo)
                 </div>
             `;
 
-            history.pushState({id: s.id}, "", "#" + s.id);
-            mostrarVista('view-perfil');
-
-            const urlBase = window.location.origin + window.location.pathname;
-            const payloadQR = { 
-                id: s.id, 
-                nombre: s.nombre, 
-                fechaNac: s.fechaNac, 
-                edad: edadCalculada, 
-                estado: s.estado, 
-                adn: s.adn, 
-                coincidencia: s.coincidencia || '99.8%',
-                foto: s.foto || FOTO_DEFAULT,
-                ultimoIngreso: s.ultimoIngreso
-            };
-            const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(payloadQR))));
-            const urlFinalQR = `${urlBase}#profileData=${encodedData}`;
-
-            setTimeout(() => {
-                const qrContainer = document.getElementById('qrcode');
-                if(qrContainer) {
-                    qrContainer.innerHTML = "";
-                    new QRCode(qrContainer, {
-                        text: urlFinalQR,
-                        width: 160,
-                        height: 160,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.L
-                    });
-                }
-            }, 50);
+            new QRCode(document.getElementById("qrcode-box"), {
+                text: urlQRActual,
+                width: 90,
+                height: 90,
+                colorDark: "#0f172a",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
         }
 
-        function procesarFotoLocal(e) {
-            const archivo = e.target.files[0];
-            if (archivo) {
-                const lector = new FileReader();
-                lector.onload = function(event) {
-                    document.getElementById('foto-base64').value = event.target.result;
-                    document.getElementById('preview-img').src = event.target.result;
-                    document.getElementById('preview-contenedor').classList.remove('hidden');
-                };
-                lector.readAsDataURL(archivo);
-            }
+        function volverAlDashboard() {
+            document.getElementById('view-perfil').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-detalle-noticia').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            renderizarPerfiles();
+            renderizarNoticias();
         }
 
         function abrirPanelAdmin() {
             limpiarFormulario();
-            actualizarListaAdmin();
-            mostrarVista('view-admin');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-admin').classList.remove('hidden');
+            renderizarAdminSujetos();
         }
 
-        function actualizarListaAdmin() {
-            const contenedor = document.getElementById('lista-admin-sujetos');
-            contenedor.innerHTML = '<h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-2">Perfiles Existentes</h3>';
-            
-            sujetos.forEach((s, index) => {
-                contenedor.innerHTML += `
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm">
-                        <div class="flex items-center space-x-3">
-                            <img src="${s.foto || FOTO_DEFAULT}" class="w-10 h-10 object-cover rounded-lg border">
-                            <div>
-                                <span class="text-blue-900 font-extrabold">${s.id}</span> - <span class="text-slate-900 font-bold">${s.nombre}</span>
-                            </div>
-                        </div>
-                        <div class="space-x-3">
-                            <button type="button" onclick="editarSujeto(${index})" class="text-blue-700 hover:underline font-bold">[ Editar ]</button>
-                            <button type="button" onclick="eliminarSujeto(${index})" class="text-rose-600 hover:underline font-bold">[ Eliminar ]</button>
-                        </div>
-                    </div>
-                `;
-            });
+        function procesarFotoLocal(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                const base64 = e.target.result;
+                document.getElementById('foto-base64').value = base64;
+                document.getElementById('preview-img').src = base64;
+                document.getElementById('preview-contenedor').classList.remove('hidden');
+            };
+            lector.readAsDataURL(archivo);
         }
 
         function guardarSujeto(e) {
             e.preventDefault();
             const idx = parseInt(document.getElementById('sujeto-edit-idx').value);
+            const id = document.getElementById('sujeto-id').value.trim();
+            const nombre = document.getElementById('nombre').value.trim();
             const fechaNac = document.getElementById('fecha-nacimiento').value;
-            const fotoBase64 = document.getElementById('foto-base64').value;
+            const estado = document.getElementById('estado').value;
+            const adn = document.getElementById('adn').value.trim();
+            const historia = document.getElementById('historia').value.trim();
+            let foto = document.getElementById('foto-base64').value;
 
-            // Conservar la foto anterior si no se selecciona una nueva al editar
-            let fotoFinal = FOTO_DEFAULT;
-            if (idx >= 0 && sujetos[idx]) {
-                fotoFinal = sujetos[idx].foto || FOTO_DEFAULT;
-            }
-            if (fotoBase64) {
-                fotoFinal = fotoBase64;
-            }
+            let sujetos = obtenerSujetos();
 
-            const nuevoSujeto = {
-                id: document.getElementById('sujeto-id').value.trim(),
-                nombre: document.getElementById('nombre').value.trim(),
-                fechaNac: fechaNac,
-                edad: calcularEdad(fechaNac),
-                estado: document.getElementById('estado').value,
-                coincidencia: "99.8%",
-                foto: fotoFinal,
-                adn: document.getElementById('adn').value.trim(),
-                ultimoIngreso: (idx >= 0 && sujetos[idx]) ? sujetos[idx].ultimoIngreso : obtenerFechaActualFormateada()
-            };
-
-            if (idx >= 0) {
-                sujetos[idx] = nuevoSujeto;
+            if (idx === -1) {
+                if (!foto) foto = FOTO_DEFAULT;
+                sujetos.push({
+                    id, nombre, fechaNac, edad: calcularEdad(fechaNac), estado, coincidencia: "99.9%", foto, adn, historia,
+                    ultimoIngreso: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                });
             } else {
-                sujetos.push(nuevoSujeto);
+                // Si no se cargó una nueva foto, se preserva la foto anterior para evitar que se borre
+                if (!foto) {
+                    foto = sujetos[idx].foto;
+                }
+                sujetos[idx] = {
+                    ...sujetos[idx],
+                    id, nombre, fechaNac, edad: calcularEdad(fechaNac), estado, foto, adn, historia,
+                    ultimoIngreso: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                };
             }
 
-            guardarDatosLocal();
+            guardarSujetosStorage(sujetos);
+            alert("Perfil guardado y asegurado exitosamente en la base institucional.");
             limpiarFormulario();
-            actualizarListaAdmin();
-            renderizarDashboard();
-            mostrarVista('view-dashboard');
-            mostrarSeccion('registros');
+            renderizarAdminSujetos();
+            renderizarPerfiles();
+        }
+
+        function editarSujeto(idx) {
+            const sujetos = obtenerSujetos();
+            const sujeto = sujetos[idx];
+
+            document.getElementById('sujeto-edit-idx').value = idx;
+            document.getElementById('sujeto-id').value = sujeto.id;
+            document.getElementById('nombre').value = sujeto.nombre;
+            document.getElementById('fecha-nacimiento').value = sujeto.fechaNac || '';
+            document.getElementById('estado').value = sujeto.estado;
+            document.getElementById('adn').value = sujeto.adn;
+            document.getElementById('historia').value = sujeto.historia;
+            document.getElementById('foto-base64').value = sujeto.foto;
+
+            if (sujeto.foto && sujeto.foto !== FOTO_DEFAULT) {
+                document.getElementById('preview-img').src = sujeto.foto;
+                document.getElementById('preview-contenedor').classList.remove('hidden');
+            } else {
+                document.getElementById('preview-contenedor').classList.add('hidden');
+            }
+
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-admin').classList.remove('hidden');
+            renderizarAdminSujetos();
+        }
+
+        function eliminarSujeto(idx) {
+            if (confirm("¿Está seguro de eliminar este perfil de la base institucional?")) {
+                let sujetos = obtenerSujetos();
+                sujetos.splice(idx, 1);
+                guardarSujetosStorage(sujetos);
+                renderizarAdminSujetos();
+                renderizarPerfiles();
+            }
         }
 
         function limpiarFormulario() {
             document.getElementById('form-sujeto').reset();
-            document.getElementById('sujeto-edit-idx').value = '-1';
-            document.getElementById('foto-base64').value = '';
+            document.getElementById('sujeto-edit-idx').value = "-1";
+            document.getElementById('foto-base64').value = "";
             document.getElementById('preview-contenedor').classList.add('hidden');
+            document.getElementById('adn').value = "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11";
+            document.getElementById('historia').value = "Sujeto bajo vigilancia pericial preventiva. Muestras biológicas estables en cadena de custodia institucional.";
         }
 
-        function editarSujeto(index) {
-            const s = sujetos[index];
-            document.getElementById('sujeto-edit-idx').value = index;
-            document.getElementById('sujeto-id').value = s.id;
-            document.getElementById('nombre').value = s.nombre;
-            document.getElementById('fecha-nacimiento').value = s.fechaNac || '';
-            document.getElementById('estado').value = s.estado;
-            document.getElementById('adn').value = s.adn;
+        function renderizarAdminSujetos() {
+            const contenedor = document.getElementById('lista-admin-sujetos');
+            contenedor.innerHTML = "<h3 class='text-xs font-bold text-slate-700 uppercase tracking-wider mb-2'>Perfiles Registrados en el Sistema</h3>";
+            const sujetos = obtenerSujetos();
 
-            if(s.foto) {
-                document.getElementById('foto-base64').value = s.foto;
-                document.getElementById('preview-img').src = s.foto;
-                document.getElementById('preview-contenedor').classList.remove('hidden');
-            }
+            sujetos.forEach((sujeto, idx) => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="font-extrabold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">${sujeto.id}</span>
+                        <span class="font-bold text-slate-800">${sujeto.nombre}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editarSujeto(${idx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1 rounded-lg transition">Editar</button>
+                        <button onclick="eliminarSujeto(${idx})" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1 rounded-lg transition">Eliminar</button>
+                    </div>
+                `;
+                contenedor.appendChild(item);
+            });
         }
 
-        function eliminarSujeto(index) {
-            if(confirm("¿Desea eliminar permanentemente este registro forense?")) {
-                sujetos.splice(index, 1);
-                guardarDatosLocal();
-                actualizarListaAdmin();
-                renderizarDashboard();
+        function calcularEdad(fechaNacStr) {
+            if (!fechaNacStr) return 17;
+            const nac = new Date(fechaNacStr);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - nac.getFullYear();
+            const m = hoy.getMonth() - nac.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) {
+                edad--;
             }
+            return edad;
         }
-
-        function volverAlDashboard() {
-            history.pushState("", document.title, window.location.pathname);
-            mostrarVista('view-dashboard');
-            mostrarSeccion('noticias');
-        }
-
-        window.onload = function() {
-            const hash = window.location.hash.replace('#', '');
-            
-            if(hash.startsWith('profileData=')) {
-                try {
-                    const jsonRaw = decodeURIComponent(escape(atob(hash.replace('profileData=', ''))));
-                    sujetoPendienteQR = JSON.parse(jsonRaw);
-                    mostrarVista('view-qr-auth');
-                } catch(e) {
-                    console.error("Error al procesar QR", e);
-                }
-            } else if(hash.startsWith('noticia-')) {
-                const idNoticia = parseInt(hash.replace('noticia-', ''));
-                verDetalleNoticia(idNoticia);
-            } else if(hash && sujetos.some(s => s.id === hash)) {
-                sujetoPendienteQR = sujetos.find(s => s.id === hash);
-                mostrarVista('view-qr-auth');
-            }
-        };
-
-        window.onpopstate = function(event) {
-            const hash = window.location.hash.replace('#', '');
-            if(hash.startsWith('profileData=')) {
-                try {
-                    sujetoPendienteQR = JSON.parse(decodeURIComponent(escape(atob(hash.replace('profileData=', '')))));
-                    mostrarVista('view-qr-auth');
-                } catch(e) {}
-            } else if(hash.startsWith('noticia-')) {
-                const idNoticia = parseInt(hash.replace('noticia-', ''));
-                verDetalleNoticia(idNoticia);
-            } else if(hash && sujetos.some(s => s.id === hash)) {
-                sujetoPendienteQR = sujetos.find(s => s.id === hash);
-                mostrarVista('view-qr-auth');
-            } else {
-                mostrarVista('view-dashboard');
-                mostrarSeccion('noticias');
-            }
-        };
     </script>
 </body>
 </html>
