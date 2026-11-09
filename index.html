@@ -639,14 +639,10 @@
         }
 
         async function verPerfil(id) {
-            // 1. Descargamos de la nube la versión más fresca antes de mostrar nada
             await cargarDatosNube(true);
             let s = sujetos.find(item => item.id === id);
             if(!s) return;
 
-            // 2. LÓGICA DE ÚLTIMO INGRESO: 
-            // Guardamos el momento actual como una visita nueva, pero desplazamos 
-            // la que estaba guardada hacia atrás para que se muestre como el "último ingreso anterior" real.
             const ahoraStr = obtenerFechaActualFormateada();
             if (!s.ultimoIngreso || s.ultimoIngreso === "Sin registros previos") {
                 s.ultimoIngreso = ahoraStr;
