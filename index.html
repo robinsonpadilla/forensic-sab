@@ -130,7 +130,9 @@
             </div>
 
             <div class="space-y-6">
-                <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Investigación">
+                <!-- Contenedor principal de galería de imágenes -->
+                <div id="det-galeria-imagenes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
                 <div class="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl space-y-6">
                     <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Informe Pericial y Análisis Criminalístico Profundo</h3>
                     <div id="det-texto" class="text-slate-800 text-sm md:text-base leading-relaxed space-y-4 font-medium"></div>
@@ -220,21 +222,24 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // 9 ARTÍCULOS CIENTÍFICOS Y CRIMINALÍSTICOS DE PROFUNDIDAD ACADÉMICA
+        // NOTICIA 1 PRINCIPAL EXTENSA Y DETALLADA CON MULTIPLES FOTOS
         const baseNoticias = [
             {
                 id: 1,
-                categoria: "Genealogía Genética y Casos Fríos",
-                titulo: "La captura del 'Golden State Killer' mediante bases genealógicas abiertas",
-                institucion: "FBI / GEDmatch",
+                categoria: "Genealogía Genética Forense",
+                titulo: "La caída del 'Golden State Killer': Cómo atraparon a un asesino serial usando ADN de parientes lejanos",
+                institucion: "GEDmatch / FBI / Investigadores Forenses",
                 lugar: "California, Estados Unidos",
                 fecha: "Abril de 2018",
-                imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
-                resumen: "El cruce pionero de perfiles de ADN genómico con árboles genealógicos digitales para desentrañar crímenes impunes durante más de cuatro décadas.",
+                imagenes: [
+                    "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
+                    "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500"
+                ],
+                resumen: "El uso histórico de bases de datos genealógicas públicas y árboles genealógicos inversos para identificar y capturar a un escurridizo asesino después de más de 30 años de impunidad.",
                 parrafos: [
-                    "Durante más de cuarenta años, las autoridades de California persiguieron sin éxito al infame criminal conocido como el 'Golden State Killer' (Joseph James DeAngelo), responsable de una ola terrorífica de violaciones y homicidios múltiples cometidos entre 1970 y 1986. A pesar de contar con perfiles biológicos intactos preservados en rigurosas cadenas de custodia, los métodos de cotejo tradicionales contra las bases de datos criminales de huellas y ADN policial jamás arrojaron un resultado positivo.",
-                    "En 2018, los investigadores aplicaron un enfoque revolucionario en la biotecnología forense contemporánea: la genealogía genética investigativa. Tomaron una muestra de ADN recuperada de la escena del crimen, la transformaron en un perfil masivo de polimorfismos de nucleótido único (SNP) y la cargaron de forma anónima en plataformas públicas de parentesco genealógico.",
-                    "El algoritmo detectó coincidencias con parientes lejanos del sospechoso. A partir de allí, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles genealógicos hasta converger directamente en DeAngelo, demostrando la enorme potencia investigativa de la genómica moderna frente a criminales elusivos."
+                    "🕵️‍♂️ **El Caso: El terror de California (1970 - 1986)**<br>Durante más de una década, un hombre aterrorizó California cometiendo al menos 13 asesinatos, más de 50 violaciones y decenas de robos. Era extremadamente metódico: no dejaba huellas dactilares útiles, usaba máscaras, planeaba cada ataque a la perfección y desaparecía sin dejar rastro. La policía tenía las muestras de ADN del asesino guardadas en un congelador, pero no coincidían con nadie en el sistema criminal de huellas o perfiles genéticos de la policía. El caso se convirtió en un misterio congelado (cold case) por más de 30 años.",
+                    "🧬 **La Innovación Tecnológica: Genealogía Genética Forense**<br>En 2018, un equipo liderado por la genetista forense CeCe Moore y el investigador Paul Holes decidió hacer algo innovador y revolucionario: usar la genealogía comercial y bases de datos abiertas.<br>1. **El perfil en plataforma pública:** Tomaron el ADN del asesino de la escena del crimen y lo subieron a <a href='https://www.gedmatch.com' target='_blank' class='text-blue-600 underline font-bold'>GEDmatch</a>, una base de datos pública y abierta donde la gente común sube su información genética de consumo (como la de Ancestry o 23andMe) para buscar familiares lejanos y armar sus árboles genealógicos.<br>2. **El 'Fichaje' de los parientes:** El sistema no encontró al asesino (porque él no estaba registrado), pero sí encontró a sus primos lejanos (terceros y cuartos grados que sí habían subido su ADN por pasatiempo voluntariamente).<br>3. **El árbol genealógico inverso:** Usando registros de nacimientos, matrimonios y esquelas de periódicos antiguos, los genetistas construyeron un gigantesco árbol genealógico hacia atrás desde esos primos lejanos hasta que las ramas convergieron en un único sospechoso vivo con la edad y el perfil geográfico exacto: Joseph James DeAngelo.",
+                    "🚨 **La Trampa Final (Sin que él sospechara nada)**<br>Una vez que la policía tuvo marcado a DeAngelo, que entonces tenía 72 años, necesitaban confirmar si su ADN coincidía con el del congelador antes de arrestarlo formalmente. Pero no podían ir a pedirle sangre directamente.<br>¿Qué hicieron? Los detectives lo vigilaron en secreto:<br>- Lo siguieron discretamente mientras iba al supermercado.<br>- Esperaron pacientemente a que tirara la basura a un contenedor público.<br>- Recogieron una servilleta usada y un trozo de papel higiénico que había desechado.<br>- Le hicieron la prueba de ADN a escondidas con esos restos de basura... ¡Y dio una coincidencia exacta del 100% con el ADN de las escenas de los crímenes de los años 70! Fue arrestado inmediatamente, demostrando el poder transformador de la biotecnología."
                 ]
             },
             {
@@ -244,7 +249,7 @@
                 institucion: "Home Office Forensic Science Service",
                 lugar: "Manchester, Reino Unido",
                 fecha: "Año 2000",
-                imagen: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500"],
                 resumen: "Cómo la exhumación y la cromatografía avanzada expusieron al médico británico considerado el asesino serial más prolífico de la historia moderna.",
                 parrafos: [
                     "Harold Shipman, un respetado médico general en Hyde, Gran Bretaña, operó bajo una fachada de absoluta impunidad durante décadas, asesinando sigilosamente a más de 250 de sus pacientes de tercera edad mediante la administración subrepticia de dosis letales de diamorfina (heroína médica).",
@@ -259,7 +264,7 @@
                 institucion: "Carabinieri Investigations",
                 lugar: "Florencia, Italia",
                 fecha: "Revisión Pericial Moderna",
-                imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500"],
                 resumen: "La extracción de células epiteliales residuales en casquillos de munición para resolver misterios criminales de décadas pasadas.",
                 parrafos: [
                     "El misterio del 'Monstruo de Florencia', una serie de brutales asesinatos dobles perpetrados en los viñedos toscanos entre 1968 y 1985, desconcertó a la criminología europea durante generaciones. Las pericias balísticas originales y las impresiones dactilares de la época resultaron insuficientes para identificar al autor intelectual y material de los crímenes.",
@@ -274,7 +279,7 @@
                 institucion: "Florida Department of Law Enforcement",
                 lugar: "Florida, Estados Unidos",
                 fecha: "Año 1979",
-                imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500"],
                 resumen: "El uso pionero de la comparación de marcas de mordedura humana como evidencia pericial determinante en un juicio por homicidio.",
                 parrafos: [
                     "A finales de la década de 1970, el infame asesino serial Ted Bundy sembró el pánico en varios estados norteamericanos. Su juicio por los crímenes perpetrados en la fraternidad Chi Omega de la Universidad Estatal de Florida marcó un hito histórico en la criminalística estadounidense debido al peso protagónico de la evidencia odontológica forense.",
@@ -289,7 +294,7 @@
                 institucion: "FBI Behavioral Science Unit",
                 lugar: "California, Estados Unidos",
                 fecha: "Año 1973",
-                imagen: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500"],
                 resumen: "El nacimiento de la perfilación criminal moderna y el estudio profundo de la mente de los asesinos seriales analizados por la ciencia.",
                 parrafos: [
                     "Edmund Kemper, conocido como el 'Asesino de las Colegialas', aterrorizó la zona de Santa Cruz en California a principios de los años 70. Con una estatura de más de dos metros y un coeficiente intelectual superior a 140, Kemper combinaba una astucia calculadora con una frialdad perturbadora, entregándose voluntariamente a la policía tras cometer sus últimos crímenes.",
@@ -304,7 +309,7 @@
                 institucion: "Institut de Recherche Criminelle de la Gendarmerie Nationale",
                 lugar: "París, Francia",
                 fecha: "Año 2021",
-                imagen: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500"],
                 resumen: "La entomología molecular aplicada para determinar el intervalo post-mortem preciso en investigaciones de homicidios complejos.",
                 parrafos: [
                     "En el año 2021, la gendarmería francesa se enfrentó a un complejo caso de homicidio en una zona boscosa aislada de los Pirineos. El cuerpo de la víctima presentaba un avanzado estado de descomposición debido a las altas temperaturas estivales, lo que imposibilitaba a los médicos legistas aplicar los métodos tradicionales de rigor mortis o enfriamiento corporal para estimar el momento exacto del deceso.",
@@ -319,7 +324,7 @@
                 institucion: "California Department of Justice",
                 lugar: "San Francisco, Estados Unidos",
                 fecha: "Investigación Histórica y Moderna",
-                imagen: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=500"],
                 resumen: "El análisis microscópico de surcos, estrías y marcas de percusión en proyectiles recuperados de escenas criminales históricas.",
                 parrafos: [
                     "El enigmático 'Asesino del Zodiaco', que mantuvo en jaque a la policía del norte de California a finales de los años 60 mediante crímenes premeditados y cartas cifradas enviadas a la prensa, dejó tras de sí una estela de casquillos y proyectiles calibre 9mm y .40 que continúan siendo objeto de estudio pericial.",
@@ -334,7 +339,7 @@
                 institucion: "Forensic Anthropology Center",
                 lugar: "Tennessee, Estados Unidos",
                 fecha: "Año 2023",
-                imagen: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=500"],
                 resumen: "La secuenciación masiva del microbioma corporal para vincular suelos, herramientas y sospechosos con entierros ilegales.",
                 parrafos: [
                     "La localización de cuerpos sepultados clandestinamente por organizaciones criminales o homicidas seriales representa uno de los mayores desafíos para las policías científicas. Tradicionalmente se dependía de perros adiestrados o radares de penetración terrestre.",
@@ -349,7 +354,7 @@
                 institucion: "MIT Biotechnology Group",
                 lugar: "Massachusetts, Estados Unidos",
                 fecha: "Actualidad",
-                imagen: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500",
+                imagenes: ["https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500"],
                 resumen: "Dispositivos nanofluídicos portátiles capaces de secuenciar perfiles STR en minutos directamente en la escena del crimen.",
                 parrafos: [
                     "El futuro inmediato de la investigación criminal y la biotecnología forense reside en la portabilidad total de los laboratorios de ADN. Históricamente, el procesamiento de muestras biológicas requería días o semanas de análisis en centros especializados.",
@@ -392,8 +397,7 @@
         let idQRPendiente = null;
 
         function obtenerSujetos() {
-            // Limpia automáticamente cachés obsoletas y fuerza la carga oficial
-            let versionActual = "sab_sujetos_v3";
+            let versionActual = "sab_sujetos_v4";
             let guardados = localStorage.getItem(versionActual);
             if (!guardados) {
                 localStorage.setItem(versionActual, JSON.stringify(perfilesBaseOficiales));
@@ -413,7 +417,7 @@
         }
 
         function guardarSujetosStorage(sujetos) {
-            localStorage.setItem("sab_sujetos_v3", JSON.stringify(sujetos));
+            localStorage.setItem("sab_sujetos_v4", JSON.stringify(sujetos));
         }
 
         window.onload = function() {
@@ -522,7 +526,7 @@
                 card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
                 card.innerHTML = `
                     <div>
-                        <img src="${noticia.imagen}" class="w-full h-44 object-cover" alt="Noticia">
+                        <img src="${noticia.imagenes[0]}" class="w-full h-44 object-cover" alt="Noticia">
                         <div class="p-5 space-y-2">
                             <span class="text-[10px] font-extrabold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100 uppercase tracking-wider">${noticia.categoria}</span>
                             <h3 class="font-black text-slate-900 text-sm md:text-base leading-snug">${noticia.titulo}</h3>
@@ -558,13 +562,28 @@
             document.getElementById('det-institucion').innerText = noticia.institucion;
             document.getElementById('det-lugar').innerText = noticia.lugar;
             document.getElementById('det-fecha').innerText = noticia.fecha;
-            document.getElementById('det-imagen').src = noticia.imagen;
             
+            // Renderizar galería de imágenes
+            const contenedorGaleria = document.getElementById('det-galeria-imagenes');
+            contenedorGaleria.innerHTML = "";
+            noticia.imagenes.forEach(imgUrl => {
+                const imgTag = document.createElement('img');
+                imgTag.src = imgUrl;
+                imgTag.className = "w-full h-64 md:h-72 object-cover rounded-2xl border border-slate-200 shadow-md";
+                contenedorGaleria.appendChild(imgTag);
+            });
+            // Si hay 1 sola imagen, que ocupe todo el ancho
+            if (noticia.imagenes.length === 1) {
+                contenedorGaleria.className = "grid grid-cols-1 gap-4";
+            } else {
+                contenedorGaleria.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+            }
+
             const contenedorTexto = document.getElementById('det-texto');
             contenedorTexto.innerHTML = "";
             noticia.parrafos.forEach(p => {
                 const par = document.createElement('p');
-                par.innerText = p;
+                par.innerHTML = p;
                 contenedorTexto.appendChild(par);
             });
 
