@@ -85,26 +85,26 @@
             <div id="qr-auth-error" class="text-red-600 text-xs text-center font-bold hidden bg-red-50 p-3 rounded-xl border border-red-100">⚠️ Contraseña incorrecta. Acceso denegado.</div>
         </div>
 
-        <!-- 3. PORTADA PRINCIPAL (CON ZONAS SEPARADAS) -->
+        <!-- 3. PORTADA PRINCIPAL (CON PESTAÑAS) -->
         <div id="view-dashboard" class="w-full max-w-6xl hidden space-y-8 py-4">
             
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
                     <h2 class="text-xl font-black text-slate-900">PANEL DE CONTROL GENERAL</h2>
-                    <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses</p>
+                    <p class="text-xs text-slate-500 font-medium">Boletín científico, cuestionario forense y base oficial de perfiles</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Investigaciones</button>
-                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Noticias</button>
+                    <button onclick="mostrarSeccion('cuestionario')" id="tab-cuestionario" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🧠 Cuestionario</button>
+                    <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
                     <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2.5 text-xs font-bold rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Nuevo Perfil</button>
                 </div>
             </div>
 
             <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS -->
             <div id="seccion-noticias" class="space-y-8">
-                
-                <!-- NOTICIA PRINCIPAL DE ANCHO COMPLETO (BANNER HORIZONTAL) -->
-                <div id="banner-noticia-principal" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition flex flex-col lg:flex-row">
+                <!-- NOTICIA PRINCIPAL DE ANCHO COMPLETO (BANNER SUPERIOR) -->
+                <div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition flex flex-col lg:flex-row">
                     <div class="lg:w-1/2 relative min-h-[320px]">
                         <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800" class="w-full h-full object-cover absolute inset-0" alt="Golden State Killer">
                         <div class="absolute top-4 left-4">
@@ -136,7 +136,34 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN B: BASE DE PERFILES REGISTRADOS -->
+            <!-- SECCIÓN B: CUESTIONARIO / PREGUNTAS INTERACTIVAS -->
+            <div id="seccion-cuestionario" class="hidden max-w-3xl mx-auto bg-white border border-slate-200 p-6 md:p-10 rounded-3xl shadow-xl space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-extrabold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase tracking-wider">Evaluación Formativa</span>
+                        <h3 class="text-xl font-black text-slate-900 mt-2">Cuestionario de Biotecnología y Criminalística Forense</h3>
+                    </div>
+                    <div id="cuestionario-progreso" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+                        Pregunta 1 de 5
+                    </div>
+                </div>
+
+                <div id="contenedor-pregunta" class="space-y-6">
+                    <!-- Se inyecta dinámicamente la pregunta actual -->
+                </div>
+
+                <div id="contenedor-resultado-final" class="hidden text-center space-y-6 py-6">
+                    <div class="inline-flex p-4 bg-emerald-50 text-emerald-600 rounded-3xl text-3xl font-bold border border-emerald-200">🎉</div>
+                    <h3 class="text-2xl font-black text-slate-900">¡Has terminado las preguntas!</h3>
+                    <p id="texto-puntaje-final" class="text-sm text-slate-600 font-medium"></p>
+                    <div class="flex justify-center gap-4 pt-2">
+                        <button onclick="reiniciarCuestionario()" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-xl text-xs transition uppercase tracking-wider shadow">🔄 Volver a Intentarlo</button>
+                        <button onclick="mostrarSeccion('noticias')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs transition uppercase tracking-wider border border-slate-200">← Ir al Boletín</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN C: BASE DE PERFILES REGISTRADOS -->
             <div id="seccion-registros" class="hidden space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="lista-sujetos"></div>
             </div>
@@ -158,9 +185,7 @@
             </div>
 
             <div class="space-y-6">
-                <!-- Contenedor principal de galería de imágenes -->
                 <div id="det-galeria-imagenes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-
                 <div class="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl space-y-6">
                     <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Informe Pericial y Análisis Criminalístico Profundo</h3>
                     <div id="det-texto" class="text-slate-800 text-sm md:text-base leading-relaxed space-y-4 font-medium"></div>
@@ -250,6 +275,74 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
+        // BANCO DE PREGUNTAS INTERACTIVAS
+        const preguntasCuestionario = [
+            {
+                id: 1,
+                enunciado: "En la investigación de una escena del crimen, los peritos descubren una mancha sospechosa sobre una prenda de vestir. Para manejar adecuadamente la evidencia biológica antes de enviarla al laboratorio de genética molecular, aplican un protocolo de serología forense. A partir de los principios de este proceso, ¿cuál de las siguientes afirmaciones es correcta?",
+                alternativas: [
+                    { letra: "A", texto: "Las pruebas presuntivas (como Kastle-Meyer o el uso de Luminol) se caracterizan por ser altamente específicas, eliminando por completo cualquier posibilidad de falsos positivos." },
+                    { letra: "B", texto: "Las pruebas confirmatorias (como la identificación microscópica de espermatozoides o ensayos inmunocromatográficos específicos) son indispensables para demostrar sin margen de error la naturaleza del fluido antes de realizar peritajes de ADN." },
+                    { letra: "C", texto: "Una prueba presuntiva positiva otorga validez legal absoluta en un juicio oral, por lo que las pruebas confirmatorias son opcionales en el protocolo forense." },
+                    { letra: "D", texto: "El objetivo principal de la serología forense es extraer y secuenciar directamente los marcadores STR del fluido sin necesidad de identificar a qué tipo de tejido corporal pertenece." },
+                    { letra: "E", texto: "Las pruebas confirmatorias son altamente sensibles pero poco específicas, diseñadas exclusivamente para detectar rastros invisibles en grandes superficies." }
+                ],
+                correcta: "B"
+            },
+            {
+                id: 2,
+                enunciado: "En una investigación se encuentra un cuerpo junto a una población de insectos en distintas etapas de desarrollo. Los investigadores identifican la especie y estudian su ciclo de vida, considerando también las condiciones ambientales. ¿Qué información pueden obtener principalmente mediante este análisis?",
+                alternativas: [
+                    { letra: "A", texto: "La edad de la persona según la cantidad de insectos adheridos directamente a la piel." },
+                    { letra: "B", texto: "El lugar exacto en donde ocurrió el fallecimiento." },
+                    { letra: "C", texto: "Una estimación del intervalo post mortem a partir del desarrollo de los insectos." },
+                    { letra: "D", texto: "La causa biológica del fallecimiento mediante la identificación de las larvas." },
+                    { letra: "E", texto: "La cantidad exacta de días que el cuerpo permaneció en ese lugar, independientemente de la temperatura." }
+                ],
+                correcta: "C"
+            },
+            {
+                id: 3,
+                enunciado: "En una investigación, los insectos encontrados en un cuerpo permiten estimar un intervalo post mortem de varios días. Paralelamente, un análisis de STR permite obtener un perfil genético que coincide con el de una persona desaparecida. Un investigador afirma que ambos resultados permiten establecer con certeza la identidad de la persona y el momento exacto de su fallecimiento. ¿Cuál es el principal error en su interpretación?",
+                alternativas: [
+                    { letra: "A", texto: "Los STR no permiten identificar individuos cuando el ADN está degradado." },
+                    { letra: "B", texto: "La entomología estima el tiempo transcurrido, pero no necesariamente el momento exacto del fallecimiento." },
+                    { letra: "C", texto: "La PCR permite establecer la antigüedad de una muestra, pero no identificar personas." },
+                    { letra: "D", texto: "Ambos métodos dependen de encontrar necesariamente ADN humano intacto." },
+                    { letra: "E", texto: "Los STR no tendrían con que compararse porque la persona está desaparecida, aún así, si se puede saber el tiempo exacto de muerte." }
+                ],
+                correcta: "B"
+            },
+            {
+                id: 4,
+                enunciado: "En una investigación criminalística se encuentra una muestra biológica en una escena. Los investigadores realizan pruebas serológicas para orientar la identificación del material, extraen el ADN y amplifican regiones STR mediante PCR. Posteriormente, separan los fragmentos según su longitud y comparan el perfil obtenido con el de un sospechoso. Un estudiante revisa el procedimiento y afirma que existe un error científico en la interpretación de los resultados. ¿Cuál es el principal error presente en el procedimiento descrito?",
+                alternativas: [
+                    { letra: "A", texto: "La serología debería realizarse después de la PCR, ya que primero es necesario amplificar el material genético para identificar su origen." },
+                    { letra: "B", texto: "La separación de fragmentos STR permite determinar directamente la procedencia física de la muestra y establecer si hubo contacto directo." },
+                    { letra: "C", texto: "La PCR permite identificar las regiones STR de una persona sin necesidad de comparar posteriormente los fragmentos obtenidos." },
+                    { letra: "D", texto: "El procedimiento no presenta ningún error científico, ya que las etapas descritas son compatibles con un análisis genético forense." },
+                    { letra: "E", texto: "La comparación genética permite demostrar por sí sola que el sospechoso estuvo presente en la escena y depositó la muestra." }
+                ],
+                correcta: "D"
+            },
+            {
+                id: 5,
+                enunciado: "Método Científico: Un grupo de entomólogos forenses desea investigar si la presencia de una droga de abuso en el tejido corporal del cual se alimentan las larvas de moscas necrófagas (Calliphoridae) altera significativamente la duración de su ciclo de desarrollo, un factor crítico para estimar con precisión el Intervalo Post-Mortem (IPM). Para ello, diseñan un experimento manteniendo constantes la temperatura y la humedad, y alimentando a grupos de larvas de la misma especie con porciones idénticas de tejido que contienen o no la sustancia. ¿Cuáles corresponden respectivamente a la variable dependiente y al grupo de control adecuado para este estudio?",
+                alternativas: [
+                    { letra: "A", texto: "Variable dependiente: El tiempo de desarrollo de las larvas; Control: Larvas de la misma especie criadas con tejido libre de la droga bajo las mismas condiciones térmicas y de humedad." },
+                    { letra: "B", texto: "Variable dependiente: La concentración de la droga; Control: Larvas criadas a temperatura variable." },
+                    { letra: "C", texto: "Variable independiente: El tiempo de desarrollo; Control: Tejido con alta concentración de la droga sin larvas." },
+                    { letra: "D", texto: "Variable dependiente: La especie de mosca necrófaga; Control: Uso exclusivo de cadáveres humanos en lugar de tejido animal." },
+                    { letra: "E", texto: "Variable independiente: La presencia de la droga; Control: Ausencia total de luz en el laboratorio." }
+                ],
+                correcta: "A"
+            }
+        ];
+
+        let preguntaActualIdx = 0;
+        let puntajeAciertos = 0;
+        let respuestaBloqueada = false;
+
         // NOTICIA 1 PRINCIPAL EXTENSA Y BIOTECNOLÓGICA (BANNER SUPERIOR)
         const baseNoticias = [
             {
@@ -266,7 +359,7 @@
                 resumen: "El uso histórico de bases de datos genealógicas públicas y árboles genealógicos inversos para identificar y capturar a un escurridizo asesino después de más de 30 años de impunidad.",
                 parrafos: [
                     "🕵️‍♂️ **El Caso: El terror de California (1970 - 1986)**<br>Durante más de una década, un violador serial y asesino conocido como el 'Golden State Killer' aterrorizó múltiples condados de California cometiendo al menos 13 asesinatos, 50 violaciones y más de 120 robos con agravantes. El criminal operaba con una disciplina paramilitar: estudiaba los vecindarios durante meses, cortaba las líneas telefónicas, cubría los rostros de las víctimas con platos para deslumbrarlas con linternas y escapaba en bicicleta por senderos oscuros. A pesar de que los peritos forenses recolectaron muestras biológicas intactas en las escenas del crimen, los cotejos masivos en CODIS (la base de datos de ADN criminal del FBI) no arrojaban ningún resultado positivo porque el criminal no tenía antecedentes policiales previos. El caso se convirtió en uno de los expedientes congelados (cold cases) más frustrantes de la criminología moderna.",
-                    "🧬 **La Biotecnología detrás del hito: Perfiles SNP y GEDmatch**<br>En 2018, la genetista forense CeCe Moore y el investigador Paul Holes revolucionaron la ciencia forense al aplicar la **genealogía genética investigativa**. Debido a que el ADN de las evidencias estaba parcialmente degradado por el tiempo, los laboratorios aplicaron microarrays para extraer más de 600.000 polimorfismos de nucleótido único (**SNPs** — variaciones en una sola base del ADN que determinan el parentesco).<br>1. **Carga en plataformas abiertas:** Convirtieron el perfil genómico en un formato compatible con <a href='https://www.gedmatch.com' target='_blank' class='text-blue-600 underline font-bold'>GEDmatch</a>, una base de datos genealógica pública donde millones de ciudadanos suben voluntariamente sus datos de consumo (como los de 23andMe o Ancestry) para hallar familiares.<br>2. **Mapeo de Centimorgans (cM):** El software analizó la cantidad de ADN compartido en centimorgans entre el asesino y otros usuarios. Aunque el criminal no tenía un perfil directo, el sistema identificó a primos segundos y terceros que compartían bloques idénticos de ADN.",
+                    "🧬 **La Biotecnología detrás del hito: Perfiles SNP y GEDmatch**<br>En 2018, la genetista forense CeCe Moore y el investigador Paul Holes revolucionaron la ciencia forense al aplicar la **genealogía genética investigativa**. Debido a que el ADN de las evidencias estaba parcialmente degradado por el tiempo, los laboratorios aplicaron microarrays para extraer más de 600.000 polimorfismos de nucleótido único (**SNPs** — variaciones en una sola base del ADN que determinan el parentesco).<br>1. **Carga en plataformas abiertas:** Convirtieron el perfil genómico en un formato compatible con <a href='https://www.gedmatch.com' target='_blank' class='text-blue-600 underline font-bold'>GEDmatch</a>, una base de datos genealógica pública donde millones de ciudadanos suben voluntariamente sus datos de consumo (como los de 23andMe ou Ancestry) para hallar familiares.<br>2. **Mapeo de Centimorgans (cM):** El software analizó la cantidad de ADN compartido en centimorgans entre el asesino y otros usuarios. Aunque el criminal no tenía un perfil directo, el sistema identificó a primos segundos y terceros que compartían bloques idénticos de ADN.",
                     "🌳 **El Árbol Genealógico Inverso y la Vigilancia Tanatológica**<br>Con los nombres de los parientes lejanos obtenidos del servidor, un equipo de genealogistas forenses construyó inmensos árboles genealógicos hacia atrás y hacia adelante, investigando registros civiles de nacimientos, matrimonios y obituarios de periódicos del siglo XIX. Las ramas convergieron en un único individuo de 72 años residente en Citrus Heights: **Joseph James DeAngelo**, un ex policía y mecánico naval que encajaba perfectamente con el rango etario, la movilidad geográfica y el perfil psicológico analizado por el FBI.<br><br>🚨 **La Trampa Final:** Para confirmar la sospecha antes de ordenar el arresto, los detectives montaron un operativo de vigilancia discreta. Lo siguieron hasta un supermercado local y esperaron a que descartara basura en un contenedor público. Los agentes recuperaron una servilleta de papel con restos de saliva. Tras un análisis urgente de ADN en el laboratorio de referencia, se confirmó una **coincidencia exacta del 100%** con el perfil genético congelado durante 30 años. DeAngelo fue detenido sin disparar un solo tiro, inaugurando formalmente la era moderna de la resolución de crímenes mediante la genética de poblaciones."
                 ]
             },
@@ -342,7 +435,7 @@
                 parrafos: [
                     "En el año 2021, la gendarmería francesa se enfrentó a un complejo caso de homicidio en una zona boscosa aislada de los Pirineos. El cuerpo de la víctima presentaba un avanzado estado de descomposición debido a las altas temperaturas estivales, lo que imposibilitaba a los médicos legistas aplicar los métodos tradicionales de rigor mortis o enfriamiento corporal para estimar el momento exacto del deceso.",
                     "Los expertos en entomología forense intervinieron recolectando muestras seriadas de larvas de insectos necrófagos (principalmente moscas de la familia Calliphoridae) presentes en los tejidos.",
-                    "Mediante el análisis de las tasas de desarrollo térmico de las larvas y la extracción de ADN estomacal para verificar la presencia de toxinas en el cuerpo a través del metabolismo del insecto, los peritos establecieron con un margen de error menor a cuatro horas el momento preciso en que se perpetró el crimen."
+                    "Mediante el análisis de las tasas de desarrollo térmico de las larvas y la extracción de ADN estomacal para verificar la presencia de toxinas en el cuerpo através del metabolismo del insecto, los peritos establecieron con un margen de error menor a cuatro horas el momento preciso en que se perpetró el crimen."
                 ]
             },
             {
@@ -394,7 +487,7 @@
 
         let limiteNoticias = 3;
 
-        // LISTA OFICIAL CON NOMBRES EXACTOS, FECHAS DE NACIMIENTO Y DESCRIPCIONES CIENTÍFICAS
+        // LISTA OFICIAL DE PERFILES
         const perfilesBaseOficiales = [
             { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2009-08-22", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Especialista en bioinformática forense y arquitectura de bases de datos genómicas. Su perfil combina algoritmos de rastreo de perfiles STR con la administración central de registros biológicos en plataformas digitales distribuidas.", ultimoIngreso: "08/11/2026 12:00" },
             { id: "SAB-8395", nombre: "Róbinson Rafael Padilla Roldán", fechaNac: "2009-12-28", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", historia: "Analista de trazabilidad molecular y control de cadenas de custodia pericial. Experto en la preservación de muestras biológicas bajo estrictos estándares de bioseguridad y control de variables ambientales.", ultimoIngreso: "08/11/2026 12:05" },
@@ -425,7 +518,7 @@
         let idQRPendiente = null;
 
         function obtenerSujetos() {
-            let versionActual = "sab_sujetos_v5";
+            let versionActual = "sab_sujetos_v6";
             let guardados = localStorage.getItem(versionActual);
             if (!guardados) {
                 localStorage.setItem(versionActual, JSON.stringify(perfilesBaseOficiales));
@@ -445,7 +538,7 @@
         }
 
         function guardarSujetosStorage(sujetos) {
-            localStorage.setItem("sab_sujetos_v5", JSON.stringify(sujetos));
+            localStorage.setItem("sab_sujetos_v6", JSON.stringify(sujetos));
         }
 
         window.onload = function() {
@@ -490,11 +583,13 @@
 
                 renderizarNoticias();
                 renderizarPerfiles();
+                reiniciarCuestionario();
 
                 if (idQRPendiente) {
                     verPerfilPorId(idQRPendiente);
                 }
             } else {
+                errorDiv.classList.add('hidden'); // Fix minor toggle
                 errorDiv.classList.remove('hidden');
             }
         }
@@ -511,6 +606,7 @@
 
             renderizarNoticias();
             renderizarPerfiles();
+            reiniciarCuestionario();
         }
 
         function cerrarSesion() {
@@ -527,28 +623,118 @@
 
         function mostrarSeccion(seccion) {
             const secNoticias = document.getElementById('seccion-noticias');
+            const secCuestionario = document.getElementById('seccion-cuestionario');
             const secRegistros = document.getElementById('seccion-registros');
+            
             const tabNoticias = document.getElementById('tab-noticias');
+            const tabCuestionario = document.getElementById('tab-cuestionario');
             const tabRegistros = document.getElementById('tab-registros');
+
+            secNoticias.classList.add('hidden');
+            secCuestionario.classList.add('hidden');
+            secRegistros.classList.add('hidden');
+
+            tabNoticias.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+            tabCuestionario.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+            tabRegistros.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
 
             if (seccion === 'noticias') {
                 secNoticias.classList.remove('hidden');
-                secRegistros.classList.add('hidden');
-                tabNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
-                tabRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
-            } else {
-                secNoticias.classList.add('hidden');
+                tabNoticias.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+            } else if (seccion === 'cuestionario') {
+                secCuestionario.classList.remove('hidden');
+                tabCuestionario.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
+            } else if (seccion === 'registros') {
                 secRegistros.classList.remove('hidden');
-                tabRegistros.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
-                tabNoticias.className = "px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                tabRegistros.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition";
             }
         }
 
+        // LÓGICA DEL CUESTIONARIO INTERACTIVO
+        function reiniciarCuestionario() {
+            preguntaActualIdx = 0;
+            puntajeAciertos = 0;
+            respuestaBloqueada = false;
+            document.getElementById('contenedor-resultado-final').classList.add('hidden');
+            document.getElementById('contenedor-pregunta').classList.remove('hidden');
+            renderizarPreguntaActual();
+        }
+
+        function renderizarPreguntaActual() {
+            const preg = preguntasCuestionario[preguntaActualIdx];
+            document.getElementById('cuestionario-progreso').innerText = `Pregunta ${preguntaActualIdx + 1} de ${preguntasCuestionario.length}`;
+            
+            const contenedor = document.getElementById('contenedor-pregunta');
+            contenedor.innerHTML = `
+                <div class="space-y-4">
+                    <p class="text-sm md:text-base font-semibold text-slate-900 leading-relaxed">${preg.enunciado}</p>
+                    <div class="space-y-2.5 pt-2" id="opciones-lista">
+                        ${preg.alternativas.map(alt => `
+                            <button onclick="verificarRespuesta('${alt.letra}')" data-letra="${alt.letra}" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 text-xs md:text-sm font-medium text-slate-800 transition flex items-start space-x-3">
+                                <span class="font-black text-blue-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200 flex-shrink-0">${alt.letra}</span>
+                                <span class="mt-0.5">${alt.texto}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                <div id="feedback-pregunta" class="hidden pt-4 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div id="feedback-texto" class="text-xs font-bold"></div>
+                    <button onclick="siguientePregunta()" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition uppercase tracking-wider shadow">Siguiente Pregunta →</button>
+                </div>
+            `;
+            respuestaBloqueada = false;
+        }
+
+        function verificarRespuesta(letraElegida) {
+            if (respuestaBloqueada) return;
+            respuestaBloqueada = true;
+
+            const preg = preguntasCuestionario[preguntaActualIdx];
+            const esCorrecta = (letraElegida === preg.correcta);
+            if (esCorrecta) puntajeAciertos++;
+
+            const botones = document.querySelectorAll('#opciones-lista button');
+            botones.forEach(btn => {
+                const letraBtn = btn.getAttribute('data-letra');
+                btn.disabled = true;
+                if (letraBtn === preg.correcta) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-emerald-300 bg-emerald-50 text-xs md:text-sm font-semibold text-emerald-900 flex items-start space-x-3";
+                } else if (letraBtn === letraElegida && !esCorrecta) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-red-300 bg-red-50 text-xs md:text-sm font-semibold text-red-900 flex items-start space-x-3";
+                } else {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-100 text-xs md:text-sm font-medium text-slate-400 opacity-60 flex items-start space-x-3";
+                }
+            });
+
+            const feedbackDiv = document.getElementById('feedback-pregunta');
+            const feedbackTexto = document.getElementById('feedback-texto');
+            feedbackDiv.classList.remove('hidden');
+
+            if (esCorrecta) {
+                feedbackTexto.innerHTML = "✅ <strong class='text-emerald-700 text-sm'>¡Correcto!</strong> Excelente deducción pericial.";
+            } else {
+                feedbackTexto.innerHTML = `❌ <strong class='text-red-700 text-sm'>¡Incorrecto!</strong> La respuesta correcta era la alternativa <strong class='text-slate-900 underline'>${preg.correcta}</strong>.`;
+            }
+        }
+
+        function siguientePregunta() {
+            preguntaActualIdx++;
+            if (preguntaActualIdx < preguntasCuestionario.length) {
+                renderizarPreguntaActual();
+            } else {
+                document.getElementById('contenedor-pregunta').classList.add('hidden');
+                document.getElementById('cuestionario-progreso').innerText = "Completado";
+                const resultadoFinal = document.getElementById('contenedor-resultado-final');
+                resultadoFinal.classList.remove('hidden');
+                document.getElementById('texto-puntaje-final').innerHTML = `Has respondido correctamente <strong>${puntajeAciertos} de ${preguntasCuestionario.length}</strong> preguntas del cuestionario forense.`;
+            }
+        }
+
+        // NOTICIAS
         function renderizarNoticias() {
             const contenedor = document.getElementById('contenedor-noticias');
             contenedor.innerHTML = "";
 
-            // Omitimos la noticia 1 del banner principal y renderizamos el resto de 3 en 3
             const otrasNoticias = baseNoticias.slice(1);
             const visibles = otrasNoticias.slice(0, limiteNoticias);
 
@@ -594,7 +780,6 @@
             document.getElementById('det-lugar').innerText = noticia.lugar;
             document.getElementById('det-fecha').innerText = noticia.fecha;
             
-            // Renderizar galería de imágenes
             const contenedorGaleria = document.getElementById('det-galeria-imagenes');
             contenedorGaleria.innerHTML = "";
             noticia.imagenes.forEach(imgUrl => {
