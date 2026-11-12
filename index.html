@@ -31,7 +31,7 @@
             </div>
             <div>
                 <h1 class="text-base md:text-lg font-black tracking-wider text-amber-400">BASE DE DATOS FORENSE SAB</h1>
-                <p class="text-xs text-slate-300 font-medium">Colegio San Antonio del Baluarte · Rengo</p>
+                <p class="text-xs text-slate-300 font-medium">Colegio San Antonio del Baluarte · Rengo (GitHub Pages)</p>
             </div>
         </div>
         <div id="user-status" class="text-xs text-slate-300 hidden flex items-center space-x-3">
@@ -807,7 +807,7 @@
         }
 
         function formatearFecha(fechaStr) {
-            if (!fechaStr) return "No registrada";
+            if (!fechaNacStr) return "No registrada";
             const partes = fechaStr.split('-');
             if (partes.length !== 3) return fechaStr;
             return `${partes[2]}/${partes[1]}/${partes[0]}`;
