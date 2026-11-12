@@ -340,8 +340,7 @@
         ];
 
         let preguntaActualIdx = 0;
-        let puntajeAciertos = 0;
-        let respuestaBloqueada = false;
+        let respuestasUsuario = {}; // Almacena las respuestas elegidas (ej: {0: 'B', 1: 'C'})
 
         // NOTICIA 1 PRINCIPAL EXTENSA Y BIOTECNOLÓGICA (BANNER SUPERIOR)
         const baseNoticias = [
@@ -518,7 +517,7 @@
         let idQRPendiente = null;
 
         function obtenerSujetos() {
-            let versionActual = "sab_sujetos_v7";
+            let versionActual = "sab_sujetos_v8";
             let guardados = localStorage.getItem(versionActual);
             if (!guardados) {
                 localStorage.setItem(versionActual, JSON.stringify(perfilesBaseOficiales));
@@ -538,7 +537,7 @@
         }
 
         function guardarSujetosStorage(sujetos) {
-            localStorage.setItem("sab_sujetos_v7", JSON.stringify(sujetos));
+            localStorage.setItem("sab_sujetos_v8", JSON.stringify(sujetos));
         }
 
         window.onload = function() {
@@ -649,11 +648,10 @@
             }
         }
 
-        // LÓGICA DEL CUESTIONARIO INTERACTIVO
+        // LÓGICA DEL CUESTIONARIO CON NAVEGACIÓN ANTERIOR / SIGUIENTE Y MEMORIA DE RESPUESTAS
         function reiniciarCuestionario() {
             preguntaActualIdx = 0;
-            puntajeAciertos = 0;
-            respuestaBloqueada = false;
+            respuestasUsuario = {};
             document.getElementById('contenedor-resultado-final').classList.add('hidden');
             document.getElementById('contenedor-pregunta').classList.remove('hidden');
             renderizarPreguntaActual();
@@ -662,6 +660,8 @@
         function renderizarPreguntaActual() {
             const preg = preguntasCuestionario[preguntaActualIdx];
             document.getElementById('cuestionario-progreso').innerText = `Pregunta ${preguntaActualIdx + 1} de ${preguntasCuestionario.length}`;
+            
+            const respuestaPrevia = respuestasUsuario[preguntaActualIdx];
             
             const contenedor = document.getElementById('contenedor-pregunta');
             contenedor.innerHTML = `
@@ -678,24 +678,35 @@
                 </div>
                 <div id="feedback-pregunta" class="hidden pt-4 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div id="feedback-texto" class="text-xs font-bold"></div>
-                    <button onclick="siguientePregunta()" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition uppercase tracking-wider shadow">Siguiente Pregunta →</button>
+                </div>
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-4">
+                    <button onclick="cambiarPregunta(-1)" ${preguntaActualIdx === 0 ? 'disabled class="bg-slate-100 text-slate-400 font-bold px-5 py-2.5 rounded-xl text-xs cursor-not-allowed"' : 'class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-xl text-xs transition uppercase tracking-wider"'}>← Anterior</button>
+                    
+                    <div class="flex gap-2">
+                        ${preguntaActualIdx === preguntasCuestionario.length - 1 ? `<button onclick="mostrarResultadoFinal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition uppercase tracking-wider shadow">Ver Resultados 🏁</button>` : ''}
+                        <button onclick="cambiarPregunta(1)" ${preguntaActualIdx === preguntasCuestionario.length - 1 ? 'class="hidden"' : 'class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition uppercase tracking-wider shadow"'}>Siguiente →</button>
+                    </div>
                 </div>
             `;
-            respuestaBloqueada = false;
+
+            // Si el usuario ya había respondido esta pregunta antes, restaurar el estado visual
+            if (respuestaPrevia) {
+                aplicarEstiloRespuestaGuardada(respuestaPrevia);
+            }
         }
 
         function verificarRespuesta(letraElegida) {
-            if (respuestaBloqueada) return;
-            respuestaBloqueada = true;
+            respuestasUsuario[preguntaActualIdx] = letraElegida;
+            aplicarEstiloRespuestaGuardada(letraElegida);
+        }
 
+        function aplicarEstiloRespuestaGuardada(letraElegida) {
             const preg = preguntasCuestionario[preguntaActualIdx];
             const esCorrecta = (letraElegida === preg.correcta);
-            if (esCorrecta) puntajeAciertos++;
 
             const botones = document.querySelectorAll('#opciones-lista button');
             botones.forEach(btn => {
                 const letraBtn = btn.getAttribute('data-letra');
-                btn.disabled = true;
                 if (letraBtn === preg.correcta) {
                     btn.className = "w-full text-left p-3.5 rounded-xl border border-emerald-300 bg-emerald-50 text-xs md:text-sm font-semibold text-emerald-900 flex items-start space-x-3";
                 } else if (letraBtn === letraElegida && !esCorrecta) {
@@ -716,17 +727,27 @@
             }
         }
 
-        function siguientePregunta() {
-            preguntaActualIdx++;
-            if (preguntaActualIdx < preguntasCuestionario.length) {
+        function cambiarPregunta(direccion) {
+            const nuevoIdx = preguntaActualIdx + direccion;
+            if (nuevoIdx >= 0 && nuevoIdx < preguntasCuestionario.length) {
+                preguntaActualIdx = nuevoIdx;
                 renderizarPreguntaActual();
-            } else {
-                document.getElementById('contenedor-pregunta').classList.add('hidden');
-                document.getElementById('cuestionario-progreso').innerText = "Completado";
-                const resultadoFinal = document.getElementById('contenedor-resultado-final');
-                resultadoFinal.classList.remove('hidden');
-                document.getElementById('texto-puntaje-final').innerHTML = `Has respondido correctamente <strong>${puntajeAciertos} de ${preguntasCuestionario.length}</strong> preguntas del cuestionario forense.`;
             }
+        }
+
+        function mostrarResultadoFinal() {
+            let aciertos = 0;
+            preguntasCuestionario.forEach((p, idx) => {
+                if (respuestasUsuario[idx] === p.correcta) {
+                    aciertos++;
+                }
+            });
+
+            document.getElementById('contenedor-pregunta').classList.add('hidden');
+            document.getElementById('cuestionario-progreso').innerText = "Completado";
+            const resultadoFinal = document.getElementById('contenedor-resultado-final');
+            resultadoFinal.classList.remove('hidden');
+            document.getElementById('texto-puntaje-final').innerHTML = `Has respondido correctamente <strong>${aciertos} de ${preguntasCuestionario.length}</strong> preguntas del cuestionario forense.`;
         }
 
         // NOTICIAS
