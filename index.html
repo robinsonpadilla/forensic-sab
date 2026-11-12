@@ -86,7 +86,7 @@
         </div>
 
         <!-- 3. PORTADA PRINCIPAL (CON ZONAS SEPARADAS) -->
-        <div id="view-dashboard" class="w-full max-w-5xl hidden space-y-8 py-4">
+        <div id="view-dashboard" class="w-full max-w-6xl hidden space-y-8 py-4">
             
             <div class="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                 <div>
@@ -101,8 +101,36 @@
             </div>
 
             <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS -->
-            <div id="seccion-noticias" class="space-y-6">
+            <div id="seccion-noticias" class="space-y-8">
+                
+                <!-- NOTICIA PRINCIPAL DE ANCHO COMPLETO (BANNER HORIZONTAL) -->
+                <div id="banner-noticia-principal" class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition flex flex-col lg:flex-row">
+                    <div class="lg:w-1/2 relative min-h-[320px]">
+                        <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800" class="w-full h-full object-cover absolute inset-0" alt="Golden State Killer">
+                        <div class="absolute top-4 left-4">
+                            <span class="text-[11px] font-extrabold text-white bg-blue-900/90 px-3.5 py-1.5 rounded-full border border-blue-400 uppercase tracking-widest backdrop-blur-sm">INVESTIGACIÓN DESTACADA · BIOTECNOLOGÍA FORENSE</span>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 p-6 md:p-10 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 text-xs text-slate-500 font-semibold">
+                                <span>🏛️ FBI / GEDmatch</span>
+                                <span>📍 California, EE.UU.</span>
+                                <span>📅 Abril 2018</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-black text-slate-900 leading-tight">La caída del 'Golden State Killer': Cómo la genealogía genética molecular reescribió la historia criminal</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed font-medium">El uso pionero de secuenciación masiva de SNP, perfiles genómicos anónimos en plataformas abiertas y árboles genealógicos inversos para identificar y capturar a un escurridizo asesino serial tras 30 años de total impunidad.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Reporte Especial de Peritaje</span>
+                            <button onclick="verDetalleNoticia(1)" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-5 py-3 rounded-xl text-xs transition shadow uppercase tracking-wider">Leer artículo completo →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRILLA DE LAS OTRAS 8 NOTICIAS -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
+
                 <div class="text-center pt-4" id="contenedor-btn-cargar">
                     <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
                 </div>
@@ -222,7 +250,7 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
-        // NOTICIA 1 PRINCIPAL EXTENSA Y DETALLADA CON MULTIPLES FOTOS
+        // NOTICIA 1 PRINCIPAL EXTENSA Y BIOTECNOLÓGICA (BANNER SUPERIOR)
         const baseNoticias = [
             {
                 id: 1,
@@ -237,9 +265,9 @@
                 ],
                 resumen: "El uso histórico de bases de datos genealógicas públicas y árboles genealógicos inversos para identificar y capturar a un escurridizo asesino después de más de 30 años de impunidad.",
                 parrafos: [
-                    "🕵️‍♂️ **El Caso: El terror de California (1970 - 1986)**<br>Durante más de una década, un hombre aterrorizó California cometiendo al menos 13 asesinatos, más de 50 violaciones y decenas de robos. Era extremadamente metódico: no dejaba huellas dactilares útiles, usaba máscaras, planeaba cada ataque a la perfección y desaparecía sin dejar rastro. La policía tenía las muestras de ADN del asesino guardadas en un congelador, pero no coincidían con nadie en el sistema criminal de huellas o perfiles genéticos de la policía. El caso se convirtió en un misterio congelado (cold case) por más de 30 años.",
-                    "🧬 **La Innovación Tecnológica: Genealogía Genética Forense**<br>En 2018, un equipo liderado por la genetista forense CeCe Moore y el investigador Paul Holes decidió hacer algo innovador y revolucionario: usar la genealogía comercial y bases de datos abiertas.<br>1. **El perfil en plataforma pública:** Tomaron el ADN del asesino de la escena del crimen y lo subieron a <a href='https://www.gedmatch.com' target='_blank' class='text-blue-600 underline font-bold'>GEDmatch</a>, una base de datos pública y abierta donde la gente común sube su información genética de consumo (como la de Ancestry o 23andMe) para buscar familiares lejanos y armar sus árboles genealógicos.<br>2. **El 'Fichaje' de los parientes:** El sistema no encontró al asesino (porque él no estaba registrado), pero sí encontró a sus primos lejanos (terceros y cuartos grados que sí habían subido su ADN por pasatiempo voluntariamente).<br>3. **El árbol genealógico inverso:** Usando registros de nacimientos, matrimonios y esquelas de periódicos antiguos, los genetistas construyeron un gigantesco árbol genealógico hacia atrás desde esos primos lejanos hasta que las ramas convergieron en un único sospechoso vivo con la edad y el perfil geográfico exacto: Joseph James DeAngelo.",
-                    "🚨 **La Trampa Final (Sin que él sospechara nada)**<br>Una vez que la policía tuvo marcado a DeAngelo, que entonces tenía 72 años, necesitaban confirmar si su ADN coincidía con el del congelador antes de arrestarlo formalmente. Pero no podían ir a pedirle sangre directamente.<br>¿Qué hicieron? Los detectives lo vigilaron en secreto:<br>- Lo siguieron discretamente mientras iba al supermercado.<br>- Esperaron pacientemente a que tirara la basura a un contenedor público.<br>- Recogieron una servilleta usada y un trozo de papel higiénico que había desechado.<br>- Le hicieron la prueba de ADN a escondidas con esos restos de basura... ¡Y dio una coincidencia exacta del 100% con el ADN de las escenas de los crímenes de los años 70! Fue arrestado inmediatamente, demostrando el poder transformador de la biotecnología."
+                    "🕵️‍♂️ **El Caso: El terror de California (1970 - 1986)**<br>Durante más de una década, un violador serial y asesino conocido como el 'Golden State Killer' aterrorizó múltiples condados de California cometiendo al menos 13 asesinatos, 50 violaciones y más de 120 robos con agravantes. El criminal operaba con una disciplina paramilitar: estudiaba los vecindarios durante meses, cortaba las líneas telefónicas, cubría los rostros de las víctimas con platos para deslumbrarlas con linternas y escapaba en bicicleta por senderos oscuros. A pesar de que los peritos forenses recolectaron muestras biológicas intactas en las escenas del crimen, los cotejos masivos en CODIS (la base de datos de ADN criminal del FBI) no arrojaban ningún resultado positivo porque el criminal no tenía antecedentes policiales previos. El caso se convirtió en uno de los expedientes congelados (cold cases) más frustrantes de la criminología moderna.",
+                    "🧬 **La Biotecnología detrás del hito: Perfiles SNP y GEDmatch**<br>En 2018, la genetista forense CeCe Moore y el investigador Paul Holes revolucionaron la ciencia forense al aplicar la **genealogía genética investigativa**. Debido a que el ADN de las evidencias estaba parcialmente degradado por el tiempo, los laboratorios aplicaron microarrays para extraer más de 600.000 polimorfismos de nucleótido único (**SNPs** — variaciones en una sola base del ADN que determinan el parentesco).<br>1. **Carga en plataformas abiertas:** Convirtieron el perfil genómico en un formato compatible con <a href='https://www.gedmatch.com' target='_blank' class='text-blue-600 underline font-bold'>GEDmatch</a>, una base de datos genealógica pública donde millones de ciudadanos suben voluntariamente sus datos de consumo (como los de 23andMe o Ancestry) para hallar familiares.<br>2. **Mapeo de Centimorgans (cM):** El software analizó la cantidad de ADN compartido en centimorgans entre el asesino y otros usuarios. Aunque el criminal no tenía un perfil directo, el sistema identificó a primos segundos y terceros que compartían bloques idénticos de ADN.",
+                    "🌳 **El Árbol Genealógico Inverso y la Vigilancia Tanatológica**<br>Con los nombres de los parientes lejanos obtenidos del servidor, un equipo de genealogistas forenses construyó inmensos árboles genealógicos hacia atrás y hacia adelante, investigando registros civiles de nacimientos, matrimonios y obituarios de periódicos del siglo XIX. Las ramas convergieron en un único individuo de 72 años residente en Citrus Heights: **Joseph James DeAngelo**, un ex policía y mecánico naval que encajaba perfectamente con el rango etario, la movilidad geográfica y el perfil psicológico analizado por el FBI.<br><br>🚨 **La Trampa Final:** Para confirmar la sospecha antes de ordenar el arresto, los detectives montaron un operativo de vigilancia discreta. Lo siguieron hasta un supermercado local y esperaron a que descartara basura en un contenedor público. Los agentes recuperaron una servilleta de papel con restos de saliva. Tras un análisis urgente de ADN en el laboratorio de referencia, se confirmó una **coincidencia exacta del 100%** con el perfil genético congelado durante 30 años. DeAngelo fue detenido sin disparar un solo tiro, inaugurando formalmente la era moderna de la resolución de crímenes mediante la genética de poblaciones."
                 ]
             },
             {
@@ -397,7 +425,7 @@
         let idQRPendiente = null;
 
         function obtenerSujetos() {
-            let versionActual = "sab_sujetos_v4";
+            let versionActual = "sab_sujetos_v5";
             let guardados = localStorage.getItem(versionActual);
             if (!guardados) {
                 localStorage.setItem(versionActual, JSON.stringify(perfilesBaseOficiales));
@@ -417,7 +445,7 @@
         }
 
         function guardarSujetosStorage(sujetos) {
-            localStorage.setItem("sab_sujetos_v4", JSON.stringify(sujetos));
+            localStorage.setItem("sab_sujetos_v5", JSON.stringify(sujetos));
         }
 
         window.onload = function() {
@@ -520,7 +548,10 @@
             const contenedor = document.getElementById('contenedor-noticias');
             contenedor.innerHTML = "";
 
-            const visibles = baseNoticias.slice(0, limiteNoticias);
+            // Omitimos la noticia 1 del banner principal y renderizamos el resto de 3 en 3
+            const otrasNoticias = baseNoticias.slice(1);
+            const visibles = otrasNoticias.slice(0, limiteNoticias);
+
             visibles.forEach(noticia => {
                 const card = document.createElement('div');
                 card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between";
@@ -541,7 +572,7 @@
                 contenedor.appendChild(card);
             });
 
-            if (limiteNoticias >= baseNoticias.length) {
+            if (limiteNoticias >= otrasNoticias.length) {
                 document.getElementById('contenedor-btn-cargar').classList.add('hidden');
             } else {
                 document.getElementById('contenedor-btn-cargar').classList.remove('hidden');
@@ -572,7 +603,6 @@
                 imgTag.className = "w-full h-64 md:h-72 object-cover rounded-2xl border border-slate-200 shadow-md";
                 contenedorGaleria.appendChild(imgTag);
             });
-            // Si hay 1 sola imagen, que ocupe todo el ancho
             if (noticia.imagenes.length === 1) {
                 contenedorGaleria.className = "grid grid-cols-1 gap-4";
             } else {
