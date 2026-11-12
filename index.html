@@ -94,7 +94,7 @@
                     <p class="text-xs text-slate-500 font-medium">Boletín científico y base oficial de perfiles forenses</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Noticias</button>
+                    <button onclick="mostrarSeccion('noticias')" id="tab-noticias" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-blue-900 text-white transition">Boletín de Investigaciones</button>
                     <button onclick="mostrarSeccion('registros')" id="tab-registros" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Base de Perfiles</button>
                     <button id="btn-admin-panel" onclick="abrirPanelAdmin()" class="hidden px-4 py-2.5 text-xs font-bold rounded-xl bg-amber-500 text-slate-950 hover:bg-amber-400 transition">+ Nuevo Perfil</button>
                 </div>
@@ -103,7 +103,7 @@
             <!-- SECCIÓN A: BOLETÍN DE NOTICIAS Y ARTÍCULOS CIENTÍFICOS -->
             <div id="seccion-noticias" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="contenedor-noticias"></div>
-                <div class="text-center pt-4">
+                <div class="text-center pt-4" id="contenedor-btn-cargar">
                     <button id="btn-cargar-mas" onclick="cargarMasNoticias()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow-md uppercase tracking-wider">➕ Cargar Más Investigaciones</button>
                 </div>
             </div>
@@ -131,9 +131,9 @@
 
             <div class="space-y-6">
                 <img id="det-imagen" class="w-full h-72 md:h-80 object-cover rounded-2xl border border-slate-200 shadow-md" alt="Investigación">
-                <div class="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl space-y-4">
-                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Desarrollo Científico y Biotecnología Forense</h3>
-                    <p id="det-texto" class="text-slate-800 text-sm md:text-base leading-relaxed whitespace-pre-line font-medium"></p>
+                <div class="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl space-y-6">
+                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider border-b border-slate-200 pb-2">Informe Pericial y Análisis Criminalístico Profundo</h3>
+                    <div id="det-texto" class="text-slate-800 text-sm md:text-base leading-relaxed space-y-4 font-medium"></div>
                 </div>
             </div>
         </div>
@@ -220,69 +220,172 @@
         const PASS_ADMIN = "saezypadillamolecular";
         const FOTO_DEFAULT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>";
 
+        // 9 ARTÍCULOS CIENTÍFICOS Y CRIMINALÍSTICOS DE PROFUNDIDAD ACADÉMICA
         const baseNoticias = [
             {
                 id: 1,
-                categoria: "Biomedicina y Bioenergética Celular",
-                titulo: "Respiración mitocondrial: Clave para detectar fragilidad y perfiles biológicos",
-                institucion: "Universidad de Chile",
-                lugar: "Santiago, Chile",
-                fecha: "Actualidad",
-                imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
-                resumen: "Estudio pionero de la Universidad de Chile sobre la función bioenergética mitocondrial como biomarcador de vitalidad y resistencia celular en peritajes.",
-                texto: "Un equipo multidisciplinario de científicos e investigadores de la Universidad de Chile ha desarrollado un exhaustivo estudio que demuestra cómo el nivel de respiración y rendimiento mitocondrial funciona como un biomarcador fundamental para diagnosticar el estado fisiológico y la fragilidad biológica en organismos.\n\nEn la criminalística y la biotecnología forense, este conocimiento resulta de vital importancia. A diferencia del ADN nuclear presente en el núcleo celular, cada célula contiene cientos de mitocondrias, las cuales poseen su propio material genético independiente (ADN mitocondrial o mtDNA). Cuando las muestras biológicas halladas en una escena se encuentran gravemente alteradas por la acción del fuego, radiación solar, humedad o el paso prolongado de los años, el ADN nuclear se fragmenta e inhabilita. En cambio, el ADN mitocondrial permanece utilizable gracias a su alta tasa de copias por célula.\n\nLos descubrimientos en respiración celular permiten a los peritos de laboratorio optimizar las técnicas de amplificación enzimática, haciendo posible reconstruir linajes maternos e identificar restos orgánicos antiguos donde antes resultaba técnicamente imposible."
-            },
-            {
-                id: 2,
-                categoria: "Genealogía Genética Forense",
-                titulo: "La captura del 'Golden State Killer' mediante bases genealógicas públicas",
-                institucion: "GEDmatch / FBI",
+                categoria: "Genealogía Genética y Casos Fríos",
+                titulo: "La captura del 'Golden State Killer' mediante bases genealógicas abiertas",
+                institucion: "FBI / GEDmatch",
                 lugar: "California, Estados Unidos",
                 fecha: "Abril de 2018",
                 imagen: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=500",
-                resumen: "El cruce sin precedentes de muestras de ADN genómico con árboles genealógicos digitales para resolver crímenes impunes de más de 40 años.",
-                texto: "Durante más de cuatro décadas, las autoridades de California persiguieron sin éxito al infame 'Golden State Killer', responsable de decenas de agresiones violentas y homicidios cometidos entre 1970 y 1986. Pese a contar con perfiles biológicos intactos resguardados en cadenas de custodia, los métodos comparativos tradicionales contra las bases de datos criminales de la policía jamás arrojaron un resultado positivo.\n\nEn 2018, los investigadores aplicaron un enfoque revolucionario en biotecnología forense: la genealogía genética. Transformaron la muestra de ADN del caso en un archivo genómico de polimorfismos de nucleótido único (SNP) y lo subieron a plataformas públicas de parentesco. El sistema detectó coincidencias con parientes lejanos del sospechoso.\n\nA partir de ese indicio, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles familiares hasta converger en el autor, demostrando el enorme potencial investigativo de la genómica moderna combinada con bases de datos públicas."
+                resumen: "El cruce pionero de perfiles de ADN genómico con árboles genealógicos digitales para desentrañar crímenes impunes durante más de cuatro décadas.",
+                parrafos: [
+                    "Durante más de cuarenta años, las autoridades de California persiguieron sin éxito al infame criminal conocido como el 'Golden State Killer' (Joseph James DeAngelo), responsable de una ola terrorífica de violaciones y homicidios múltiples cometidos entre 1970 y 1986. A pesar de contar con perfiles biológicos intactos preservados en rigurosas cadenas de custodia, los métodos de cotejo tradicionales contra las bases de datos criminales de huellas y ADN policial jamás arrojaron un resultado positivo.",
+                    "En 2018, los investigadores aplicaron un enfoque revolucionario en la biotecnología forense contemporánea: la genealogía genética investigativa. Tomaron una muestra de ADN recuperada de la escena del crimen, la transformaron en un perfil masivo de polimorfismos de nucleótido único (SNP) y la cargaron de forma anónima en plataformas públicas de parentesco genealógico.",
+                    "El algoritmo detectó coincidencias con parientes lejanos del sospechoso. A partir de allí, genetistas y genealogistas reconstruyeron minuciosamente inmensos árboles genealógicos hasta converger directamente en DeAngelo, demostrando la enorme potencia investigativa de la genómica moderna frente a criminales elusivos."
+                ]
+            },
+            {
+                id: 2,
+                categoria: "Toxicología Forense e Historia Criminal",
+                titulo: "El veneno invisible: Peritajes toxicológicos en el caso de Harold Shipman",
+                institucion: "Home Office Forensic Science Service",
+                lugar: "Manchester, Reino Unido",
+                fecha: "Año 2000",
+                imagen: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
+                resumen: "Cómo la exhumación y la cromatografía avanzada expusieron al médico británico considerado el asesino serial más prolífico de la historia moderna.",
+                parrafos: [
+                    "Harold Shipman, un respetado médico general en Hyde, Gran Bretaña, operó bajo una fachada de absoluta impunidad durante décadas, asesinando sigilosamente a más de 250 de sus pacientes de tercera edad mediante la administración subrepticia de dosis letales de diamorfina (heroína médica).",
+                    "El engaño se derrumbó cuando los familiares notaron patrones extraños en los testamentos y el inusual incremento de certificados de defunción firmados por el mismo médico. La fiscalía ordenó la exhumación judicial de múltiples cuerpos para su análisis pericial post-mortem.",
+                    "Los peritos del servicio forense emplearon técnicas sofisticadas de cromatografía líquida acoplada a espectrometría de masas (LC-MS/MS) en tejidos duros y fluidos descompuestos. Lograron aislar y cuantificar los residuos exactos de opiáceos en los restos, proporcionando la evidencia científica irrefutable que condenó a Shipman a cadena perpetua."
+                ]
             },
             {
                 id: 3,
-                categoria: "ADN de Contacto (Touch DNA)",
-                titulo: "Identificación molecular a partir de células epiteliales invisibles",
-                institucion: "Forensic Science Laboratories",
-                lugar: "Londres, Reino Unido",
-                fecha: "Año 2021",
+                categoria: "ADN de Contacto y Escenas Históricas",
+                titulo: "El rastro imperceptible: Touch DNA en el caso del Monstruo de Florencia",
+                institucion: "Carabinieri Investigations",
+                lugar: "Florencia, Italia",
+                fecha: "Revisión Pericial Moderna",
                 imagen: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=500",
-                resumen: "Recuperación y amplificación por PCR de depósitos microscópicos de piel dejados al contacto breve con superficies.",
-                texto: "Durante décadas, el levantamiento de evidencias biológicas en la escena del crimen dependía exclusivamente de la detección a simple vista o con luces ultravioleta de manchas hemáticas o fluidos orgánicos. Sin embargo, el avance del denominado 'Touch DNA' o ADN de contacto transformó el trabajo pericial contemporáneo.\n\nCada vez que un ser humano manipula una herramienta, empuña un arma de fuego o sostiene una manilla durante apenas un par de segundos, transfiere involuntariamente microgramos de células epiteliales muertas desprendidas de la piel. Aunque la masa de ADN recuperada suele ser inferior a los 100 picogramos, las modernas técnicas de Reacción en Cadena de la Polimerasa de Baja Copia (LCN-PCR) logran duplicar estas secuencias STR millones de veces.\n\nEsto permite a los científicos forenses reconstruir la identidad exacta del último portador de un objeto, proveyendo a la justicia de evidencias de un valor probatorio inobjetable."
+                resumen: "La extracción de células epiteliales residuales en casquillos de munición para resolver misterios criminales de décadas pasadas.",
+                parrafos: [
+                    "El misterio del 'Monstruo de Florencia', una serie de brutales asesinatos dobles perpetrados en los viñedos toscanos entre 1968 y 1985, desconcertó a la criminología europea durante generaciones. Las pericias balísticas originales y las impresiones dactilares de la época resultaron insuficientes para identificar al autor intelectual y material de los crímenes.",
+                    "En las últimas revisiones periciales, laboratorios especializados recurrieron a tecnologías de amplificación de ADN de bajo molde (Low Copy Number PCR). Analizaron minuciosamente los surcos microscópicos de los casquillos de bala Winchester de calibre .22 utilizados en los ataques.",
+                    "A pesar del paso de los años y la exposición ambiental, los científicos lograron extraer minúsculos depósitos de células epiteliales —Touch DNA— dejados por el tirador al manipular la munición antes de cargar el arma, abriendo nuevas rutas de esclarecimiento judicial."
+                ]
+            },
+            {
+                id: 4,
+                categoria: "Odontología y Antropología Forense",
+                titulo: "La mordedura de la condena: Peritaje dental en el juicio de Ted Bundy",
+                institucion: "Florida Department of Law Enforcement",
+                lugar: "Florida, Estados Unidos",
+                fecha: "Año 1979",
+                imagen: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=500",
+                resumen: "El uso pionero de la comparación de marcas de mordedura humana como evidencia pericial determinante en un juicio por homicidio.",
+                parrafos: [
+                    "A finales de la década de 1970, el infame asesino serial Ted Bundy sembró el pánico en varios estados norteamericanos. Su juicio por los crímenes perpetrados en la fraternidad Chi Omega de la Universidad Estatal de Florida marcó un hito histórico en la criminalística estadounidense debido al peso protagónico de la evidencia odontológica forense.",
+                    "Durante el ataque, el agresor dejó una marca de mordedura clara en el glúteo de una de las víctimas. Los odontólogos forenses moldearon calcos de yeso comparando milimétricamente la dentadura única de Bundy —caracterizada por dientes torcidos, apiñados y rotados— con la impronta fotográfica y física hallada en el cuerpo.",
+                    "Durante el juicio, la coincidencia geométrica y de patrones de desgaste dental fue tan contundente que se constituyó en la prueba clave que facilitó el veredicto de culpabilidad ante el jurado."
+                ]
+            },
+            {
+                id: 5,
+                categoria: "Psiquiatría Criminal y Peritaje Comportamental",
+                titulo: "Análisis de patrones y geolocalización en la captura de Ed Kemper",
+                institucion: "FBI Behavioral Science Unit",
+                lugar: "California, Estados Unidos",
+                fecha: "Año 1973",
+                imagen: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
+                resumen: "El nacimiento de la perfilación criminal moderna y el estudio profundo de la mente de los asesinos seriales analizados por la ciencia.",
+                parrafos: [
+                    "Edmund Kemper, conocido como el 'Asesino de las Colegialas', aterrorizó la zona de Santa Cruz en California a principios de los años 70. Con una estatura de más de dos metros y un coeficiente intelectual superior a 140, Kemper combinaba una astucia calculadora con una frialdad perturbadora, entregándose voluntariamente a la policía tras cometer sus últimos crímenes.",
+                    "Su caso se convirtió en piedra angular para los pioneros de la Unidad de Ciencia del Comportamiento del FBI. A través de extensas entrevistas carcelarias, los analistas estructuraron patrones conductuales sobre la compartimentación de la vida social de los depredadores seriales, la recolección de 'trofeos' y la simulación de normalidad.",
+                    "Este análisis metodológico transformó la manera en que los investigadores forenses interpretan las escenas del crimen sin testigos presenciales, sentando las bases de la perfilación criminal contemporánea."
+                ]
+            },
+            {
+                id: 6,
+                categoria: "Entomología Forense y Data de Muerte",
+                titulo: "Insectos en la escena: El testimonio silencioso de los dípteros",
+                institucion: "Institut de Recherche Criminelle de la Gendarmerie Nationale",
+                lugar: "París, Francia",
+                fecha: "Año 2021",
+                imagen: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=500",
+                resumen: "La entomología molecular aplicada para determinar el intervalo post-mortem preciso en investigaciones de homicidios complejos.",
+                parrafos: [
+                    "En el año 2021, la gendarmería francesa se enfrentó a un complejo caso de homicidio en una zona boscosa aislada de los Pirineos. El cuerpo de la víctima presentaba un avanzado estado de descomposición debido a las altas temperaturas estivales, lo que imposibilitaba a los médicos legistas aplicar los métodos tradicionales de rigor mortis o enfriamiento corporal para estimar el momento exacto del deceso.",
+                    "Los expertos en entomología forense intervinieron recolectando muestras seriadas de larvas de insectos necrófagos (principalmente moscas de la familia Calliphoridae) presentes en los tejidos.",
+                    "Mediante el análisis de las tasas de desarrollo térmico de las larvas y la extracción de ADN estomacal para verificar la presencia de toxinas en el cuerpo a través del metabolismo del insecto, los peritos establecieron con un margen de error menor a cuatro horas el momento preciso en que se perpetró el crimen."
+                ]
+            },
+            {
+                id: 7,
+                categoria: "Balística Forense y Criminalística Balística",
+                titulo: "Estrías balísticas y microscopía electrónica en el caso del 'Asesino del Zodiaco'",
+                institucion: "California Department of Justice",
+                lugar: "San Francisco, Estados Unidos",
+                fecha: "Investigación Histórica y Moderna",
+                imagen: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=500",
+                resumen: "El análisis microscópico de surcos, estrías y marcas de percusión en proyectiles recuperados de escenas criminales históricas.",
+                parrafos: [
+                    "El enigmático 'Asesino del Zodiaco', que mantuvo en jaque a la policía del norte de California a finales de los años 60 mediante crímenes premeditados y cartas cifradas enviadas a la prensa, dejó tras de sí una estela de casquillos y proyectiles calibre 9mm y .40 que continúan siendo objeto de estudio pericial.",
+                    "La balística forense moderna utiliza sistemas automatizados de comparación balística (IBIS) junto con microscopía electrónica de barrido para analizar las microestrías únicas impresas por el ánima del cañón sobre el plomo y el latón al ser disparados.",
+                    "Aunque el caso principal sigue oficialmente abierto, los avances en la digitalización de huellas balísticas permiten a los laboratorios cruzar evidencias antiguas con armas incautadas en delitos contemporáneos a nivel nacional."
+                ]
+            },
+            {
+                id: 8,
+                categoria: "Tanatomicrobioma y Escenas Ocultas",
+                titulo: "Bacterias post-mortem: Mapeo microbiano en fosas clandestinas",
+                institucion: "Forensic Anthropology Center",
+                lugar: "Tennessee, Estados Unidos",
+                fecha: "Año 2023",
+                imagen: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=500",
+                resumen: "La secuenciación masiva del microbioma corporal para vincular suelos, herramientas y sospechosos con entierros ilegales.",
+                parrafos: [
+                    "La localización de cuerpos sepultados clandestinamente por organizaciones criminales o homicidas seriales representa uno de los mayores desafíos para las policías científicas. Tradicionalmente se dependía de perros adiestrados o radares de penetración terrestre.",
+                    "Investigaciones recientes en tanatología forense han demostrado que, tras el deceso, las bacterias intestinales y cutáneas migran sistemáticamente hacia los tejidos circundantes y el suelo circundante, creando un perfil microbiano único conocido como 'tanatomicrobioma'.",
+                    "Mediante la secuenciación masiva del gen 16S rRNA en muestras de tierra tomadas de las herramientas de excavación de un sospechoso, los peritos pueden confirmar con precisión matemática si cavaron en el sitio exacto del hallazgo del cuerpo."
+                ]
+            },
+            {
+                id: 9,
+                categoria: "Nanotecnología y Peritajes In Situ",
+                titulo: "Biosensores de grafeno para identificación genética inmediata en terreno",
+                institucion: "MIT Biotechnology Group",
+                lugar: "Massachusetts, Estados Unidos",
+                fecha: "Actualidad",
+                imagen: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500",
+                resumen: "Dispositivos nanofluídicos portátiles capaces de secuenciar perfiles STR en minutos directamente en la escena del crimen.",
+                parrafos: [
+                    "El futuro inmediato de la investigación criminal y la biotecnología forense reside en la portabilidad total de los laboratorios de ADN. Históricamente, el procesamiento de muestras biológicas requería días o semanas de análisis en centros especializados.",
+                    "Nuevos desarrollos basados en nanotecnología y biosensores de grafeno permiten realizar reacciones de amplificación y lectura electroquímica de marcadores STR en dispositivos portátiles del tamaño de un teléfono inteligente.",
+                    "Estos equipos permiten a los peritos en terreno verificar identidades en controles críticos o escenas del crimen con una precisión equiparable a la de los laboratorios de referencia más avanzados del mundo."
+                ]
             }
         ];
 
         let limiteNoticias = 3;
 
-        // LOS 30 PERFILES OFICIALES DE LA CLASE CON HISTORIALES TANATOLÓGICOS Y PERICIALES
+        // LOS 30 PERFILES OFICIALES CON FECHA EXACTA O "No registrada"
         const perfilesBaseOficiales = [
-            { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2009-08-22", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Administrador de sistemas y analista principal en laboratorio central de biotecnología. Vigilancia pericial preventiva sin alteraciones criminales.", ultimoIngreso: "08/11/2026 12:00" },
-            { id: "SAB-8395", nombre: "Róbinson Rafael Padilla Roldán", fechaNac: "2009-12-28", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", historia: "Administrador operativo y especialista en trazabilidad de cadenas de custodia. Muestras biológicas bajo estricto control institucional.", ultimoIngreso: "08/11/2026 12:05" },
-            { id: "SAB-2001", nombre: "Benjamín Elías Zúñiga Torres", fechaNac: "2009-08-24", edad: 17, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 15,18 | TPOX: 9,11", historia: "Asignado al análisis de muestras epiteliales recuperadas en zonas de control pericial de la Región Metropolitana.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2002", nombre: "Martina Javiera Sánchez Bustos", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19 | TPOX: 8,10", historia: "Especialista en peritaje bioquímico y validación cruzada de perfiles genéticos en el sector sur de Chile.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2003", nombre: "Adriana Carolina Garrido Diaz", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 14,17 | TPOX: 7,12", historia: "Investigadora en genética forense y estabilidad de cadenas moleculares ante agentes ambientales extremos.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2004", nombre: "Samantha Andrea Calderón Marchant", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 17,18 | TPOX: 9,11", historia: "Perito en dactiloscopia y levantamiento de huellas latentes recuperadas en escenarios periciales complejos.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2005", nombre: "Emilia Sofía Ortubia Reyes", fechaNac: "2010-02-23", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 15,19 | TPOX: 8,12", historia: "Especialista en secuenciación mitocondrial (mtDNA) aplicada a muestras históricas en la zona central.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2006", nombre: "Emila Antonia Palma Covarrubias", fechaNac: "2009-12-16", edad: 16, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,12 | vWA: 14,18 | TPOX: 8,10", historia: "Analista de rastros biológicos y fluidos corporales bajo rigurosos protocolos de bioseguridad.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2007", nombre: "Josefa Trinidad Valenzuela Parragués", fechaNac: "2009-11-28", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 16,17 | TPOX: 9,11", historia: "Investigadora en toxicología forense y detección cromatográfica de metabolitos en tejidos blandos.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2008", nombre: "Antonia Paz Moraga Ríos", fechaNac: "2010-01-02", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 15,18 | TPOX: 8,11", historia: "Perito en antropología forense y análisis morfológico de restos óseos recuperados en la Región de O'Higgins.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2009", nombre: "José Tomás Méndez Yáñez", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,13 | vWA: 13,16 | TPOX: 7,10", historia: "Analista de bases de datos genómicas y ciberseguridad aplicada a registros periciales institucionales.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2010", nombre: "Romeo Matías Ignacio Delgado Pezoa", fechaNac: "2009-12-22", edad: 16, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,15 | vWA: 17,19 | TPOX: 10,12", historia: "Operador técnico en equipos de amplificación PCR y caracterización de perfiles STR estables.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2011", nombre: "Martina Ibarra", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", historia: "Especialista en entomología forense y análisis de sucesión ecológica en escenarios periciales.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2012", nombre: "Maite Rafaela Ibarra Maturana", fechaNac: "2010-03-30", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 15,19 | TPOX: 9,11", historia: "Investigadora en fenotipación y estimación de características biofísicas mediante marcadores AIMs.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2013", nombre: "Tomas Velasquez", fechaNac: "2009-05-18", edad: 17, estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 16,18 | TPOX: 8,10", historia: "Técnico en preservación de evidencias físicas y resguardo en cadenas de custodia centralizadas.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2014", nombre: "Fernanda de Jesús Cañete Poblete", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 13,17 | TPOX: 7,9", historia: "Analista de perfiles epigenéticos y relojes de metilación celular en muestras biológicas.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2015", nombre: "Martín Garrido Cuevas", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,19 | TPOX: 8,12", historia: "Perito en reconstrucción balística y análisis pericial de trayectorias en escenarios de simulacro.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2016", nombre: "Emilia Figueroa", fechaNac: "2009-11-17", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 14,18 | TPOX: 9,11", historia: "Investigadora en microbioma ambiental y rastreo de comunidades bacterianas post-mortem.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2017", nombre: "Rocío Gonzalez", fechaNac: "", edad: 17, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 15,17 | TPOX: 8,10", historia: "Especialista en identificación odontológica forense y cotejo de registros dentales indubitados.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2018", nombre: "Matilda Alarcón", fechaNac: "2009-08-19", edad: 17, estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,18 | TPOX: 9,12", historia: "Analista de muestras óseas y recuperación de perfiles genéticos en contextos de alta degradación.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2019", nombre: "Agustina Isabel Sáenz Tamayo", fechaNac: "2010-02-24", edad: 16, estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 17,19 | TPOX: 8,11", historia: "Investigadora en genética de poblaciones y genealogía forense aplicada a casos de estudio.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2020", nombre: "Victoria Bustamante Muñoz", fechaNac: "2010-04-05", edad: 16, estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,12 | vWA: 14,16 | TPOX: 7,10", historia: "Perito en cromatografía líquida para la detección de sustancias y metabolitos en fluidos complejos.", ultimoIngreso: "08/11/2026" },
-            { id: "SAB-2021", nombre: "Profe Angélica", fechaNac: "", edad: 42, estado: "VIVO", coincidencia: "100%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Docente guía, directora y máxima autoridad de supervisión pericial en el Colegio San Antonio del Baluarte.", ultimoIngreso: "08/11/2026" }
+            { id: "SAB-6282", nombre: "Martín Ignacio Sáez Moreno", fechaNac: "2009-08-22", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Administrador de sistemas y analista principal en laboratorio central de biotecnología. Vigilancia pericial preventiva sin alteraciones criminales.", ultimoIngreso: "08/11/2026 12:00" },
+            { id: "SAB-8395", nombre: "Róbinson Rafael Padilla Roldán", fechaNac: "2009-12-28", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", historia: "Administrador operativo y especialista en trazabilidad de cadenas de custodia. Muestras biológicas bajo estricto control institucional.", ultimoIngreso: "08/11/2026 12:05" },
+            { id: "SAB-2001", nombre: "Benjamín Elías Zúñiga Torres", fechaNac: "2009-08-24", estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 15,18 | TPOX: 9,11", historia: "Asignado al análisis de muestras epiteliales recuperadas en zonas de control pericial de la Región Metropolitana.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2002", nombre: "Martina Javiera Sánchez Bustos", fechaNac: "", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,19 | TPOX: 8,10", historia: "Especialista en peritaje bioquímico y validación cruzada de perfiles genéticos en el sector sur de Chile.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2003", nombre: "Adriana Carolina Garrido Diaz", fechaNac: "", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 14,17 | TPOX: 7,12", historia: "Investigadora en genética forense y estabilidad de cadenas moleculares ante agentes ambientales extremos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2004", nombre: "Samantha Andrea Calderón Marchant", fechaNac: "", estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 17,18 | TPOX: 9,11", historia: "Perito en dactiloscopia y levantamiento de huellas latentes recuperadas en escenarios periciales complejos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2005", nombre: "Emilia Sofía Ortubia Reyes", fechaNac: "2010-02-23", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,15 | vWA: 15,19 | TPOX: 8,12", historia: "Especialista en secuenciación mitocondrial (mtDNA) aplicada a muestras históricas en la zona central.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2006", nombre: "Emila Antonia Palma Covarrubias", fechaNac: "2009-12-16", estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,12 | vWA: 14,18 | TPOX: 8,10", historia: "Analista de rastros biológicos y fluidos corporales bajo rigurosos protocolos de bioseguridad.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2007", nombre: "Josefa Trinidad Valenzuela Parragués", fechaNac: "2009-11-28", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,13 | vWA: 16,17 | TPOX: 9,11", historia: "Investigadora en toxicología forense y detección cromatográfica de metabolitos en tejidos blandos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2008", nombre: "Antonia Paz Moraga Ríos", fechaNac: "2010-01-02", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 15,18 | TPOX: 8,11", historia: "Perito en antropología forense y análisis morfológico de restos óseos recuperados en la Región de O'Higgins.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2009", nombre: "José Tomás Méndez Yáñez", fechaNac: "", estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 9,13 | vWA: 13,16 | TPOX: 7,10", historia: "Analista de bases de datos genómicas y ciberseguridad aplicada a registros periciales institucionales.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2010", nombre: "Romeo Matías Ignacio Delgado Pezoa", fechaNac: "2009-12-22", estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,15 | vWA: 17,19 | TPOX: 10,12", historia: "Operador técnico en equipos de amplificación PCR y caracterización de perfiles STR estables.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2011", nombre: "Martina Ibarra", fechaNac: "", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,14 | vWA: 14,18 | TPOX: 8,11", historia: "Especialista en entomología forense y análisis de sucesión ecológica en escenarios periciales.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2012", nombre: "Maite Rafaela Ibarra Maturana", fechaNac: "2010-03-30", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,12 | vWA: 15,19 | TPOX: 9,11", historia: "Investigadora en fenotipación y estimación de características biofísicas mediante marcadores AIMs.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2013", nombre: "Tomas Velasquez", fechaNac: "2009-05-18", estado: "VIVO", coincidencia: "99.6%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,15 | vWA: 16,18 | TPOX: 8,10", historia: "Técnico en preservación de evidencias físicas y resguardo en cadenas de custodia centralizadas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2014", nombre: "Fernanda de Jesús Cañete Poblete", fechaNac: "", estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,13 | vWA: 13,17 | TPOX: 7,9", historia: "Analista de perfiles epigenéticos y relojes de metilación celular en muestras biológicas.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2015", nombre: "Martín Garrido Cuevas", fechaNac: "", estado: "VIVO", coincidencia: "99.5%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,19 | TPOX: 8,12", historia: "Perito en reconstrucción balística y análisis pericial de trayectorias en escenarios de simulacro.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2016", nombre: "Emilia Figueroa", fechaNac: "2009-11-17", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,15 | vWA: 14,18 | TPOX: 9,11", historia: "Investigadora en microbioma ambiental y rastreo de comunidades bacterianas post-mortem.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2017", nombre: "Rocío Gonzalez", fechaNac: "", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 12,14 | vWA: 15,17 | TPOX: 8,10", historia: "Especialista en identificación odontológica forense y cotejo de registros dentales indubitados.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2018", nombre: "Matilda Alarcón", fechaNac: "2009-08-19", estado: "VIVO", coincidencia: "99.7%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,13 | vWA: 16,18 | TPOX: 9,12", historia: "Analista de muestras óseas y recuperación de perfiles genéticos en contextos de alta degradación.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2019", nombre: "Agustina Isabel Sáenz Tamayo", fechaNac: "2010-02-24", estado: "VIVO", coincidencia: "99.9%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 13,14 | vWA: 17,19 | TPOX: 8,11", historia: "Investigadora en genética de poblaciones y genealogía forense aplicada a casos de estudio.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2020", nombre: "Victoria Bustamante Muñoz", fechaNac: "2010-04-05", estado: "VIVO", coincidencia: "99.8%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 10,12 | vWA: 14,16 | TPOX: 7,10", historia: "Perito en cromatografía líquida para la detección de sustancias y metabolitos en fluidos complejos.", ultimoIngreso: "08/11/2026" },
+            { id: "SAB-2021", nombre: "Profe Angélica", fechaNac: "", estado: "VIVO", coincidencia: "100%", foto: FOTO_DEFAULT, adn: "STR-D13S317: 11,14 | vWA: 16,18 | TPOX: 8,11", historia: "Docente guía, directora y máxima autoridad de supervisión pericial en el Colegio San Antonio del Baluarte.", ultimoIngreso: "08/11/2026" }
         ];
 
         let rolActual = null;
@@ -423,7 +526,9 @@
             });
 
             if (limiteNoticias >= baseNoticias.length) {
-                document.getElementById('btn-cargar-mas').classList.add('hidden');
+                document.getElementById('contenedor-btn-cargar').classList.add('hidden');
+            } else {
+                document.getElementById('contenedor-btn-cargar').classList.remove('hidden');
             }
         }
 
@@ -442,7 +547,14 @@
             document.getElementById('det-lugar').innerText = noticia.lugar;
             document.getElementById('det-fecha').innerText = noticia.fecha;
             document.getElementById('det-imagen').src = noticia.imagen;
-            document.getElementById('det-texto').innerText = noticia.texto;
+            
+            const contenedorTexto = document.getElementById('det-texto');
+            contenedorTexto.innerHTML = "";
+            noticia.parrafos.forEach(p => {
+                const par = document.createElement('p');
+                par.innerText = p;
+                contenedorTexto.appendChild(par);
+            });
 
             document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('view-detalle-noticia').classList.remove('hidden');
@@ -456,6 +568,9 @@
             sujetos.forEach((sujeto, idx) => {
                 const card = document.createElement('div');
                 card.className = "bg-white border border-slate-200 p-5 rounded-2xl shadow-sm hover:shadow-md transition flex items-center space-x-4";
+                const textoFecha = sujeto.fechaNac ? formatearFecha(sujeto.fechaNac) : "No registrada";
+                const edadCalculada = sujeto.fechaNac ? calcularEdad(sujeto.fechaNac) + " años" : "No registrada";
+
                 card.innerHTML = `
                     <img src="${sujeto.foto || FOTO_DEFAULT}" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shadow-sm flex-shrink-0">
                     <div class="flex-grow min-w-0">
@@ -464,7 +579,7 @@
                             <span class="text-[10px] font-bold ${sujeto.estado === 'VIVO' ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-red-700 bg-red-50 border-red-200'} px-2 py-0.5 rounded border">${sujeto.estado}</span>
                         </div>
                         <h4 class="font-bold text-slate-900 text-sm truncate mt-1">${sujeto.nombre}</h4>
-                        <p class="text-xs text-slate-500 font-medium">Edad: ${sujeto.edad || 'N/D'} años · ADN: ${sujeto.adn.substring(0, 22)}...</p>
+                        <p class="text-xs text-slate-500 font-medium">Nacimiento: ${textoFecha} · Edad: ${edadCalculada}</p>
                     </div>
                     <div class="flex flex-col gap-1.5 flex-shrink-0">
                         <button onclick="verPerfil(${idx})" class="bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">Ver Ficha</button>
@@ -500,6 +615,8 @@
 
             const contenedor = document.getElementById('detalle-perfil');
             const urlQRActual = window.location.origin + window.location.pathname + "?id=" + sujeto.id;
+            const textoFecha = sujeto.fechaNac ? formatearFecha(sujeto.fechaNac) : "No registrada";
+            const edadCalculada = sujeto.fechaNac ? calcularEdad(sujeto.fechaNac) + " años" : "No registrada";
 
             contenedor.innerHTML = `
                 <div class="border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -508,7 +625,7 @@
                         <div>
                             <span class="text-xs font-extrabold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 uppercase">${sujeto.id}</span>
                             <h2 class="text-xl md:text-2xl font-black text-slate-900 mt-1">${sujeto.nombre}</h2>
-                            <p class="text-xs text-slate-500 font-semibold">Estado Vital: <strong class="${sujeto.estado === 'VIVO' ? 'text-emerald-700' : 'text-red-700'}">${sujeto.estado}</strong> · Edad: ${sujeto.edad || 'N/D'} años</p>
+                            <p class="text-xs text-slate-500 font-semibold">Estado Vital: <strong class="${sujeto.estado === 'VIVO' ? 'text-emerald-700' : 'text-red-700'}">${sujeto.estado}</strong> · F. Nacimiento: ${textoFecha} · Edad: ${edadCalculada}</p>
                         </div>
                     </div>
                     <div id="qrcode-box" class="bg-white p-2 border border-slate-200 rounded-xl shadow-sm flex flex-col items-center"></div>
@@ -590,7 +707,7 @@
             if (idx === -1) {
                 if (!foto) foto = FOTO_DEFAULT;
                 sujetos.push({
-                    id, nombre, fechaNac, edad: calcularEdad(fechaNac), estado, coincidencia: "99.9%", foto, adn, historia,
+                    id, nombre, fechaNac, estado, coincidencia: "99.9%", foto, adn, historia,
                     ultimoIngreso: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                 });
             } else {
@@ -599,7 +716,7 @@
                 }
                 sujetos[idx] = {
                     ...sujetos[idx],
-                    id, nombre, fechaNac, edad: calcularEdad(fechaNac), estado, foto, adn, historia,
+                    id, nombre, fechaNac, estado, foto, adn, historia,
                     ultimoIngreso: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                 };
             }
@@ -678,7 +795,7 @@
         }
 
         function calcularEdad(fechaNacStr) {
-            if (!fechaNacStr) return 17;
+            if (!fechaNacStr) return "No registrada";
             const nac = new Date(fechaNacStr);
             const hoy = new Date();
             let edad = hoy.getFullYear() - nac.getFullYear();
@@ -687,6 +804,13 @@
                 edad--;
             }
             return edad;
+        }
+
+        function formatearFecha(fechaStr) {
+            if (!fechaStr) return "No registrada";
+            const partes = fechaStr.split('-');
+            if (partes.length !== 3) return fechaStr;
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
         }
     </script>
 </body>
