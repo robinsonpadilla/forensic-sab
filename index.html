@@ -303,13 +303,54 @@
             },
             {
                 id: 3,
-                enunciado: "En una investigación, los insectos encontrados en un cuerpo permiten estimar un intervalo post mortem de varios días. Paralelamente, un análisis de STR permite obtener un perfil genético que coincide con el de una persona desaparecida. Un investigador afirma que ambos resultados permiten establecer con certeza la identidad de la persona y el momento exacto de su fallecimiento. ¿Cuál es el principal error en su interpretación?",
+                enunciado: `
+                    <p class="mb-4">Un equipo de entomólogos forenses investiga el efecto de distintas concentraciones de morfina en el tejido cadavérico sobre el tiempo que tardan las larvas de la mosca necrófaga <em>Lucilia sericata</em> en alcanzar la etapa de pupa, un parámetro clave para estimar el Intervalo Post-Mortem (IPM). Para ello, crían cuatro grupos de larvas en condiciones estrictamente controladas de temperatura (25 °C) y humedad relativa (60%), obteniendo los resultados registrados en la siguiente tabla:</p>
+                    <div class="overflow-x-auto my-4 rounded-xl border border-slate-200 shadow-sm">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-900 text-white">
+                                    <th class="p-3 font-bold uppercase tracking-wider border-b border-slate-700">Grupo Experimental</th>
+                                    <th class="p-3 font-bold uppercase tracking-wider border-b border-slate-700">Concentración de morfina en el tejido (mg/kg)</th>
+                                    <th class="p-3 font-bold uppercase tracking-wider border-b border-slate-700">Tiempo promedio hasta etapa de pupa (horas)</th>
+                                    <th class="p-3 font-bold uppercase tracking-wider border-b border-slate-700">Longitud máxima promedio de la larva (mm)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 bg-white">
+                                <tr class="bg-slate-50/70">
+                                    <td class="p-3 font-bold text-slate-900">Grupo 1 (Control)</td>
+                                    <td class="p-3 font-mono text-slate-700">0,0</td>
+                                    <td class="p-3 font-mono font-semibold text-blue-900">144</td>
+                                    <td class="p-3 font-mono text-slate-700">15,2</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">Grupo 2</td>
+                                    <td class="p-3 font-mono text-slate-700">0,5</td>
+                                    <td class="p-3 font-mono font-semibold text-blue-900">128</td>
+                                    <td class="p-3 font-mono text-slate-700">16,8</td>
+                                </tr>
+                                <tr class="bg-slate-50/70">
+                                    <td class="p-3 font-bold text-slate-900">Grupo 3</td>
+                                    <td class="p-3 font-mono text-slate-700">1,5</td>
+                                    <td class="p-3 font-mono font-semibold text-blue-900">112</td>
+                                    <td class="p-3 font-mono text-slate-700">18,1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">Grupo 4</td>
+                                    <td class="p-3 font-mono text-slate-700">3,0</td>
+                                    <td class="p-3 font-mono font-semibold text-blue-900">98</td>
+                                    <td class="p-3 font-mono text-slate-700">19,4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-3">A partir del diseño experimental y los datos presentados en la tabla, ¿cuál de las siguientes inferencias es correcta?</p>
+                `,
                 alternativas: [
-                    { letra: "A", texto: "Los STR no permiten identificar individuos cuando el ADN está degradado." },
-                    { letra: "B", texto: "La entomología estima el tiempo transcurrido, pero no necesariamente el momento exacto del fallecimiento." },
-                    { letra: "C", texto: "La PCR permite establecer la antigüedad de una muestra, pero no identificar personas." },
-                    { letra: "D", texto: "Ambos métodos dependen de encontrar necesariamente ADN humano intacto." },
-                    { letra: "E", texto: "Los STR no tendrían con que compararse porque la persona está desaparecida, aún así, si se puede saber el tiempo exacto de muerte." }
+                    { letra: "A", texto: "La temperatura y la humedad actúan como las variables dependientes del estudio, ya que determinan la velocidad de pupación de las larvas." },
+                    { letra: "B", texto: "La presencia de morfina acelera el desarrollo larvario, lo que podría llevar a sobreestimar el tiempo transcurrido desde la muerte (IPM) si no se realiza un análisis toxicológico previo." },
+                    { letra: "C", texto: "El Grupo 1 corresponde a la variable independiente del experimento, pues demuestra que las larvas no pueden sobrevivir en ausencia de fármacos." },
+                    { letra: "D", texto: "A mayor concentración de morfina, el tiempo necesario para alcanzar la pupación aumenta proporcionalmente debido a un efecto inhibidor metabólico." },
+                    { letra: "E", texto: "Los resultados demuestran que la longitud de la larva es una variable controlada que se mantiene constante independientemente de la dosis administrada." }
                 ],
                 correcta: "B"
             },
@@ -517,7 +558,7 @@
         let idQRPendiente = null;
 
         function obtenerSujetos() {
-            let versionActual = "sab_sujetos_v8";
+            let versionActual = "sab_sujetos_v9";
             let guardados = localStorage.getItem(versionActual);
             if (!guardados) {
                 localStorage.setItem(versionActual, JSON.stringify(perfilesBaseOficiales));
@@ -537,7 +578,7 @@
         }
 
         function guardarSujetosStorage(sujetos) {
-            localStorage.setItem("sab_sujetos_v8", JSON.stringify(sujetos));
+            localStorage.setItem("sab_sujetos_v9", JSON.stringify(sujetos));
         }
 
         window.onload = function() {
@@ -666,7 +707,7 @@
             const contenedor = document.getElementById('contenedor-pregunta');
             contenedor.innerHTML = `
                 <div class="space-y-4">
-                    <p class="text-sm md:text-base font-semibold text-slate-900 leading-relaxed">${preg.enunciado}</p>
+                    <div class="text-sm md:text-base font-semibold text-slate-900 leading-relaxed">${preg.enunciado}</div>
                     <div class="space-y-2.5 pt-2" id="opciones-lista">
                         ${preg.alternativas.map(alt => `
                             <button onclick="verificarRespuesta('${alt.letra}')" data-letra="${alt.letra}" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 text-xs md:text-sm font-medium text-slate-800 transition flex items-start space-x-3">
